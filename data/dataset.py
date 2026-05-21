@@ -96,31 +96,25 @@ def get_dataloaders(data_root=config.DATA_ROOT):
     return train_loader, test_loader
 
 def get_pretrain_dataloader(data_root=config.DATA_ROOT, sample_frac=0.3):
-    """
-    Build a pretraining dataset by pooling 30% of samples from
-    FallDetection and MotionSourceRecognition (HP device only).
-    No labels used — purely for self-supervised pretraining.
-    """
     tasks = {
-        "FallDetection":          "FallDetection/metadata/sample_metadata.csv",
+        "FallDetection":           "FallDetection/metadata/sample_metadata.csv",
         "MotionSourceRecognition": "MotionSourceRecognition/metadata/sample_metadata.csv",
     }
 
     dfs = []
     for task, meta_rel_path in tasks.items():
-        meta_path = os.path.join(data_root, meta_rel_path)
-        df = pd.read_csv(meta_path)
-
-        # Filter HP device
+        df = pd.read_csv(os.path.join(data_root, meta_rel_path))
         df = df[df["device"] == "HP"].copy()
-
-        # Add task column so we know which folder to look in
         df["task"] = task
 
-        # Sample 30%
-        df = df.sample(frac=sample_frac, random_state=42).reset_index(drop=True)
+        # Filter missing files
+        df["h5_path"] = df["file_path"].apply(
+            lambda p: os.path.join(data_root, task, p.lstrip("./"))
+        )
+        df = df[df["h5_path"].apply(os.path.exists)].reset_index(drop=True)
 
-        print(f"{task}: {len(df)} samples (30% of HP)")
+        df = df.sample(frac=sample_frac, random_state=42).reset_index(drop=True)
+        print(f"{task}: {len(df)} samples after filter")
         dfs.append(df)
 
     combined = pd.concat(dfs, ignore_index=True).sample(
