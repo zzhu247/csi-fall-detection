@@ -60,7 +60,7 @@ def train_one_epoch_ijepa(model, loader, optimizer, device):
     model.train()
     total_loss = 0
 
-    for csi, _ in loader:           # labels ignored during pretraining
+    for csi in loader:           # labels ignored during pretraining
         csi = csi.to(device)
         B   = csi.shape[0]
 
