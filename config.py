@@ -11,7 +11,7 @@ PATCH_W     = 25
 D_MODEL     = 128
 D_FF        = 512
 N_HEADS     = 4
-N_LAYERS    = 4
+N_LAYERS    = 12
 NUM_CLASSES = 2
 
 # Training
