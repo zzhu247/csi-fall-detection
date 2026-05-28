@@ -16,6 +16,6 @@ NUM_CLASSES = 2
 
 # Training
 BATCH_SIZE  = 16
-LR          = 1e-4
+LR          = 3e-5
 NUM_EPOCHS  = 10
 NUM_WORKERS = 0

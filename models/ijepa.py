@@ -68,7 +68,7 @@ class IJEPA(nn.Module):
                  patch_h, patch_w, encoder_dim, encoder_ff_dim,
                  encoder_heads, encoder_depth,
                  predictor_dim, predictor_heads, predictor_depth,
-                 ema_momentum=0.996):
+                 ema_momentum=0.999):
         super().__init__()
 
         self.num_patches  = (img_h // patch_h) * (img_w // patch_w)
