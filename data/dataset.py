@@ -37,18 +37,18 @@ class CSIFallDataset(Dataset):
         return len(self.meta)
 
     def __getitem__(self, idx):
-        row    = self.meta.iloc[idx]
+        row = self.meta.iloc[idx]
         h5_path = self.data_root + "/FallDetection/" + row["file_path"].lstrip("./")
 
         with h5py.File(h5_path, "r") as hf:
-            csi = hf["CSI_amps"][:].squeeze(-1)        # (232, 500)
+            csi = hf["CSI_amps"][:].squeeze(-1)   # (n_sub, 500)
 
-        csi   = (csi - csi.mean()) / (csi.std() + 1e-8)
-        csi   = torch.tensor(csi, dtype=torch.float32).unsqueeze(0)  # [1, 232, 500]
-        label = torch.tensor(
-            0 if row["label"] == "Fall" else 1,
-            dtype=torch.long
-        )
+        # Normalize subcarrier count to 232
+        csi = normalize_subcarriers(csi, target_n=232)  # handles 64, 232, 696
+
+        csi = (csi - csi.mean()) / (csi.std() + 1e-8)
+        csi = torch.tensor(csi, dtype=torch.float32).unsqueeze(0)
+        label = torch.tensor(0 if row["label"] == "Fall" else 1, dtype=torch.long)
         return csi, label
     
 class CSIPretrainDataset(Dataset):

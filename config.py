@@ -1,6 +1,6 @@
 # config.py
 
-DATA_ROOT = "/home/zhuzih19/raw_data/csi-bench-dataset/csi-bench-dataset"
+DATA_ROOT = "/home/zhuzih19/data/csi-bench-dataset"
 
 # Model
 IN_CHANNELS = 1

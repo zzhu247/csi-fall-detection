@@ -1,0 +1,65 @@
+nohup: ignoring input
+Starting: mae_ep500_mask0.75_dec128_bs32
+Epoch 001/500 | Loss: 0.9673 | Best: 0.9673
+Epoch 050/500 | Loss: 0.2170 | Best: 0.2170
+Epoch 100/500 | Loss: 0.2073 | Best: 0.2071
+Epoch 150/500 | Loss: 0.1734 | Best: 0.1734
+Epoch 200/500 | Loss: 0.1302 | Best: 0.1302
+Epoch 250/500 | Loss: 0.1246 | Best: 0.1245
+Epoch 300/500 | Loss: 0.1224 | Best: 0.1224
+Epoch 350/500 | Loss: 0.1212 | Best: 0.1211
+Epoch 400/500 | Loss: 0.1204 | Best: 0.1204
+Epoch 450/500 | Loss: 0.1200 | Best: 0.1199
+Epoch 500/500 | Loss: 0.1198 | Best: 0.1197
+
+Running KNN evaluation...
+
+-- KNN on val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.887
+  Layer  1  k=10  →  0.856
+  Layer  1  k=20  →  0.821
+  Layer  4  k= 5  →  0.924
+  Layer  4  k=10  →  0.882
+  Layer  4  k=20  →  0.853
+  Layer  8  k= 5  →  0.915
+  Layer  8  k=10  →  0.892
+  Layer  8  k=20  →  0.854
+  Layer 12  k= 5  →  0.923
+  Layer 12  k=10  →  0.892
+  Layer 12  k=20  →  0.854
+
+-- KNN on test_easy --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.872
+  Layer  1  k=10  →  0.851
+  Layer  1  k=20  →  0.839
+  Layer  4  k= 5  →  0.925
+  Layer  4  k=10  →  0.901
+  Layer  4  k=20  →  0.871
+  Layer  8  k= 5  →  0.920
+  Layer  8  k=10  →  0.904
+  Layer  8  k=20  →  0.882
+  Layer 12  k= 5  →  0.928
+  Layer 12  k=10  →  0.901
+  Layer 12  k=20  →  0.883
+
+-- KNN on test_hard --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.638
+  Layer  1  k=10  →  0.609
+  Layer  1  k=20  →  0.609
+  Layer  4  k= 5  →  0.681
+  Layer  4  k=10  →  0.652
+  Layer  4  k=20  →  0.638
+  Layer  8  k= 5  →  0.754
+  Layer  8  k=10  →  0.681
+  Layer  8  k=20  →  0.638
+  Layer 12  k= 5  →  0.710
+  Layer 12  k=10  →  0.667
+  Layer 12  k=20  →  0.594
+
+Done! Results saved to results/mae_ep500_mask0.75_dec128_bs32.json

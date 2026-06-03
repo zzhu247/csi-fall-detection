@@ -19,19 +19,43 @@ from eval.knn_probe import knn_eval, build_table
 
 # ── Data setup ────────────────────────────────────────────
 def get_dataloaders(batch_size):
-    # Pretraining data (unlabeled, multi-task)
-    combined_df = pd.read_csv(os.path.join(
-        os.path.dirname(config.DATA_ROOT), "pretrain_combined.csv"
-    ))
+    pretrain_df  = pd.read_csv('/home/zhuzih19/data/pretrain_combined.csv')
+    train_df     = pd.read_csv('/home/zhuzih19/data/train.csv')
+    val_df       = pd.read_csv('/home/zhuzih19/data/val.csv')
+    test_easy_df = pd.read_csv('/home/zhuzih19/data/test_easy.csv')
+    test_hard_df = pd.read_csv('/home/zhuzih19/data/test_hard.csv')
+
     pretrain_loader = DataLoader(
-        CSIPretrainDatasetV2(combined_df, config.DATA_ROOT),
+        CSIPretrainDatasetV2(pretrain_df, config.DATA_ROOT),
         batch_size=batch_size, shuffle=True,
         num_workers=4, pin_memory=True
     )
+    train_loader = DataLoader(
+        CSIFallDataset(train_df, config.DATA_ROOT),
+        batch_size=batch_size, shuffle=True,
+        num_workers=4, pin_memory=True
+    )
+    val_loader = DataLoader(
+        CSIFallDataset(val_df, config.DATA_ROOT),
+        batch_size=batch_size, shuffle=False,
+        num_workers=4, pin_memory=True
+    )
+    test_easy_loader = DataLoader(
+        CSIFallDataset(test_easy_df, config.DATA_ROOT),
+        batch_size=batch_size, shuffle=False,
+        num_workers=4, pin_memory=True
+    )
+    test_hard_loader = DataLoader(
+        CSIFallDataset(test_hard_df, config.DATA_ROOT),
+        batch_size=batch_size, shuffle=False,
+        num_workers=4, pin_memory=True
+    )
 
-    # Downstream data (labeled, FallDetection only)
-    meta_hp = load_metadata(config.DATA_ROOT)
-    train_df, test_df = get_splits(config.DATA_ROOT, meta_hp)
+    print(f"Pretrain: {len(pretrain_df)} | Train: {len(train_df)} | "
+          f"Val: {len(val_df)} | Test Easy: {len(test_easy_df)} | "
+          f"Test Hard: {len(test_hard_df)}")
+
+    return pretrain_loader, train_loader, val_loader, test_easy_loader, test_hard_loader
 
     def file_exists(row):
         return os.path.exists(
@@ -139,11 +163,21 @@ for mask_ratio, dec_depth, dec_dim, epochs, batch_size in product(
                   f"Loss: {loss:.4f} | LR: {lr:.2e}")
 
     # ── KNN evaluation ────────────────────────────────────
+    # In the experiment loop, replace knn_eval call with:
     print("\nRunning KNN evaluation...")
-    knn_results = knn_eval(
-        model, train_loader, test_loader,
-        layers=LAYERS, k_values=K_VALUES, device=device
-    )
+    for eval_name, eval_loader in [
+        ("val",       val_loader),
+        ("test_easy", test_easy_loader),
+        ("test_hard", test_hard_loader),
+    ]:
+        print(f"\n-- {eval_name} --")
+        knn_results = knn_eval(
+            model, train_loader, eval_loader,
+            layers=LAYERS, k_values=K_VALUES, device=device
+        )
+        exp_result[f"knn_{eval_name}"] = {
+            str(k): float(v) for k, v in knn_results.items()
+        }
 
     # ── Save results ──────────────────────────────────────
     exp_result = {
