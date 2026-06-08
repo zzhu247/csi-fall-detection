@@ -20,7 +20,7 @@ print(f"Starting: {exp_name}")
 device = torch.device("cuda")
 
 # Dataloaders
-pretrain_df  = pd.read_csv("/home/zhuzih19/data/pretrain_combined.csv")
+pretrain_df = pd.read_csv("/home/zhuzih19/data/combined_all_clean.csv")
 train_df     = pd.read_csv("/home/zhuzih19/data/train.csv")
 val_df       = pd.read_csv("/home/zhuzih19/data/val.csv")
 test_easy_df = pd.read_csv("/home/zhuzih19/data/test_easy.csv")
