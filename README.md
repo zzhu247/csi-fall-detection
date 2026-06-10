@@ -1,6 +1,6 @@
 # CSI Fall Detection Project
 
-This repository implements fall detection using Channel State Information (CSI) with multiple training approaches, comparing self-supervised pretraining methods with supervised learning.
+This repository implements fall detection using Channel State Information (CSI) with multiple training approaches, comparing self-supervised pretraining methods with supervised learning. The project evaluates Vision Transformer (ViT) based models using various pretraining strategies including supervised learning, I-JEPA, Bootleg with reconstruction, and Masked Autoencoders (MAE).
 
 ## Table of Contents
 
@@ -10,10 +10,14 @@ This repository implements fall detection using Channel State Information (CSI) 
 - [Quick Start](#quick-start)
 - [Models](#models)
 - [Training Scripts](#training-scripts)
+- [Evaluation Scripts](#evaluation-scripts)
 - [Experimental Results](#experimental-results)
+- [Results Summary](#results-summary)
 - [Detailed Experiment Analysis](#detailed-experiment-analysis)
 - [Key Findings](#key-findings)
 - [Next Steps](#next-steps)
+
+📊 **[See Complete Results Documentation](RESULTS.md)** - Detailed results from all experiments, metrics, and comparative analysis.
 
 ## Project Overview
 
@@ -29,6 +33,12 @@ The project explores different learning strategies for fall detection classifica
 ├── train.py                     # Supervised ViT training
 ├── train_ijepa.py               # I-JEPA self-supervised pretraining
 ├── train_booyleg_recon.py       # Bootleg + reconstruction pretraining
+├── train_mae.py                 # MAE training and utilities
+├── train_mae_run.py             # MAE experiment runner
+├── run_mae_experiments.py        # MAE comprehensive experiment suite
+├── eval_linear_probe.py          # Linear probe evaluation on single task
+├── eval_pertask.py              # Per-task evaluation with multiple models
+├── eval_multitask.py            # Multi-task evaluation framework
 ├── data/
 │   ├── __init__.py
 │   └── dataset.py               # CSI dataset loading and preprocessing
@@ -36,8 +46,18 @@ The project explores different learning strategies for fall detection classifica
 │   ├── __init__.py
 │   ├── vit.py                   # Vision Transformer backbone
 │   ├── ijepa.py                 # I-JEPA model implementation
+│   ├── mae.py                   # Masked Autoencoder model
 │   ├── decoder.py               # Decoder for reconstruction
 │   └── bootleg_with_recon.py    # Bootleg model with reconstruction head
+├── eval/
+│   ├── __init__.py
+│   └── knn_probe.py             # KNN evaluation utilities
+├── checkpoints/                 # Saved model checkpoints
+├── results/                     # Experiment results (JSON)
+├── logs/                        # Training logs
+├── scripts/
+│   ├── build_combined_dataset.py # Multi-task dataset construction
+│   ├── build_multitask_splits.py # Multi-task split generation
 └── README.md                    # This file
 ```
 
@@ -111,14 +131,61 @@ Combines Bootleg contrastive learning and reconstruction objectives for pretrain
 - **Downstream**: Linear probe on fall detection
 - **Challenges**: Instability with limited epochs on CPU
 
+## Evaluation Scripts
+
+### Linear Probe Evaluation (`eval_linear_probe.py`)
+- **Purpose**: Evaluate pretrained models using linear probe on frozen encoder
+- **Method**: Extract layer embeddings from intermediate transformer layers, train linear classifier
+- **Layers Evaluated**: [1, 4, 8, 12] (from single to full depth)
+- **Output**: Layer-wise accuracy metrics for optimal feature layer identification
+
+### Per-Task Evaluation (`eval_pertask.py`)
+- **Purpose**: Evaluate multiple pretrained models across different CSI-Bench tasks
+- **Models**: MAE models with different training configurations
+- **Tasks**: Fall Detection, Motion Source Recognition
+- **Metrics**: KNN accuracy (varying k and layer depths) + Linear probe accuracy
+- **Output**: JSON results with per-task performance breakdown
+
+### Multi-Task Evaluation (`eval_multitask.py`)
+- **Purpose**: Comprehensive evaluation of multi-task transfer learning
+- **Framework**: Combines KNN probe and linear probe evaluation
+- **Coverage**: All 6 CSI-Bench tasks in single evaluation run
+- **Output**: Stratified results by task and difficulty level
+
 ## Experimental Results
 
-| Method | Test Acc | Notes |
-|--------|----------|-------|
-| Majority Baseline | ~60.0% | Always predict Nonfall |
-| Supervised ViT (10% subset) | 82.2% | From scratch, no pretraining |
-| I-JEPA Linear Probe | 65.6% | Pretrain: 429 samples, 10 epochs |
-| Bootleg Linear Probe | TBD | Pretrain: 20K samples, 10 epochs |
+### Quick Summary
+
+| Method | Model | Pretraining Data | Best Accuracy | Evaluation | Notes |
+|--------|-------|------------------|---------------|-----------|-------|
+| **Supervised** | ViT-4L | 429 samples | **82.2%** | Direct | Baseline, no pretraining |
+| **I-JEPA** | ViT-4L | 429 samples | 65.6% | Linear Probe | SSL gap observed |
+| **MAE-200** | ViT-12L | ~341K | ~60.9% | KNN+LP | Layer 12, k=20 |
+| **MAE-300** | ViT-12L | ~341K | ~60.7% | KNN+LP | Similar to MAE-200 |
+| **MAE-500** | ViT-12L | ~341K | ~67.5% | KNN+LP | Best layer-wise |
+| **Bootleg** | ViT-4L | 20K | TBD | Linear Probe | CPU instability |
+| **Multi-Task** | MAE-500 | Multi-task | 78.98% (easy) | KNN+LP | Best for FD task |
+
+**📊 See [RESULTS.md](RESULTS.md) for comprehensive breakdowns by layer, k-value, split, and difficulty.**
+
+## Results Summary
+
+### Key Performance Metrics
+
+**MAE-500 Fall Detection (Multi-task transfer)**:
+- Validation KNN (layer 12, k=20): 60.9%
+- Test Easy (layer 12, k=10): 76.5%
+- Test Hard (layer 12, k=10): 59.4%
+- Linear Probe (layer 4): 74.9%
+
+**MAE-200 Fall Detection**:
+- Best Linear Probe (layer 12): 60.7%
+- Test Easy (layer 4): 78.98%
+- Test Hard average: ~45%
+
+**Supervised Baseline**:
+- Test Accuracy: 82.2%
+- No pretraining, direct classification
 
 ---
 
