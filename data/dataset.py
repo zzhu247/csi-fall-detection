@@ -312,3 +312,26 @@ def get_pretrain_dataloader_all(data_root=config.DATA_ROOT, sample_frac=0.3):
         batch_size=config.BATCH_SIZE, shuffle=True,
         num_workers=config.NUM_WORKERS
     )
+
+class CombinedDataset(Dataset):
+    """
+    Labeled dataset for combined multi-task evaluation.
+    Uses pre-resolved h5_path and global_label columns.
+    """
+    def __init__(self, meta_df, data_root):
+        self.meta      = meta_df.reset_index(drop=True)
+        self.data_root = data_root
+
+    def __len__(self):
+        return len(self.meta)
+
+    def __getitem__(self, idx):
+        row     = self.meta.iloc[idx]
+        h5_path = row["h5_path"]
+
+        csi = load_and_normalize_csi(h5_path)
+        csi = (csi - csi.mean()) / (csi.std() + 1e-8)
+        csi = torch.tensor(csi, dtype=torch.float32).unsqueeze(0)
+
+        label = torch.tensor(int(row["global_label"]), dtype=torch.long)
+        return csi, label

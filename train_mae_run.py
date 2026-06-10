@@ -3,7 +3,7 @@ import os, sys, time, json, torch, pandas as pd
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from models.mae import MAE
-from data.dataset import CSIPretrainDatasetV2, MultiTaskDataset
+from data.dataset import CSIPretrainDatasetV2, CombinedDataset, MultiTaskDataset
 from eval.knn_probe import knn_eval
 import config
 
@@ -52,15 +52,15 @@ pretrain_loader = DataLoader(
     batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True
 )
 train_loader = DataLoader(
-    MultiTaskDataset(train_df, config.DATA_ROOT),
+    CombinedDataset(train_df, config.DATA_ROOT),
     batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True
 )
 val_loader = DataLoader(
-    MultiTaskDataset(val_df, config.DATA_ROOT),
+    CombinedDataset(val_df, config.DATA_ROOT),
     batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True
 )
 test_loader = DataLoader(
-    MultiTaskDataset(test_df, config.DATA_ROOT),
+    CombinedDataset(test_df, config.DATA_ROOT),
     batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True
 )
 
