@@ -18,6 +18,7 @@ TASKS = {
 
 CHECKPOINTS = {
     "mae_341k_200": ("checkpoints/mae_ep200_mask0.75_dec128_bs64_best.pth", 128),
+    "mae_341k_300": ("checkpoints/mae_ep300_mask0.75_dec128_bs64_best.pth", 128),  
     "mae_341k_500": ("checkpoints/mae_ep500_mask0.75_dec128_bs64_best.pth", 128),
 }
 
