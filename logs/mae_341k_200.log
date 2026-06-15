@@ -1,0 +1,79 @@
+nohup: ignoring input
+Starting: mae_ep200_mask0.75_dec128_bs64
+Epoch 001/200 | Loss: 0.4597 | Best: 0.4597
+Epoch 050/200 | Loss: 0.0989 | Best: 0.0989
+Epoch 100/200 | Loss: 0.0927 | Best: 0.0927
+Epoch 150/200 | Loss: 0.0907 | Best: 0.0905
+Epoch 200/200 | Loss: 0.0898 | Best: 0.0896
+
+Running KNN evaluation...
+
+-- KNN on val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.864
+  Layer  1  k=10  →  0.835
+  Layer  1  k=20  →  0.797
+  Layer  4  k= 5  →  0.913
+  Layer  4  k=10  →  0.872
+  Layer  4  k=20  →  0.842
+  Layer  8  k= 5  →  0.911
+  Layer  8  k=10  →  0.873
+  Layer  8  k=20  →  0.861
+  Layer 12  k= 5  →  0.925
+  Layer 12  k=10  →  0.884
+  Layer 12  k=20  →  0.857
+
+-- KNN on test_easy --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.855
+  Layer  1  k=10  →  0.835
+  Layer  1  k=20  →  0.796
+  Layer  4  k= 5  →  0.914
+  Layer  4  k=10  →  0.890
+  Layer  4  k=20  →  0.869
+  Layer  8  k= 5  →  0.920
+  Layer  8  k=10  →  0.889
+  Layer  8  k=20  →  0.872
+  Layer 12  k= 5  →  0.922
+  Layer 12  k=10  →  0.893
+  Layer 12  k=20  →  0.877
+
+-- KNN on test_hard --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.667
+  Layer  1  k=10  →  0.609
+  Layer  1  k=20  →  0.580
+  Layer  4  k= 5  →  0.638
+  Layer  4  k=10  →  0.652
+  Layer  4  k=20  →  0.638
+  Layer  8  k= 5  →  0.652
+  Layer  8  k=10  →  0.623
+  Layer  8  k=20  →  0.623
+  Layer 12  k= 5  →  0.710
+  Layer 12  k=10  →  0.696
+  Layer 12  k=20  →  0.652
+
+Done! Results saved to results/mae_ep200_mask0.75_dec128_bs64.json
+
+Running Linear Probe evaluation...
+
+-- Linear Probe on val --
+  Layer  1  →  0.576
+  Layer  4  →  0.584
+  Layer  8  →  0.576
+  Layer 12  →  0.577
+
+-- Linear Probe on test_easy --
+  Layer  1  →  0.606
+  Layer  4  →  0.628
+  Layer  8  →  0.637
+  Layer 12  →  0.606
+
+-- Linear Probe on test_hard --
+  Layer  1  →  0.449
+  Layer  4  →  0.493
+  Layer  8  →  0.449
+  Layer 12  →  0.449

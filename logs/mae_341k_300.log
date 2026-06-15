@@ -1,0 +1,62 @@
+nohup: ignoring input
+Starting: mae_ep300_mask0.75_dec128_bs64
+Pretrain: 341569 | Train: 239097 | Val: 68314 | Test: 34158
+Model params: 2,992,968
+Epoch 001/300 | Loss: 0.4641 | Best: 0.4641 | LR: 1.50e-04
+Epoch 050/300 | Loss: 0.1069 | Best: 0.1069 | LR: 1.40e-04
+Epoch 100/300 | Loss: 0.0938 | Best: 0.0937 | LR: 1.12e-04
+Epoch 150/300 | Loss: 0.0910 | Best: 0.0907 | LR: 7.50e-05
+Epoch 200/300 | Loss: 0.0895 | Best: 0.0893 | LR: 3.75e-05
+Epoch 250/300 | Loss: 0.0879 | Best: 0.0878 | LR: 1.00e-05
+Epoch 300/300 | Loss: 0.0874 | Best: 0.0871 | LR: 0.00e+00
+
+Running KNN evaluation...
+
+-- KNN on val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.516
+  Layer  1  k=10  →  0.528
+  Layer  1  k=20  →  0.547
+  Layer  4  k= 5  →  0.564
+  Layer  4  k=10  →  0.573
+  Layer  4  k=20  →  0.599
+  Layer  8  k= 5  →  0.573
+  Layer  8  k=10  →  0.583
+  Layer  8  k=20  →  0.606
+  Layer 12  k= 5  →  0.573
+  Layer 12  k=10  →  0.585
+  Layer 12  k=20  →  0.609
+
+-- KNN on test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.514
+  Layer  1  k=10  →  0.526
+  Layer  1  k=20  →  0.544
+  Layer  4  k= 5  →  0.564
+  Layer  4  k=10  →  0.575
+  Layer  4  k=20  →  0.597
+  Layer  8  k= 5  →  0.572
+  Layer  8  k=10  →  0.586
+  Layer  8  k=20  →  0.608
+  Layer 12  k= 5  →  0.572
+  Layer 12  k=10  →  0.584
+  Layer 12  k=20  →  0.610
+
+Running Linear Probe evaluation...
+
+-- Linear Probe on val --
+  Layer  1  →  0.444
+  Layer  4  →  0.492
+  Layer  8  →  0.531
+  Layer 12  →  0.522
+
+-- Linear Probe on test --
+  Layer  1  →  0.447
+  Layer  4  →  0.495
+  Layer  8  →  0.527
+  Layer 12  →  0.526
+
+Done! Saved: results/mae_ep300_mask0.75_dec128_bs64.json
+Best pretrain loss: 0.0871

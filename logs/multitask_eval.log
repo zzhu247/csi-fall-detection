@@ -1,0 +1,337 @@
+nohup: ignoring input
+
+============================================================
+Checkpoint: mae_200
+
+  ── FallDetection ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.715
+  Layer  1  k=10  →  0.706
+  Layer  4  k= 5  →  0.734
+  Layer  4  k=10  →  0.731
+  Layer  8  k= 5  →  0.719
+  Layer  8  k=10  →  0.711
+  Layer 12  k= 5  →  0.717
+  Layer 12  k=10  →  0.714
+    Linear Probe L1: 0.718
+    Linear Probe L4: 0.748
+    Linear Probe L8: 0.730
+    Linear Probe L12: 0.733
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.759
+  Layer  1  k=10  →  0.740
+  Layer  4  k= 5  →  0.785
+  Layer  4  k=10  →  0.775
+  Layer  8  k= 5  →  0.776
+  Layer  8  k=10  →  0.766
+  Layer 12  k= 5  →  0.764
+  Layer 12  k=10  →  0.765
+    Linear Probe L1: 0.773
+    Linear Probe L4: 0.790
+    Linear Probe L8: 0.769
+    Linear Probe L12: 0.776
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.623
+  Layer  1  k=10  →  0.609
+  Layer  4  k= 5  →  0.638
+  Layer  4  k=10  →  0.638
+  Layer  8  k= 5  →  0.594
+  Layer  8  k=10  →  0.623
+  Layer 12  k= 5  →  0.609
+  Layer 12  k=10  →  0.594
+    Linear Probe L1: 0.551
+    Linear Probe L4: 0.551
+    Linear Probe L8: 0.551
+    Linear Probe L12: 0.551
+
+  ── MotionSourceRecognition ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.967
+  Layer  1  k=10  →  0.968
+  Layer  4  k= 5  →  0.992
+  Layer  4  k=10  →  0.991
+  Layer  8  k= 5  →  0.999
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+    Linear Probe L1: 0.742
+    Linear Probe L4: 0.838
+    Linear Probe L8: 0.745
+    Linear Probe L12: 0.785
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.963
+  Layer  1  k=10  →  0.957
+  Layer  4  k= 5  →  0.993
+  Layer  4  k=10  →  0.984
+  Layer  8  k= 5  →  1.000
+  Layer  8  k=10  →  0.999
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+    Linear Probe L1: 0.644
+    Linear Probe L4: 0.837
+    Linear Probe L8: 0.701
+    Linear Probe L12: 0.680
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.946
+  Layer  1  k=10  →  0.939
+  Layer  4  k= 5  →  0.991
+  Layer  4  k=10  →  0.987
+  Layer  8  k= 5  →  0.999
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.998
+  Layer 12  k=10  →  0.997
+    Linear Probe L1: 0.608
+    Linear Probe L4: 0.732
+    Linear Probe L8: 0.625
+    Linear Probe L12: 0.682
+
+============================================================
+Checkpoint: mae_300
+
+  ── FallDetection ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.775
+  Layer  1  k=10  →  0.772
+  Layer  4  k= 5  →  0.758
+  Layer  4  k=10  →  0.748
+  Layer  8  k= 5  →  0.722
+  Layer  8  k=10  →  0.699
+  Layer 12  k= 5  →  0.706
+  Layer 12  k=10  →  0.688
+    Linear Probe L1: 0.747
+    Linear Probe L4: 0.751
+    Linear Probe L8: 0.733
+    Linear Probe L12: 0.720
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.830
+  Layer  1  k=10  →  0.806
+  Layer  4  k= 5  →  0.799
+  Layer  4  k=10  →  0.769
+  Layer  8  k= 5  →  0.768
+  Layer  8  k=10  →  0.750
+  Layer 12  k= 5  →  0.740
+  Layer 12  k=10  →  0.736
+    Linear Probe L1: 0.793
+    Linear Probe L4: 0.792
+    Linear Probe L8: 0.788
+    Linear Probe L12: 0.768
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.696
+  Layer  1  k=10  →  0.681
+  Layer  4  k= 5  →  0.580
+  Layer  4  k=10  →  0.623
+  Layer  8  k= 5  →  0.609
+  Layer  8  k=10  →  0.609
+  Layer 12  k= 5  →  0.580
+  Layer 12  k=10  →  0.623
+    Linear Probe L1: 0.551
+    Linear Probe L4: 0.565
+    Linear Probe L8: 0.580
+    Linear Probe L12: 0.565
+
+  ── MotionSourceRecognition ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.942
+  Layer  1  k=10  →  0.938
+  Layer  4  k= 5  →  0.993
+  Layer  4  k=10  →  0.991
+  Layer  8  k= 5  →  0.999
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+    Linear Probe L1: 0.748
+    Linear Probe L4: 0.823
+    Linear Probe L8: 0.763
+    Linear Probe L12: 0.805
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.938
+  Layer  1  k=10  →  0.923
+  Layer  4  k= 5  →  0.992
+  Layer  4  k=10  →  0.988
+  Layer  8  k= 5  →  1.000
+  Layer  8  k=10  →  0.999
+  Layer 12  k= 5  →  1.000
+  Layer 12  k=10  →  0.999
+    Linear Probe L1: 0.677
+    Linear Probe L4: 0.788
+    Linear Probe L8: 0.706
+    Linear Probe L12: 0.724
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.899
+  Layer  1  k=10  →  0.892
+  Layer  4  k= 5  →  0.991
+  Layer  4  k=10  →  0.986
+  Layer  8  k= 5  →  0.999
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.998
+  Layer 12  k=10  →  0.997
+    Linear Probe L1: 0.662
+    Linear Probe L4: 0.749
+    Linear Probe L8: 0.666
+    Linear Probe L12: 0.747
+
+============================================================
+Checkpoint: mae_500
+
+  ── FallDetection ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.876
+  Layer  1  k=10  →  0.851
+  Layer  4  k= 5  →  0.905
+  Layer  4  k=10  →  0.875
+  Layer  8  k= 5  →  0.927
+  Layer  8  k=10  →  0.892
+  Layer 12  k= 5  →  0.936
+  Layer 12  k=10  →  0.892
+    Linear Probe L1: 0.805
+    Linear Probe L4: 0.809
+    Linear Probe L8: 0.819
+    Linear Probe L12: 0.825
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.922
+  Layer  1  k=10  →  0.885
+  Layer  4  k= 5  →  0.956
+  Layer  4  k=10  →  0.920
+  Layer  8  k= 5  →  0.950
+  Layer  8  k=10  →  0.927
+  Layer 12  k= 5  →  0.958
+  Layer 12  k=10  →  0.933
+    Linear Probe L1: 0.853
+    Linear Probe L4: 0.867
+    Linear Probe L8: 0.870
+    Linear Probe L12: 0.875
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.638
+  Layer  1  k=10  →  0.638
+  Layer  4  k= 5  →  0.710
+  Layer  4  k=10  →  0.667
+  Layer  8  k= 5  →  0.725
+  Layer  8  k=10  →  0.696
+  Layer 12  k= 5  →  0.696
+  Layer 12  k=10  →  0.681
+    Linear Probe L1: 0.536
+    Linear Probe L4: 0.565
+    Linear Probe L8: 0.565
+    Linear Probe L12: 0.565
+
+  ── MotionSourceRecognition ──
+
+    val:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.895
+  Layer  1  k=10  →  0.893
+  Layer  4  k= 5  →  0.997
+  Layer  4  k=10  →  0.996
+  Layer  8  k= 5  →  0.999
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+    Linear Probe L1: 0.678
+    Linear Probe L4: 0.786
+    Linear Probe L8: 0.766
+    Linear Probe L12: 0.882
+
+    test_easy:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.873
+  Layer  1  k=10  →  0.879
+  Layer  4  k= 5  →  0.998
+  Layer  4  k=10  →  0.997
+  Layer  8  k= 5  →  1.000
+  Layer  8  k=10  →  0.999
+  Layer 12  k= 5  →  1.000
+  Layer 12  k=10  →  1.000
+    Linear Probe L1: 0.555
+    Linear Probe L4: 0.755
+    Linear Probe L8: 0.718
+    Linear Probe L12: 0.897
+
+    test_hard:
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.821
+  Layer  1  k=10  →  0.814
+  Layer  4  k= 5  →  0.995
+  Layer  4  k=10  →  0.994
+  Layer  8  k= 5  →  1.000
+  Layer  8  k=10  →  0.998
+  Layer 12  k= 5  →  0.998
+  Layer 12  k=10  →  0.998
+    Linear Probe L1: 0.598
+    Linear Probe L4: 0.677
+    Linear Probe L8: 0.654
+    Linear Probe L12: 0.830
+
+
+======================================================================
+MULTI-TASK EVALUATION SUMMARY (Best across layers)
+======================================================================
+Checkpoint   Task                      Split            KNN      LP
+----------------------------------------------------------------------
+mae_200      FallDetection             val            0.734   0.749
+mae_200      FallDetection             test_easy      0.785   0.790
+mae_200      FallDetection             test_hard      0.638   0.551
+mae_200      MotionSourceRecognition   val            0.999   0.838
+mae_200      MotionSourceRecognition   test_easy      1.000   0.837
+mae_200      MotionSourceRecognition   test_hard      0.999   0.732
+mae_300      FallDetection             val            0.775   0.750
+mae_300      FallDetection             test_easy      0.830   0.793
+mae_300      FallDetection             test_hard      0.696   0.580
+mae_300      MotionSourceRecognition   val            0.999   0.823
+mae_300      MotionSourceRecognition   test_easy      1.000   0.788
+mae_300      MotionSourceRecognition   test_hard      0.999   0.749
+mae_500      FallDetection             val            0.936   0.825
+mae_500      FallDetection             test_easy      0.958   0.875
+mae_500      FallDetection             test_hard      0.725   0.565
+mae_500      MotionSourceRecognition   val            0.999   0.882
+mae_500      MotionSourceRecognition   test_easy      1.000   0.897
+mae_500      MotionSourceRecognition   test_hard      1.000   0.830
+
+Saved: results/multitask_eval.json

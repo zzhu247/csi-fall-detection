@@ -1,0 +1,204 @@
+nohup: ignoring input
+
+============================================================
+Checkpoint: mae_341k_200
+
+  ── FallDetection ──
+  test merged: 968 samples (easy+hard)
+
+    -- val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.780
+  Layer  1  k=10  →  0.776
+  Layer  1  k=20  →  0.751
+  Layer  4  k= 5  →  0.896
+  Layer  4  k=10  →  0.876
+  Layer  4  k=20  →  0.840
+  Layer  8  k= 5  →  0.906
+  Layer  8  k=10  →  0.886
+  Layer  8  k=20  →  0.846
+  Layer 12  k= 5  →  0.923
+  Layer 12  k=10  →  0.890
+  Layer 12  k=20  →  0.862
+    LP L1: 0.787
+    LP L4: 0.809
+    LP L8: 0.810
+    LP L12: 0.828
+    → KNN=0.923 (at (12, 5))  LP=0.828 (L12)
+
+    -- test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.821
+  Layer  1  k=10  →  0.809
+  Layer  1  k=20  →  0.798
+  Layer  4  k= 5  →  0.928
+  Layer  4  k=10  →  0.898
+  Layer  4  k=20  →  0.870
+  Layer  8  k= 5  →  0.919
+  Layer  8  k=10  →  0.885
+  Layer  8  k=20  →  0.875
+  Layer 12  k= 5  →  0.916
+  Layer 12  k=10  →  0.889
+  Layer 12  k=20  →  0.874
+    LP L1: 0.819
+    LP L4: 0.834
+    LP L8: 0.853
+    LP L12: 0.869
+    → KNN=0.928 (at (4, 5))  LP=0.869 (L12)
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples (easy+hard)
+
+    -- val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.895
+  Layer  1  k=10  →  0.895
+  Layer  1  k=20  →  0.883
+  Layer  4  k= 5  →  0.982
+  Layer  4  k=10  →  0.979
+  Layer  4  k=20  →  0.974
+  Layer  8  k= 5  →  0.998
+  Layer  8  k=10  →  0.997
+  Layer  8  k=20  →  0.995
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+  Layer 12  k=20  →  0.996
+    LP L1: 0.662
+    LP L4: 0.761
+    LP L8: 0.796
+    LP L12: 0.824
+    → KNN=0.999 (at (12, 5))  LP=0.824 (L12)
+
+    -- test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.846
+  Layer  1  k=10  →  0.839
+  Layer  1  k=20  →  0.825
+  Layer  4  k= 5  →  0.975
+  Layer  4  k=10  →  0.971
+  Layer  4  k=20  →  0.970
+  Layer  8  k= 5  →  0.997
+  Layer  8  k=10  →  0.997
+  Layer  8  k=20  →  0.993
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.999
+  Layer 12  k=20  →  0.995
+    LP L1: 0.548
+    LP L4: 0.679
+    LP L8: 0.719
+    LP L12: 0.759
+    → KNN=0.999 (at (12, 5))  LP=0.759 (L12)
+
+============================================================
+Checkpoint: mae_341k_500
+
+  ── FallDetection ──
+  test merged: 968 samples (easy+hard)
+
+    -- val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.797
+  Layer  1  k=10  →  0.791
+  Layer  1  k=20  →  0.745
+  Layer  4  k= 5  →  0.899
+  Layer  4  k=10  →  0.863
+  Layer  4  k=20  →  0.834
+  Layer  8  k= 5  →  0.924
+  Layer  8  k=10  →  0.886
+  Layer  8  k=20  →  0.845
+  Layer 12  k= 5  →  0.919
+  Layer 12  k=10  →  0.892
+  Layer 12  k=20  →  0.853
+    LP L1: 0.788
+    LP L4: 0.802
+    LP L8: 0.822
+    LP L12: 0.828
+    → KNN=0.924 (at (8, 5))  LP=0.828 (L12)
+
+    -- test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.841
+  Layer  1  k=10  →  0.826
+  Layer  1  k=20  →  0.800
+  Layer  4  k= 5  →  0.921
+  Layer  4  k=10  →  0.894
+  Layer  4  k=20  →  0.873
+  Layer  8  k= 5  →  0.923
+  Layer  8  k=10  →  0.897
+  Layer  8  k=20  →  0.876
+  Layer 12  k= 5  →  0.934
+  Layer 12  k=10  →  0.902
+  Layer 12  k=20  →  0.884
+    LP L1: 0.811
+    LP L4: 0.832
+    LP L8: 0.845
+    LP L12: 0.853
+    → KNN=0.934 (at (12, 5))  LP=0.853 (L12)
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples (easy+hard)
+
+    -- val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.908
+  Layer  1  k=10  →  0.904
+  Layer  1  k=20  →  0.895
+  Layer  4  k= 5  →  0.982
+  Layer  4  k=10  →  0.979
+  Layer  4  k=20  →  0.976
+  Layer  8  k= 5  →  0.998
+  Layer  8  k=10  →  0.997
+  Layer  8  k=20  →  0.995
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+  Layer 12  k=20  →  0.996
+    LP L1: 0.624
+    LP L4: 0.728
+    LP L8: 0.822
+    LP L12: 0.850
+    → KNN=0.999 (at (12, 5))  LP=0.850 (L12)
+
+    -- test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.883
+  Layer  1  k=10  →  0.871
+  Layer  1  k=20  →  0.861
+  Layer  4  k= 5  →  0.979
+  Layer  4  k=10  →  0.974
+  Layer  4  k=20  →  0.971
+  Layer  8  k= 5  →  0.998
+  Layer  8  k=10  →  0.997
+  Layer  8  k=20  →  0.995
+  Layer 12  k= 5  →  0.999
+  Layer 12  k=10  →  0.998
+  Layer 12  k=20  →  0.995
+    LP L1: 0.540
+    LP L4: 0.632
+    LP L8: 0.763
+    LP L12: 0.819
+    → KNN=0.999 (at (12, 5))  LP=0.819 (L12)
+
+
+=================================================================
+PER-TASK EVALUATION SUMMARY
+=================================================================
+Checkpoint         Task                      Split       KNN     LP
+-----------------------------------------------------------------
+mae_341k_200       FallDetection             val       0.922  0.828
+mae_341k_200       FallDetection             test      0.928  0.869
+mae_341k_200       MotionSourceRecognition   val       0.999  0.824
+mae_341k_200       MotionSourceRecognition   test      0.999  0.759
+mae_341k_500       FallDetection             val       0.923  0.828
+mae_341k_500       FallDetection             test      0.934  0.853
+mae_341k_500       MotionSourceRecognition   val       0.999  0.850
+mae_341k_500       MotionSourceRecognition   test      0.999  0.819
+
+Saved: results/pertask_eval.json

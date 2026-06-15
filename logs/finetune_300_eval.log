@@ -1,0 +1,160 @@
+nohup: ignoring input
+
+============================================================
+Checkpoint: mae_341k_200
+
+  ── FallDetection ──
+  test merged: 968 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.788  Eval: 0.801  Best: 0.801
+    Epoch 10/50 | Train: 0.889  Eval: 0.864  Best: 0.864
+    Epoch 20/50 | Train: 0.932  Eval: 0.889  Best: 0.898
+    Epoch 30/50 | Train: 0.954  Eval: 0.906  Best: 0.906
+    Epoch 40/50 | Train: 0.966  Eval: 0.911  Best: 0.912
+    Epoch 50/50 | Train: 0.970  Eval: 0.909  Best: 0.913
+    → Fine-tune best acc: 0.913
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.800  Eval: 0.832  Best: 0.832
+    Epoch 10/50 | Train: 0.894  Eval: 0.875  Best: 0.875
+    Epoch 20/50 | Train: 0.933  Eval: 0.913  Best: 0.913
+    Epoch 30/50 | Train: 0.956  Eval: 0.928  Best: 0.928
+    Epoch 40/50 | Train: 0.966  Eval: 0.935  Best: 0.940
+    Epoch 50/50 | Train: 0.971  Eval: 0.933  Best: 0.940
+    → Fine-tune best acc: 0.940
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.777  Eval: 0.895  Best: 0.895
+    Epoch 10/50 | Train: 0.980  Eval: 0.980  Best: 0.980
+    Epoch 20/50 | Train: 0.992  Eval: 0.985  Best: 0.990
+    Epoch 30/50 | Train: 0.995  Eval: 0.992  Best: 0.992
+    Epoch 40/50 | Train: 0.998  Eval: 0.994  Best: 0.994
+    Epoch 50/50 | Train: 0.999  Eval: 0.994  Best: 0.994
+    → Fine-tune best acc: 0.994
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.781  Eval: 0.806  Best: 0.806
+    Epoch 10/50 | Train: 0.972  Eval: 0.964  Best: 0.964
+    Epoch 20/50 | Train: 0.989  Eval: 0.949  Best: 0.983
+    Epoch 30/50 | Train: 0.994  Eval: 0.984  Best: 0.986
+    Epoch 40/50 | Train: 0.998  Eval: 0.987  Best: 0.989
+    Epoch 50/50 | Train: 0.999  Eval: 0.988  Best: 0.989
+    → Fine-tune best acc: 0.989
+
+============================================================
+Checkpoint: mae_341k_300
+
+  ── FallDetection ──
+  test merged: 968 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.793  Eval: 0.791  Best: 0.791
+    Epoch 10/50 | Train: 0.897  Eval: 0.891  Best: 0.891
+    Epoch 20/50 | Train: 0.939  Eval: 0.916  Best: 0.916
+    Epoch 30/50 | Train: 0.968  Eval: 0.924  Best: 0.924
+    Epoch 40/50 | Train: 0.977  Eval: 0.923  Best: 0.925
+    Epoch 50/50 | Train: 0.981  Eval: 0.926  Best: 0.928
+    → Fine-tune best acc: 0.928
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.775  Eval: 0.822  Best: 0.822
+    Epoch 10/50 | Train: 0.905  Eval: 0.893  Best: 0.893
+    Epoch 20/50 | Train: 0.946  Eval: 0.927  Best: 0.927
+    Epoch 30/50 | Train: 0.968  Eval: 0.924  Best: 0.942
+    Epoch 40/50 | Train: 0.979  Eval: 0.942  Best: 0.944
+    Epoch 50/50 | Train: 0.982  Eval: 0.940  Best: 0.944
+    → Fine-tune best acc: 0.944
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.697  Eval: 0.874  Best: 0.874
+    Epoch 10/50 | Train: 0.977  Eval: 0.980  Best: 0.980
+    Epoch 20/50 | Train: 0.992  Eval: 0.990  Best: 0.990
+    Epoch 30/50 | Train: 0.997  Eval: 0.984  Best: 0.992
+    Epoch 40/50 | Train: 0.999  Eval: 0.993  Best: 0.993
+    Epoch 50/50 | Train: 1.000  Eval: 0.994  Best: 0.994
+    → Fine-tune best acc: 0.994
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.704  Eval: 0.764  Best: 0.764
+    Epoch 10/50 | Train: 0.980  Eval: 0.974  Best: 0.974
+    Epoch 20/50 | Train: 0.989  Eval: 0.982  Best: 0.983
+    Epoch 30/50 | Train: 0.997  Eval: 0.986  Best: 0.988
+    Epoch 40/50 | Train: 1.000  Eval: 0.992  Best: 0.992
+    Epoch 50/50 | Train: 1.000  Eval: 0.992  Best: 0.993
+    → Fine-tune best acc: 0.993
+
+============================================================
+Checkpoint: mae_341k_500
+
+  ── FallDetection ──
+  test merged: 968 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.788  Eval: 0.804  Best: 0.804
+    Epoch 10/50 | Train: 0.884  Eval: 0.865  Best: 0.865
+    Epoch 20/50 | Train: 0.930  Eval: 0.906  Best: 0.906
+    Epoch 30/50 | Train: 0.943  Eval: 0.902  Best: 0.926
+    Epoch 40/50 | Train: 0.953  Eval: 0.932  Best: 0.932
+    Epoch 50/50 | Train: 0.956  Eval: 0.934  Best: 0.937
+    → Fine-tune best acc: 0.937
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.787  Eval: 0.835  Best: 0.835
+    Epoch 10/50 | Train: 0.891  Eval: 0.903  Best: 0.903
+    Epoch 20/50 | Train: 0.923  Eval: 0.925  Best: 0.925
+    Epoch 30/50 | Train: 0.941  Eval: 0.930  Best: 0.936
+    Epoch 40/50 | Train: 0.953  Eval: 0.937  Best: 0.937
+    Epoch 50/50 | Train: 0.957  Eval: 0.936  Best: 0.937
+    → Fine-tune best acc: 0.937
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.776  Eval: 0.873  Best: 0.873
+    Epoch 10/50 | Train: 0.974  Eval: 0.967  Best: 0.972
+    Epoch 20/50 | Train: 0.989  Eval: 0.983  Best: 0.989
+    Epoch 30/50 | Train: 0.994  Eval: 0.990  Best: 0.993
+    Epoch 40/50 | Train: 0.998  Eval: 0.995  Best: 0.995
+    Epoch 50/50 | Train: 0.999  Eval: 0.995  Best: 0.995
+    → Fine-tune best acc: 0.995
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.764  Eval: 0.811  Best: 0.811
+    Epoch 10/50 | Train: 0.973  Eval: 0.959  Best: 0.968
+    Epoch 20/50 | Train: 0.988  Eval: 0.984  Best: 0.986
+    Epoch 30/50 | Train: 0.995  Eval: 0.975  Best: 0.990
+    Epoch 40/50 | Train: 0.997  Eval: 0.988  Best: 0.992
+    Epoch 50/50 | Train: 0.999  Eval: 0.990  Best: 0.992
+    → Fine-tune best acc: 0.992
+
+
+=================================================================
+FINE-TUNE EVALUATION SUMMARY
+=================================================================
+Checkpoint         Task                      Split      FT Acc
+-----------------------------------------------------------------
+
+Checkpoint         Task                      Split       KNN     LP     FT
+-----------------------------------------------------------------
+mae_341k_200       FallDetection             val       0.922  0.833  0.913
+mae_341k_200       FallDetection             test      0.928  0.875  0.940
+mae_341k_200       MotionSourceRecognition   val       0.999  0.824  0.994
+mae_341k_200       MotionSourceRecognition   test      0.999  0.758  0.989
+mae_341k_300       FallDetection             val       0.913  0.819  0.928
+mae_341k_300       FallDetection             test      0.929  0.845  0.944
+mae_341k_300       MotionSourceRecognition   val       0.999  0.740  0.994
+mae_341k_300       MotionSourceRecognition   test      1.000  0.658  0.993
+mae_341k_500       FallDetection             val       0.923  0.829  0.937
+mae_341k_500       FallDetection             test      0.934  0.853  0.937
+mae_341k_500       MotionSourceRecognition   val       0.999  0.852  0.995
+mae_341k_500       MotionSourceRecognition   test      0.999  0.819  0.992
+
+Saved: results/finetune_eval.json

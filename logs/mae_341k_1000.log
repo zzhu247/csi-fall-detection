@@ -1,0 +1,76 @@
+nohup: ignoring input
+Starting: mae_ep1000_mask0.75_dec128_bs64
+Pretrain: 341569 | Train: 239097 | Val: 68314 | Test: 34158
+Model params: 2,992,968
+Epoch 001/1000 | Loss: 0.4670 | Best: 0.4670 | LR: 1.50e-04
+Epoch 050/1000 | Loss: 0.1052 | Best: 0.1052 | LR: 1.49e-04
+Epoch 100/1000 | Loss: 0.0985 | Best: 0.0985 | LR: 1.46e-04
+Epoch 150/1000 | Loss: 0.0952 | Best: 0.0951 | LR: 1.42e-04
+Epoch 200/1000 | Loss: 0.0936 | Best: 0.0935 | LR: 1.36e-04
+Epoch 250/1000 | Loss: 0.0919 | Best: 0.0918 | LR: 1.28e-04
+Epoch 300/1000 | Loss: 0.0898 | Best: 0.0898 | LR: 1.19e-04
+Epoch 350/1000 | Loss: 0.0879 | Best: 0.0879 | LR: 1.09e-04
+Epoch 400/1000 | Loss: 0.0846 | Best: 0.0842 | LR: 9.82e-05
+Epoch 450/1000 | Loss: 0.0836 | Best: 0.0833 | LR: 8.67e-05
+Epoch 500/1000 | Loss: 0.0829 | Best: 0.0829 | LR: 7.50e-05
+Epoch 550/1000 | Loss: 0.0829 | Best: 0.0825 | LR: 6.33e-05
+Epoch 600/1000 | Loss: 0.0825 | Best: 0.0823 | LR: 5.18e-05
+Epoch 650/1000 | Loss: 0.0822 | Best: 0.0818 | LR: 4.10e-05
+Epoch 700/1000 | Loss: 0.0820 | Best: 0.0818 | LR: 3.09e-05
+Epoch 750/1000 | Loss: 0.0821 | Best: 0.0818 | LR: 2.20e-05
+Epoch 800/1000 | Loss: 0.0820 | Best: 0.0817 | LR: 1.43e-05
+Epoch 850/1000 | Loss: 0.0820 | Best: 0.0817 | LR: 8.17e-06
+Epoch 900/1000 | Loss: 0.0822 | Best: 0.0817 | LR: 3.67e-06
+Epoch 950/1000 | Loss: 0.0820 | Best: 0.0817 | LR: 9.23e-07
+Epoch 1000/1000 | Loss: 0.0817 | Best: 0.0816 | LR: 0.00e+00
+
+Running KNN evaluation...
+
+-- KNN on val --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.537
+  Layer  1  k=10  →  0.549
+  Layer  1  k=20  →  0.571
+  Layer  4  k= 5  →  0.567
+  Layer  4  k=10  →  0.579
+  Layer  4  k=20  →  0.602
+  Layer  8  k= 5  →  0.573
+  Layer  8  k=10  →  0.583
+  Layer  8  k=20  →  0.608
+  Layer 12  k= 5  →  0.573
+  Layer 12  k=10  →  0.582
+  Layer 12  k=20  →  0.606
+
+-- KNN on test --
+Extracting train features...
+Extracting test features...
+  Layer  1  k= 5  →  0.538
+  Layer  1  k=10  →  0.548
+  Layer  1  k=20  →  0.573
+  Layer  4  k= 5  →  0.568
+  Layer  4  k=10  →  0.577
+  Layer  4  k=20  →  0.600
+  Layer  8  k= 5  →  0.574
+  Layer  8  k=10  →  0.582
+  Layer  8  k=20  →  0.608
+  Layer 12  k= 5  →  0.572
+  Layer 12  k=10  →  0.585
+  Layer 12  k=20  →  0.608
+
+Running Linear Probe evaluation...
+
+-- Linear Probe on val --
+  Layer  1  →  0.446
+  Layer  4  →  0.515
+  Layer  8  →  0.553
+  Layer 12  →  0.570
+
+-- Linear Probe on test --
+  Layer  1  →  0.457
+  Layer  4  →  0.519
+  Layer  8  →  0.555
+  Layer 12  →  0.572
+
+Done! Saved: results/mae_ep1000_mask0.75_dec128_bs64.json
+Best pretrain loss: 0.0816
