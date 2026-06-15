@@ -18,9 +18,10 @@ TASKS = {
 }
 
 CHECKPOINTS = {
-    "mae_341k_200": ("checkpoints/mae_ep200_mask0.75_dec128_bs64_best.pth", 128),
-    "mae_341k_300": ("checkpoints/mae_ep300_mask0.75_dec128_bs64_best.pth", 128),  
-    "mae_341k_500": ("checkpoints/mae_ep500_mask0.75_dec128_bs64_best.pth", 128),
+    "mae_341k_200":  ("checkpoints/mae_ep200_mask0.75_dec128_bs64_best.pth",  128),
+    "mae_341k_300":  ("checkpoints/mae_ep300_mask0.75_dec128_bs64_best.pth",  128),
+    "mae_341k_500":  ("checkpoints/mae_ep500_mask0.75_dec128_bs64_best.pth",  128),
+    "mae_341k_1000": ("checkpoints/mae_ep1000_mask0.75_dec128_bs64_best.pth", 128),
 }
 
 LAYERS   = [1, 4, 8, 12]
@@ -44,7 +45,7 @@ def run_linear_probe(model, train_loader, eval_loader,
     train_feats, train_labels = get_feats(model, train_loader, layer, device)
     eval_feats,  eval_labels  = get_feats(model, eval_loader,  layer, device)
 
-    # Normalize
+    # Normalize features
     mean = train_feats.mean(0, keepdim=True)
     std  = train_feats.std(0,  keepdim=True) + 1e-8
     train_feats = (train_feats - mean) / std
@@ -62,7 +63,9 @@ def run_linear_probe(model, train_loader, eval_loader,
     dataset = torch.utils.data.TensorDataset(train_feats, train_labels)
     loader  = torch.utils.data.DataLoader(dataset, batch_size=128, shuffle=True)
 
-    best_acc = 0.0
+    best_acc   = 0.0
+    no_improve = 0
+
     for ep in range(epochs):
         head.train()
         for xb, yb in loader:
@@ -71,13 +74,18 @@ def run_linear_probe(model, train_loader, eval_loader,
             optim.zero_grad(); loss.backward(); optim.step()
         sched.step()
 
-        if (ep + 1) % 20 == 0:
+        if (ep + 1) % 10 == 0:
             head.eval()
             with torch.no_grad():
                 preds = head(eval_feats.to(device)).argmax(dim=1).cpu()
             acc = (preds == eval_labels).float().mean().item()
             if acc > best_acc:
-                best_acc = acc
+                best_acc   = acc
+                no_improve = 0
+            else:
+                no_improve += 1
+            if no_improve >= 3:
+                break
 
     return best_acc
 
@@ -120,7 +128,7 @@ for ckpt_name, (ckpt_path, dec_dim) in CHECKPOINTS.items():
             batch_size=64, shuffle=True, num_workers=4, pin_memory=True
         )
 
-        # Build loaders: val + merged test
+        # ── Build val + merged test loaders ───────────────
         loaders = {}
 
         # Val
@@ -133,7 +141,7 @@ for ckpt_name, (ckpt_path, dec_dim) in CHECKPOINTS.items():
                     batch_size=64, shuffle=False, num_workers=4, pin_memory=True
                 )
 
-        # Test: merge easy + hard into one
+        # Test: merge easy + hard
         test_dfs = []
         for split in ["test_easy", "test_hard"]:
             path = os.path.join(SPLITS_DIR, f"{task}_{split}.csv")
@@ -148,31 +156,33 @@ for ckpt_name, (ckpt_path, dec_dim) in CHECKPOINTS.items():
                 MultiTaskDataset(test_merged, config.DATA_ROOT, task, label_map),
                 batch_size=64, shuffle=False, num_workers=4, pin_memory=True
             )
-            print(f"  test merged: {len(test_merged)} samples "
-                  f"(easy+hard)")
+            print(f"  test merged: {len(test_merged)} samples (easy+hard)")
 
         # ── Evaluate each split ────────────────────────────
         task_results = {}
+
         for split_name, eval_loader in loaders.items():
             print(f"\n    -- {split_name} --")
             task_results[split_name] = {}
 
             # KNN
-            knn_res  = knn_eval(model, train_loader, eval_loader,
-                                 layers=LAYERS, k_values=K_VALUES,
-                                 device=device)
-            best_knn = max(float(v) for v in knn_res.values())
+            knn_res      = knn_eval(model, train_loader, eval_loader,
+                                    layers=LAYERS, k_values=K_VALUES,
+                                    device=device)
+            best_knn     = max(float(v) for v in knn_res.values())
             best_knn_key = max(knn_res, key=lambda k: float(knn_res[k]))
+
             task_results[split_name]["knn"] = {
                 str(k): float(v) for k, v in knn_res.items()
             }
-            task_results[split_name]["best_knn"]     = round(best_knn, 4)
-            task_results[split_name]["best_knn_at"]  = str(best_knn_key)
+            task_results[split_name]["best_knn"]    = round(best_knn, 4)
+            task_results[split_name]["best_knn_at"] = str(best_knn_key)
 
             # Linear Probe per layer
-            lp_results = {}
-            best_lp    = 0.0
+            lp_results    = {}
+            best_lp       = 0.0
             best_lp_layer = None
+
             for layer in LAYERS:
                 acc = run_linear_probe(
                     model, train_loader, eval_loader,
@@ -184,9 +194,9 @@ for ckpt_name, (ckpt_path, dec_dim) in CHECKPOINTS.items():
                     best_lp       = acc
                     best_lp_layer = layer
 
-            task_results[split_name]["linear_probe"]     = lp_results
-            task_results[split_name]["best_lp"]          = round(best_lp, 4)
-            task_results[split_name]["best_lp_layer"]    = best_lp_layer
+            task_results[split_name]["linear_probe"]  = lp_results
+            task_results[split_name]["best_lp"]       = round(best_lp, 4)
+            task_results[split_name]["best_lp_layer"] = best_lp_layer
 
             print(f"    → KNN={best_knn:.3f} (at {best_knn_key})  "
                   f"LP={best_lp:.3f} (L{best_lp_layer})")

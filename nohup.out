@@ -1,0 +1,41 @@
+
+============================================================
+Checkpoint: mae_341k_200
+
+  ── FallDetection ──
+  test merged: 968 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.788  Eval: 0.795  Best: 0.795
+    Epoch 10/50 | Train: 0.866  Eval: 0.844  Best: 0.844
+    Epoch 20/50 | Train: 0.927  Eval: 0.902  Best: 0.902
+    Epoch 30/50 | Train: 0.944  Eval: 0.910  Best: 0.912
+    Epoch 40/50 | Train: 0.957  Eval: 0.913  Best: 0.918
+    Epoch 50/50 | Train: 0.961  Eval: 0.919  Best: 0.920
+    → Fine-tune best acc: 0.920
+
+    -- Fine-tune eval on test --
+    Epoch 01/50 | Train: 0.796  Eval: 0.832  Best: 0.832
+    Epoch 10/50 | Train: 0.885  Eval: 0.871  Best: 0.871
+    Epoch 20/50 | Train: 0.937  Eval: 0.906  Best: 0.913
+    Epoch 30/50 | Train: 0.959  Eval: 0.923  Best: 0.929
+    Epoch 40/50 | Train: 0.969  Eval: 0.920  Best: 0.930
+    Epoch 50/50 | Train: 0.973  Eval: 0.927  Best: 0.930
+    → Fine-tune best acc: 0.930
+
+  ── MotionSourceRecognition ──
+  test merged: 2869 samples
+
+    -- Fine-tune eval on val --
+    Epoch 01/50 | Train: 0.774  Eval: 0.894  Best: 0.894
+    Epoch 10/50 | Train: 0.978  Eval: 0.980  Best: 0.980
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/eval_finetune.py", line 200, in <module>
+    acc = finetune_eval(
+        model, train_loader, eval_loader,
+        task_info["num_classes"], device
+    )
+  File "/home/zhuzih19/csi-project/csi-fall-detection/eval_finetune.py", line 88, in finetune_eval
+    total_loss += loss.item()
+                  ~~~~~~~~~^^
+KeyboardInterrupt
