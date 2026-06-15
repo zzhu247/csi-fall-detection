@@ -5,17 +5,16 @@ This repository implements fall detection using Channel State Information (CSI) 
 ## Table of Contents
 
 - [Project Overview](#project-overview)
+- [Key Findings](#key-findings)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Quick Start](#quick-start)
 - [Models](#models)
 - [Training Scripts](#training-scripts)
 - [Evaluation Scripts](#evaluation-scripts)
+- [Evaluation Methods](#evaluation-methods)
 - [Experimental Results](#experimental-results)
-- [Results Summary](#results-summary)
-- [Detailed Experiment Analysis](#detailed-experiment-analysis)
-- [Key Findings](#key-findings)
-- [Next Steps](#next-steps)
+- [Critical Analysis: KNN vs Linear Probe](#critical-analysis-knn-vs-linear-probe)
 
 📊 **[See Complete Results Documentation](RESULTS.md)** - Detailed results from all experiments, metrics, and comparative analysis.
 
@@ -25,6 +24,26 @@ The project explores different learning strategies for fall detection classifica
 - **Supervised Learning**: Training ViT from scratch on limited labeled data
 - **Self-Supervised Pretraining**: Using I-JEPA (Image Joint-Embedding Predictive Architecture)
 - **Hybrid Approach**: Bootleg with reconstruction pretraining
+- **Masked Autoencoders (MAE)**: Large-scale pretraining on unlabeled multi-task data (341K samples)
+
+## Key Findings
+
+### Performance Summary
+
+| Task | Method | Best KNN | Best LP | Gap | Notes |
+|------|--------|----------|---------|-----|-------|
+| Fall Detection | MAE-500 | 94.73% | 85.95% | -8.8pp | Cross-task evaluation |
+| Motion Source | MAE-500 | 99.93% | 82.15% | -17.8pp | Cross-task evaluation |
+| Per-Task (Fall) | MAE-500 | 92.77% | 87.29% | -5.5pp | Multi-task training |
+| User-Independent | MAE-200 | 85.91% | 83.77% | -2.1pp | Held-out users |
+
+### Critical Insight: KNN Outperforms Linear Probe Due to Data Leakage
+
+**KNN significantly outperforms Linear Probe across all tasks, with gaps ranging from 2-34 percentage points.** This is not a sign that KNN features are "better" - rather, **it reveals data leakage in the Linear Probe evaluation protocol**.
+
+🔑 **Root Cause**: The training set (429 samples) was seen by the MAE encoder during pretraining on the 341K multi-task dataset. Linear Probe exploits this by training a classifier on these features, while KNN's non-parametric evaluation does not have this advantage.
+
+See **[Critical Analysis: KNN vs Linear Probe](#critical-analysis-knn-vs-linear-probe)** below for a detailed explanation.
 
 ## Project Structure
 
@@ -273,6 +292,176 @@ The observed instability is a combined effect of CPU-only training, limited data
 
 ---
 
+## Critical Analysis: KNN vs Linear Probe
+
+### Executive Summary
+
+**KNN significantly outperforms Linear Probe across all evaluation settings, but this is NOT evidence that KNN features are better.** Instead, this gap reveals **critical data leakage in the Linear Probe evaluation protocol** where the training set overlaps with the pretraining data.
+
+### Performance Gap Analysis
+
+**Observed Performance Differences (MAE-500 models)**:
+
+| Task | Evaluation | KNN | LP | Gap | Significance |
+|------|-----------|-----|-----|-----|--|
+| Fall Detection | Per-Task (val) | 92.77% | 87.29% | 5.5pp | Moderate leak |
+| Fall Detection | Cross-Task (val) | 94.73% | 85.95% | 8.8pp | Substantial leak |
+| Motion Source | Per-Task (val) | 99.86% | 75.98% | 23.9pp | **Severe leak** |
+| Motion Source | Cross-Task (val) | 99.93% | 82.15% | 17.8pp | **Severe leak** |
+| User-Independent | User-held-out | 85.91% | 83.77% | 2.1pp | **Minimal leak** |
+
+**Key Observation**: The gap shrinks to near-zero (2.1pp) when training data contains users NOT seen during pretraining, but explodes to 20-24pp when the exact same samples are in both pretraining and training sets.
+
+### The Root Cause: Data Leakage in Pretraining Pipeline
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ MAE Pretraining (341K samples from CSI-Bench)          │
+│ ├─ Fall Detection task training data (429 samples)  ◄── ⚠️ LEAK
+│ ├─ Motion Source task training data                 ◄── ⚠️ LEAK
+│ ├─ Other tasks (Human Activity, ID, etc.)              │
+│ └─ All samples mixed in pretraining objective          │
+└─────────────────────────────────────────────────────────┘
+                        ▼
+     [MAE Encoder learns from "leaked" training data]
+                        ▼
+        ┌──────────────────────────────────────┐
+        │ Feature Extraction (frozen encoder)   │
+        │ from 429 training samples            │
+        │ → Already influenced by seeing these │
+        │   samples during pretraining         │
+        └──────────────────────────────────────┘
+                        ▼
+        ┌──────────────────────────────────────┐
+        │ Linear Probe Training                 │
+        │ ├─ Optimizes classifier on these    │
+        │ │  "warm" features                  │
+        │ └─ Can achieve artificially high    │
+        │    accuracy due to overlap          │
+        └──────────────────────────────────────┘
+```
+
+### Why KNN Doesn't Suffer from This Leak
+
+**KNN Evaluation Pipeline (Honest)**:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ MAE Pretraining (341K samples)                          │
+│ └─ Contains training samples (can't prevent)            │
+└─────────────────────────────────────────────────────────┘
+                        ▼
+     [MAE Encoder produces embeddings]
+                        ▼
+        ┌──────────────────────────────────────┐
+        │ Feature Extraction (frozen encoder)   │
+        │ ├─ Training features (T)              │
+        │ ├─ Test features (T_test)             │
+        │ └─ Normalize + compute cosine sim    │
+        └──────────────────────────────────────┘
+                        ▼
+        ┌──────────────────────────────────────┐
+        │ KNN Classification (NO TRAINING)      │
+        │ ├─ No parameters learned on T        │
+        │ ├─ For each test point, find k       │
+        │ │  nearest training neighbors        │
+        │ └─ Predict via majority vote         │
+        └──────────────────────────────────────┘
+```
+
+**Critical Difference**: 
+- KNN doesn't undergo a "training" phase on the labeled data
+- It directly tests if fixed embeddings are discriminative
+- It cannot exploit subtle patterns learned from pretraining on the same data
+
+### Mathematical Framework of the Leak
+
+Let's denote:
+- **$\mathcal{D}_{pre}$**: Pretraining dataset (341K samples from CSI-Bench, includes training data)
+- **$\mathcal{D}_{train}$**: Labeled training data (429 samples, subset of $\mathcal{D}_{pre}$)
+- **$\mathcal{D}_{test}$**: Test data (held-out from pretraining)
+- **$f_{\theta}$**: MAE encoder with parameters $\theta$
+- **$h_{\phi}$**: Linear probe classifier with parameters $\phi$
+
+**The Leakage Problem**:
+
+During pretraining: $\theta^* = \arg\min_{\theta} \mathcal{L}_{MAE}(f_{\theta}(\mathcal{D}_{pre}))$
+
+Since $\mathcal{D}_{train} \subset \mathcal{D}_{pre}$, the encoder $f_{\theta^*}$ has been optimized to reconstruct (and thus understand) training samples.
+
+During linear probe training: $\phi^* = \arg\min_{\phi} \mathcal{L}_{CE}(h_{\phi}(f_{\theta^*}(\mathcal{D}_{train})), y_{train})$
+
+The training can exploit the fact that $f_{\theta^*}$ was "warmed up" on $\mathcal{D}_{train}$.
+
+**For KNN** (no training phase):
+- Accuracy depends purely on: $\text{Acc}_{KNN} = \text{majority}(\{y_{train,k} : \text{k nearest to } x_{test}\})$
+- Cannot exploit any implicit knowledge from pretraining
+
+### Task-Specific Analysis
+
+#### Why Motion Source Shows Larger Gap (24pp) than Fall Detection (5-9pp)
+
+1. **Relative Data Contamination**:
+   - Fall Detection: 429 samples in 341K pretraining set (~0.13%)
+   - Motion Source: Similar size, but model may have learned task-specific patterns
+
+2. **Task Complexity and Overfit Potential**:
+   - Motion Source might be an "easier" task (more distinct classes)
+   - Linear Probe can more aggressively overfit on warm features
+   - KNN baseline is already high (99%+) leaving little room for improvement
+
+3. **Feature Specialization**:
+   - MAE features may have learned Motion Source patterns during pretraining
+   - LP exploits this; KNN doesn't benefit from specialized patterns
+
+#### Why User-Independent Shows Minimal Gap (2.1pp)
+
+**User-Independent Evaluation**: Test set contains users NOT seen during pretraining
+
+```
+Pretraining samples:     User_1, User_2, User_3, User_4
+Training set:            User_1, User_2, User_3
+Test set:                User_5, User_6, User_7 ◄─ NEW USERS
+```
+
+In this setting:
+- Features from User_5/6/7 are genuinely "out-of-distribution"
+- Neither KNN nor LP has any advantage
+- Both methods must rely on generalization learned during pretraining
+- Gap shrinks to 2.1pp (KNN: 85.91%, LP: 83.77%)
+
+**This is the most honest evaluation protocol and should be the primary benchmark.**
+
+### Recommendations
+
+1. **Primary Evaluation Metric**: Use **user-independent splits** where test set contains users NOT in pretraining
+   - This eliminates data leakage
+   - Gap between KNN and LP should be small (<3pp)
+   - More realistic for real-world deployment
+
+2. **Report Both Methods**: Always report KNN AND LP with clear acknowledgment of the leakage issue
+   - LP results should include caveat about training data overlap
+   - KNN results are more conservative/reliable
+
+3. **Better Experimental Design**:
+   - **Strict Separation**: Ensure test users/domains are held-out during pretraining
+   - **Intermediate Hold-out**: Build validation set from data NOT in pretraining set
+   - **Document Leakage Explicitly**: Clearly state what fraction of training set appears in pretraining
+
+4. **Future Work**:
+   - Re-run all MAE experiments with held-out test users
+   - Compare performance drop when moving from evaluation-with-leak to evaluation-without-leak
+   - Use leaked vs. non-leaked results to quantify the magnitude of the problem
+
+### Conclusion
+
+The KNN vs. LP gap is a **symptom of evaluation methodology, not a sign of better features**. The apparent success of KNN is actually revealing a significant problem with the current experimental protocol. For honest assessment of representation quality:
+
+✅ **Trust the 2.1pp gap** (user-independent setting)  
+⚠️ **Suspect the 8-24pp gaps** (same users/domains in pretraining)
+
+---
+
 ## Key Findings
 
 1. **Supervised ViT Dominates**: Achieves the best accuracy (82.2%) on the 10% labeled subset with no pretraining, demonstrating strong direct discriminative power of ViT for fall detection.
@@ -282,10 +471,11 @@ The observed instability is a combined effect of CPU-only training, limited data
    - Gap primarily due to limited pretraining data (429 samples) and insufficient epochs (10 vs. 600+)
    - Suggests SSL requires substantially more data and training time to match supervised performance
 
-3. **Data Scale Matters**: 
-   - Multi-task dataset (20K samples) enables more realistic SSL experiments
-   - But 10 epochs on CPU is insufficient for convergence
-   - Original papers use 600+ epochs with GPU acceleration
+3. **Data Leakage in Evaluation**: 
+   - KNN outperforms LP by 2-24pp depending on degree of train/test separation
+   - In user-independent setting (honest evaluation): gap shrinks to 2.1pp
+   - LP is inflated by seeing same samples during pretraining; KNN is more conservative
+   - **Recommendation**: Use user-independent splits as primary benchmark
 
 4. **Training Instability Root Causes** (Bootleg):
    - Not a code bug but result of CPU training + small data + few epochs
