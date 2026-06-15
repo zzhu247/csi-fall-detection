@@ -59,11 +59,23 @@ class CombinedLabeledDataset(Dataset):
 
     def __getitem__(self, idx):
         row     = self.meta.iloc[idx]
-        h5_path = row["h5_path"]
+        
+        # Use pre-resolved h5_path if available, else resolve on the fly
+        if "h5_path" in row.index and pd.notna(row.get("h5_path", None)):
+            h5_path = row["h5_path"]
+        else:
+            task    = row["task"]
+            h5_path = os.path.join(
+                self.data_root, task, row["file_path"].lstrip("./")
+            )
+            # Handle Multitask folder structure
+            if "../../sub_Human_h5" in row["file_path"]:
+                rel     = row["file_path"].replace("../../", "")
+                h5_path = os.path.join(self.data_root, "Multitask", rel)
+        
         csi     = load_and_normalize_csi(h5_path)
         csi     = (csi - csi.mean()) / (csi.std() + 1e-8)
         csi     = torch.tensor(csi, dtype=torch.float32).unsqueeze(0)
-        # Return task_label string as label (will encode later)
         return csi, f"{row['task']}_{row['label']}"
 
 
