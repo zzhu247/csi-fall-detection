@@ -267,11 +267,25 @@ def get_pretrain_dataloader_all(data_root=config.DATA_ROOT, sample_frac=0.3):
         "FallDetection":           ("FallDetection/metadata/sample_metadata.csv",           "Difficulty"),
         "MotionSourceRecognition": ("MotionSourceRecognition/metadata/sample_metadata.csv", "difficulty"),
     }
+
+    # (meta_csv_path, task_root_dir) — both relative to data_root
     tasks_no_difficulty = {
-        "HumanActivityRecognition": "HumanActivityRecognition/metadata/sample_metadata.csv",
-        "HumanIdentification":      "HumanIdentification/metadata/sample_metadata.csv",
-        "ProximityRecognition":     "ProximityRecognition/metadata/sample_metadata.csv",
-        "Localization":             "Localization/metadata/sample_metadata.csv",
+        "Multitask/HumanActivityRecognition": (
+            "Multitask/HumanActivityRecognition/metadata/sample_metadata.csv",
+            "Multitask",
+        ),
+        "Multitask/HumanIdentification": (
+            "Multitask/HumanIdentification/metadata/sample_metadata.csv",
+            "Multitask",
+        ),
+        "Multitask/ProximityRecognition": (
+            "Multitask/ProximityRecognition/metadata/sample_metadata.csv",
+            "Multitask",
+        ),
+        "Localization": (
+            "Localization/metadata/sample_metadata.csv",
+            "Localization",
+        ),
     }
 
     dfs = []
@@ -292,14 +306,27 @@ def get_pretrain_dataloader_all(data_root=config.DATA_ROOT, sample_frac=0.3):
             lambda x: x.sample(frac=sample_frac, random_state=42)
         ).reset_index(drop=True)
 
-        print(f"{task}: {len(sampled)} samples (stratified 30%)")
+        print(f"{task}: {len(sampled)} samples (stratified {int(sample_frac*100)}%)")
         dfs.append(sampled)
 
-    for task, meta_rel in tasks_no_difficulty.items():
+    for task, (meta_rel, task_root) in tasks_no_difficulty.items():
         df = pd.read_csv(os.path.join(data_root, meta_rel))
         df["task"] = task
+
+        meta_dir = os.path.dirname(os.path.join(data_root, meta_rel))
+        task_dir = os.path.join(data_root, task_root)
+
+        def resolve(p, md=meta_dir, td=task_dir):
+            # Multitask uses ../../sub_Human_h5/... (relative to metadata dir)
+            candidate = os.path.normpath(os.path.join(md, p))
+            if os.path.exists(candidate):
+                return candidate
+            # Localization uses ./sub_Human/... (relative to task root)
+            return os.path.normpath(os.path.join(td, p.lstrip("./")))
+
+        df["h5_path"] = df["file_path"].apply(resolve)
         df = df.sample(frac=sample_frac, random_state=42).reset_index(drop=True)
-        print(f"{task}: {len(df)} samples (uniform 30%)")
+        print(f"{task}: {len(df)} samples (uniform {int(sample_frac*100)}%)")
         dfs.append(df)
 
     combined = pd.concat(dfs, ignore_index=True).sample(
@@ -312,6 +339,7 @@ def get_pretrain_dataloader_all(data_root=config.DATA_ROOT, sample_frac=0.3):
         batch_size=config.BATCH_SIZE, shuffle=True,
         num_workers=config.NUM_WORKERS
     )
+
 
 class CombinedDataset(Dataset):
     """

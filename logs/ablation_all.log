@@ -1,0 +1,17 @@
+nohup: ignoring input
+Loading pretrain dataloader...
+FallDetection: 6126 samples (stratified 100%)
+MotionSourceRecognition: 60858 samples (stratified 100%)
+Multitask/HumanActivityRecognition: 55684 samples (uniform 100%)
+Multitask/HumanIdentification: 55684 samples (uniform 100%)
+Multitask/ProximityRecognition: 55684 samples (uniform 100%)
+Localization: 7062 samples (uniform 100%)
+
+Total pretrain: 241098
+
+============================================================
+  Variant A: MAE-Random
+  mask_strategy    = random
+  use_physics_loss = False
+============================================================
+
