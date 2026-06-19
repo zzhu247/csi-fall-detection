@@ -1,0 +1,19 @@
+
+Task:  HumanIdentification
+Model: resnet18
+Mode:  supervised
+Device:cuda
+
+Classes: 6  |  train=21473 val=4601 test=4602
+Parameters: 11.17M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=1.0000 | best=1.0000
+  Early stop at epoch 16
+Saved: checkpoints/resnet18_HumanID.pt
+
+==================================================
+Standard Test  |  Acc=100.00%  F1=100.00%
+
+==================================================
+Results saved: results/benchmark_HumanIdentification_resnet18_supervised.json

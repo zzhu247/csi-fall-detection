@@ -1,0 +1,26 @@
+
+Task:  FallDetection
+Model: resnet18
+Mode:  supervised
+Device:cuda
+
+Filtered missing files: 6700 -> 6598
+Filtered missing files: 6598 -> 6598
+Classes: 2  |  train=4619 val=994 test=985
+Parameters: 11.17M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.8551 | best=0.8763
+  Epoch 020 | val_acc=0.9276 | best=0.9416
+  Epoch 030 | val_acc=0.9416 | best=0.9497
+  Early stop at epoch 35
+Saved: checkpoints/resnet18_FallDetection.pt
+
+==================================================
+Standard Test  |  Acc=95.84%  F1=95.84%
+test_easy             |  Acc=98.67%  F1=98.67%
+test_medium           |  Acc=76.47%  F1=75.46%
+test_hard             |  Acc=63.77%  F1=62.15%
+
+==================================================
+Results saved: results/benchmark_FallDetection_resnet18_supervised.json

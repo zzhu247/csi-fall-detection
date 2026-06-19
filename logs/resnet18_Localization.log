@@ -1,0 +1,22 @@
+
+Task:  Localization
+Model: resnet18
+Mode:  supervised
+Device:cuda
+
+Filtered missing files: 7062 -> 7062
+Filtered missing files: 7062 -> 7062
+Classes: 6  |  train=2364 val=533 test=548
+Parameters: 11.17M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.9343 | best=0.9962
+  Epoch 020 | val_acc=1.0000 | best=1.0000
+  Early stop at epoch 25
+Saved: checkpoints/resnet18_Localization.pt
+
+==================================================
+Standard Test  |  Acc=100.00%  F1=100.00%
+
+==================================================
+Results saved: results/benchmark_Localization_resnet18_supervised.json

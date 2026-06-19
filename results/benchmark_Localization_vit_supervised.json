@@ -1,0 +1,11 @@
+{
+  "task": "Localization",
+  "model": "vit",
+  "mode": "supervised",
+  "results": {
+    "test": {
+      "acc": 0.9945255474452555,
+      "f1": 0.9945408374465188
+    }
+  }
+}

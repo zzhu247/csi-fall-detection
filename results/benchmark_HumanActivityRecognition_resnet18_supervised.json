@@ -1,0 +1,11 @@
+{
+  "task": "HumanActivityRecognition",
+  "model": "resnet18",
+  "mode": "supervised",
+  "results": {
+    "test": {
+      "acc": 0.9923946110386789,
+      "f1": 0.9923872797895296
+    }
+  }
+}

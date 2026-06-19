@@ -1,0 +1,11 @@
+{
+  "task": "ProximityRecognition",
+  "model": "resnet18",
+  "mode": "supervised",
+  "results": {
+    "test": {
+      "acc": 0.9845719252498913,
+      "f1": 0.9845425406358939
+    }
+  }
+}

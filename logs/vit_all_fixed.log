@@ -1,0 +1,13 @@
+nohup: ignoring input
+Thu Jun 18 16:31:22 EDT 2026 Starting ViT: FallDetection
+Thu Jun 18 16:36:02 EDT 2026 Done: FallDetection
+Thu Jun 18 16:36:02 EDT 2026 Starting ViT: MotionSourceRecognition
+Thu Jun 18 17:47:58 EDT 2026 Done: MotionSourceRecognition
+Thu Jun 18 17:47:58 EDT 2026 Starting ViT: Localization
+Thu Jun 18 17:50:28 EDT 2026 Done: Localization
+Thu Jun 18 17:50:28 EDT 2026 Starting ViT: HumanActivityRecognition
+Thu Jun 18 18:01:02 EDT 2026 Done: HumanActivityRecognition
+Thu Jun 18 18:01:02 EDT 2026 Starting ViT: HumanIdentification
+Thu Jun 18 18:20:30 EDT 2026 Done: HumanIdentification
+Thu Jun 18 18:20:30 EDT 2026 Starting ViT: ProximityRecognition
+Thu Jun 18 18:29:28 EDT 2026 Done: ProximityRecognition

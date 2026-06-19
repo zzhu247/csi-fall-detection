@@ -1,0 +1,25 @@
+
+Task:  FallDetection
+Model: vit
+Mode:  supervised
+Device:cuda
+
+Filtered missing files: 6700 -> 6598
+Filtered missing files: 6598 -> 6598
+Classes: 2  |  train=4619 val=994 test=985
+Parameters: 2.48M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.8571 | best=0.8622
+  Epoch 020 | val_acc=0.8672 | best=0.8843
+  Early stop at epoch 26
+Saved: checkpoints/vit_FallDetection.pt
+
+==================================================
+Standard Test  |  Acc=87.21%  F1=87.31%
+test_easy             |  Acc=89.99%  F1=90.06%
+test_medium           |  Acc=70.59%  F1=69.30%
+test_hard             |  Acc=55.07%  F1=39.12%
+
+==================================================
+Results saved: results/benchmark_FallDetection_vit_supervised.json

@@ -1,0 +1,19 @@
+
+Task:  ProximityRecognition
+Model: vit
+Mode:  supervised
+Device:cuda
+
+Classes: 4  |  train=21473 val=4601 test=4602
+Parameters: 2.48M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.6349 | best=0.6349
+  Early stop at epoch 11
+Saved: checkpoints/vit_Proximity.pt
+
+==================================================
+Standard Test  |  Acc=61.30%  F1=46.59%
+
+==================================================
+Results saved: results/benchmark_ProximityRecognition_vit_supervised.json

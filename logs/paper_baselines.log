@@ -1,0 +1,4 @@
+nohup: ignoring input
+21:32:55 START mlp / FallDetection
+21:35:25 DONE  mlp / FallDetection
+21:35:25 START mlp / MotionSourceRecognition

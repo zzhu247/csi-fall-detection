@@ -1,0 +1,24 @@
+
+Task:  MotionSourceRecognition
+Model: vit
+Mode:  supervised
+Device:cuda
+
+Filtered missing files: 60858 -> 60858
+Filtered missing files: 60858 -> 60858
+Classes: 4  |  train=42599 val=9128 test=9131
+Parameters: 2.48M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.4574 | best=0.4574
+  Early stop at epoch 12
+Saved: checkpoints/vit_MotionSource.pt
+
+==================================================
+Standard Test  |  Acc=46.06%  F1=29.05%
+test_easy             |  Acc=40.69%  F1=23.54%
+test_medium           |  Acc=44.09%  F1=26.98%
+test_hard             |  Acc=54.54%  F1=38.50%
+
+==================================================
+Results saved: results/benchmark_MotionSourceRecognition_vit_supervised.json

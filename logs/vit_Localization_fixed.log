@@ -1,0 +1,22 @@
+
+Task:  Localization
+Model: vit
+Mode:  supervised
+Device:cuda
+
+Filtered missing files: 7062 -> 7062
+Filtered missing files: 7062 -> 7062
+Classes: 6  |  train=2364 val=533 test=548
+Parameters: 2.48M
+
+Training supervised baseline...
+  Epoch 010 | val_acc=0.9212 | best=0.9831
+  Epoch 020 | val_acc=0.9925 | best=0.9944
+  Early stop at epoch 26
+Saved: checkpoints/vit_Localization.pt
+
+==================================================
+Standard Test  |  Acc=99.45%  F1=99.45%
+
+==================================================
+Results saved: results/benchmark_Localization_vit_supervised.json

@@ -1,0 +1,11 @@
+{
+  "task": "ProximityRecognition",
+  "model": "vit",
+  "mode": "supervised",
+  "results": {
+    "test": {
+      "acc": 0.6129943502824858,
+      "f1": 0.46591864802556715
+    }
+  }
+}
