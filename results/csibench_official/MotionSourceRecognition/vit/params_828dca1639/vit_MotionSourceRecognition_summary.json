@@ -1,0 +1,15 @@
+{
+    "best_epoch": 48,
+    "best_val_loss": 0.02825951070576175,
+    "best_val_accuracy": 0.9914548641542507,
+    "experiment_id": "params_828dca1639",
+    "experiment_completed": true,
+    "test_easy_accuracy": 0.9815028901734104,
+    "test_easy_f1_score": 0.9815552796776645,
+    "test_accuracy": 0.9909100865184536,
+    "test_f1_score": 0.9909109407349049,
+    "test_hard_accuracy": 0.9835329341317365,
+    "test_hard_f1_score": 0.9835133965395354,
+    "test_medium_accuracy": 0.9945704247844139,
+    "test_medium_f1_score": 0.9945676252262524
+}

@@ -1,3 +1,4 @@
+import math
 # eval_benchmark.py
 #
 # Replicates CSI-Bench paper:
@@ -147,16 +148,43 @@ def load_split(data_root, splits_dir, split_name, meta_df, split_suffix=""):
 # ── Models ────────────────────────────────────────────────────────────────────
 
 def build_model(model_name, num_classes, device):
-    from models.baselines import build_baseline
-    return build_baseline(model_name, num_classes).to(device)
+    from models.csibench_models import (
+        MLPClassifier, LSTMClassifier, ResNet18Classifier,
+        TransformerClassifier, ViTClassifier, PatchTST, TimesFormer1D
+    )
+    kwargs = dict(win_len=500, feature_size=232, num_classes=num_classes)
+    if model_name == "mlp":
+        return MLPClassifier(**kwargs).to(device)
+    elif model_name == "lstm":
+        return LSTMClassifier(feature_size=232, num_classes=num_classes).to(device)
+    elif model_name == "resnet18":
+        return ResNet18Classifier(**kwargs).to(device)
+    elif model_name == "transformer":
+        return TransformerClassifier(feature_size=232, num_classes=num_classes).to(device)
+    elif model_name in ("vit", "vit_paper"):
+        return ViTClassifier(**kwargs).to(device)
+    elif model_name == "patchtst":
+        return PatchTST(**kwargs).to(device)
+    elif model_name == "timesformer1d":
+        return TimesFormer1D(**kwargs).to(device)
+    else:
+        raise ValueError(f"Unknown model: {model_name}")
 
 
 # ── Training ──────────────────────────────────────────────────────────────────
 
 def train_supervised(model, train_loader, val_loader, device,
-                     epochs=50, lr=1e-3, patience=10):
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.05)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
+                     epochs=100, lr=1e-3, patience=15, warmup_epochs=5,
+                     weight_decay=1e-5):
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+
+    def lr_lambda(epoch):
+        if epoch < warmup_epochs:
+            return (epoch + 1) / warmup_epochs
+        progress = (epoch - warmup_epochs) / max(1, epochs - warmup_epochs)
+        return 0.5 * (1.0 + math.cos(math.pi * progress))
+
+    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
     criterion = nn.CrossEntropyLoss()
 
     best_val_acc = 0.0

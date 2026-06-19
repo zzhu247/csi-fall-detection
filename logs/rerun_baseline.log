@@ -1,0 +1,88 @@
+nohup: ignoring input
+root_dir is /home/zhuzih19/csi-project/csibench-official
+Loaded configuration from /home/zhuzih19/csi-project/csibench-official/configs/local_default_config.json
+Using CUDA device: NVIDIA GeForce RTX 5090
+CUDA version: 12.8
+Total GPU memory: 34.19 GB
+PyTorch version: 2.12.0.dev20260407+cu128
+Loaded configuration from configs/rerun_config.json
+
+============================================================
+Dispatching 35 job(s) across 1 GPU(s) (jobs_per_gpu=1, max_workers=1, heartbeat=60s)
+============================================================
+
+
+============================================================
+Starting training: Localization/mlp/seed42
+============================================================
+
+Running supervised learning: /opt/conda/bin/python /home/zhuzih19/csi-project/csibench-official/scripts/train_supervised.py --data_dir="/home/zhuzih19/data/csi-bench-dataset" --task_name=Localization --model=mlp --batch_size=128 --epochs=100 --win_len=500 --feature_size=232 --save_dir="/home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official" --output_dir="/home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official" --num_workers=0 --use_root_data_path --no_pin_memory --test_splits="all" --learning_rate=0.001 --weight_decay=1e-05 --warmup_epochs=5 --patience=15 --seed=42
+Running in local environment
+Experiment ID: params_828dca1639
+Results will be saved to: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/Localization/mlp/params_828dca1639
+Model checkpoints will be saved to: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/Localization/mlp/params_828dca1639
+Using device: cuda
+********************splits_dir is /home/zhuzih19/data/csi-bench-dataset/Localization/splits
+Available test splits: ['test_id', 'test_medium_id', 'test_easy_id', 'test_hard_id']
+Using test splits: ['test_id', 'test_medium_id', 'test_easy_id', 'test_hard_id']
+Loading data from /home/zhuzih19/data/csi-bench-dataset for task Localization...
+________________________DATA DEBUG________/home/zhuzih19/data/csi-bench-dataset/tasks/Localization
+Root directory does not contain required subfolders, will try standard paths.
+Checking path: /home/zhuzih19/data/csi-bench-dataset/Localization
+  Has metadata: True, Has splits: True
+Using task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+
+==== Task Directory Contents (/home/zhuzih19/data/csi-bench-dataset/Localization) ====
+  Directory: metadata/ (2 items)
+    - label_mapping.json
+    - sample_metadata.csv
+  Directory: sub_Human/ (6 items)
+  Directory: splits/ (6 items)
+    - train_id.json
+    - test_id.json
+    - test_medium_id.json
+    - test_easy_id.json
+    - val_id.json
+    - test_hard_id.json
+================================================
+
+Using metadata path: /home/zhuzih19/data/csi-bench-dataset/Localization/metadata/sample_metadata.csv
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 2364 samples for Localization - train_id
+Loaded 2364 samples for Localization - train_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 533 samples for Localization - val_id
+Loaded 533 samples for Localization - val_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 548 samples for Localization - test_id
+Loaded 548 samples for Localization - test_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 0 samples for Localization - test_medium_id
+Loaded 0 samples for Localization - test_medium_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 0 samples for Localization - test_easy_id
+Loaded 0 samples for Localization - test_easy_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Localization
+Loaded 548 samples for Localization - test_hard_id
+Loaded 548 samples for Localization - test_hard_id
+Detected 6 classes in the dataset
+Loaded 4 test splits: ['test', 'test_medium_id', 'test_easy_id', 'test_hard_id']
+Creating MLP model...
+Model parameters: 5186950
+Starting supervised training phase...
+Epoch 1/100
+[heartbeat T+0h01m] running=1 finished=0 queued=34 (of 35 pending; skipped=0, total=35)
+  - [gpu -1] Localization/mlp/seed42  (running 0h01m)
+Train Loss: 1.7443, Val Loss: 1.7641
+Train Acc: 0.2246, Val Acc: 0.1332
+Time per sample: 0.000212 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/Localization/mlp/params_828dca1639/best_model.pt
+Epoch 2/100
+[heartbeat T+0h02m] running=1 finished=0 queued=34 (of 35 pending; skipped=0, total=35)
+  - [gpu -1] Localization/mlp/seed42  (running 0h02m)

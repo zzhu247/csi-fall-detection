@@ -35,8 +35,8 @@ for model in "${MODELS[@]}"; do
             --model "$model" \
             --mode  supervised \
             --epochs 100 \
-            --lr    3e-4 \
-            --batch_size 32 \
+            --lr    1e-3 \
+            --batch_size 128 \
             --save  "$ckpt" \
             > "$log" 2>&1
 
