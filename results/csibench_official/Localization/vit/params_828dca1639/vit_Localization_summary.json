@@ -1,0 +1,15 @@
+{
+    "best_epoch": 53,
+    "best_val_loss": 0.00030802092082469985,
+    "best_val_accuracy": 1.0,
+    "experiment_id": "params_828dca1639",
+    "experiment_completed": true,
+    "test_accuracy": 0.9963503649635036,
+    "test_f1_score": 0.9963470161863612,
+    "test_medium_id_accuracy": null,
+    "test_medium_id_f1_score": null,
+    "test_easy_id_accuracy": null,
+    "test_easy_id_f1_score": null,
+    "test_hard_id_accuracy": 0.9963503649635036,
+    "test_hard_id_f1_score": 0.9963470161863612
+}

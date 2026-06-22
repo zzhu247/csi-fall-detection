@@ -1,13 +1,13 @@
 {
-    "best_val_accuracy": 0.9792944785276073,
-    "best_val_loss": 0.061408187076000466,
+    "best_val_accuracy": 0.9828001752848379,
+    "best_val_loss": 0.06893747048319444,
     "best_experiment_id": "params_828dca1639",
     "best_experiment_params": {
         "model": "lstm",
         "task": "MotionSourceRecognition",
         "task_name": "MotionSourceRecognition",
         "seed": 42,
-        "num_classes": 2,
+        "num_classes": 4,
         "batch_size": 128,
         "learning_rate": 0.001,
         "weight_decay": 1e-05,
@@ -24,16 +24,16 @@
         ]
     },
     "best_test_accuracies": {
-        "test_easy": 0.9734104046242774,
-        "test": 0.9776585259007776,
-        "test_hard": 0.9680638722554891,
-        "test_medium": 0.9813158735228361
+        "test_easy": 0.9757225433526011,
+        "test": 0.9858723031431388,
+        "test_hard": 0.9755489021956087,
+        "test_medium": 0.9905780900670712
     },
     "best_test_f1_scores": {
-        "test_easy": 0.973526144578723,
-        "test": 0.9776528834189853,
-        "test_hard": 0.968016594208537,
-        "test_medium": 0.9812845081204972
+        "test_easy": 0.9763650855660821,
+        "test": 0.9858741076531554,
+        "test_hard": 0.9755266988602738,
+        "test_medium": 0.9905795070257888
     },
-    "timestamp": "2026-06-19 02:53:05"
+    "timestamp": "2026-06-21 08:28:46"
 }

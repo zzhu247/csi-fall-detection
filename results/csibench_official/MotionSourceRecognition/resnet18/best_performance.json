@@ -1,13 +1,13 @@
 {
-    "best_val_accuracy": 0.9962751971954426,
-    "best_val_loss": 0.01607652866811512,
+    "best_val_accuracy": 0.996603856266433,
+    "best_val_loss": 0.012581419079100228,
     "best_experiment_id": "params_828dca1639",
     "best_experiment_params": {
         "model": "resnet18",
         "task": "MotionSourceRecognition",
         "task_name": "MotionSourceRecognition",
         "seed": 42,
-        "num_classes": 2,
+        "num_classes": 4,
         "batch_size": 128,
         "learning_rate": 0.001,
         "weight_decay": 1e-05,
@@ -24,16 +24,16 @@
         ]
     },
     "best_test_accuracies": {
-        "test_easy": 0.991907514450867,
-        "test": 0.9960573869236666,
-        "test_hard": 0.9960079840319361,
-        "test_medium": 0.9966464388374321
+        "test_easy": 0.9907514450867052,
+        "test": 0.9941955974153981,
+        "test_hard": 0.9860279441117764,
+        "test_medium": 0.9972852123922069
     },
     "best_test_f1_scores": {
-        "test_easy": 0.9919195552942823,
-        "test": 0.9960575904611553,
-        "test_hard": 0.9960064594107453,
-        "test_medium": 0.9966458539630506
+        "test_easy": 0.9907622070246813,
+        "test": 0.9941961732749337,
+        "test_hard": 0.986008901169917,
+        "test_medium": 0.9972855910313576
     },
-    "timestamp": "2026-06-19 04:21:07"
+    "timestamp": "2026-06-21 20:45:42"
 }
