@@ -1,11 +1,11 @@
 {
   "task": "HumanActivityRecognition",
-  "model": "resnet18",
+  "model": "timesformer1d",
   "mode": "supervised",
   "results": {
     "test": {
-      "acc": 0.989787049109083,
-      "f1": 0.9897755118369407
+      "acc": 0.9647979139504563,
+      "f1": 0.9648025380245967
     }
   }
 }

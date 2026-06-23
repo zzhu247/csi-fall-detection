@@ -1,6 +1,39 @@
 {
-    "best_test_accuracy": 0.0,
-    "best_test_f1_score": 0.0,
-    "best_experiment_id": null,
-    "best_experiment_params": {}
+    "best_val_accuracy": 1.0,
+    "best_val_loss": 2.4616665112098455e-06,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "resnet18",
+        "task": "HumanIdentification",
+        "task_name": "HumanIdentification",
+        "seed": 42,
+        "num_classes": 7,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_cross_device",
+            "test_cross_user",
+            "test_cross_env"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 1.0,
+        "test_cross_device": 0.24057730246080367,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.2231578947368421
+    },
+    "best_test_f1_scores": {
+        "test": 1.0,
+        "test_cross_device": 0.19615053141479225,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.36488812392426856
+    },
+    "timestamp": "2026-06-22 22:16:19"
 }

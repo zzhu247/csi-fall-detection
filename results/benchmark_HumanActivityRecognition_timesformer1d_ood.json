@@ -1,0 +1,23 @@
+{
+  "task": "HumanActivityRecognition",
+  "model": "timesformer1d",
+  "mode": "ood",
+  "results": {
+    "test": {
+      "acc": 0.9647979139504563,
+      "f1": 0.9648025380245967
+    },
+    "test_cross_device": {
+      "acc": 0.38490291766171736,
+      "f1": 0.3759986180799646
+    },
+    "test_cross_env": {
+      "acc": 0.33473684210526317,
+      "f1": 0.3515505502902027
+    },
+    "test_cross_user": {
+      "acc": 0.5494260467420926,
+      "f1": 0.5033461631145232
+    }
+  }
+}

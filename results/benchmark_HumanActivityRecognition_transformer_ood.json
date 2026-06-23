@@ -1,0 +1,23 @@
+{
+  "task": "HumanActivityRecognition",
+  "model": "transformer",
+  "mode": "ood",
+  "results": {
+    "test": {
+      "acc": 0.5189048239895697,
+      "f1": 0.35454784540403217
+    },
+    "test_cross_device": {
+      "acc": 0.508669920049839,
+      "f1": 0.3430108655642342
+    },
+    "test_cross_env": {
+      "acc": 0.5133834586466165,
+      "f1": 0.3483090476588928
+    },
+    "test_cross_user": {
+      "acc": 0.5052440333636138,
+      "f1": 0.339176276525878
+    }
+  }
+}

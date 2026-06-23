@@ -20482,3 +20482,1833 @@ Epoch 2/100
   - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h14m)
 [heartbeat T+86h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
   - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h15m)
+[heartbeat T+86h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h16m)
+[heartbeat T+86h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h17m)
+[heartbeat T+86h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h18m)
+[heartbeat T+86h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h19m)
+[heartbeat T+86h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h20m)
+[heartbeat T+86h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h21m)
+[heartbeat T+86h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h22m)
+[heartbeat T+86h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h23m)
+[heartbeat T+86h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h24m)
+[heartbeat T+86h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h25m)
+[heartbeat T+86h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h26m)
+Train Loss: 1.8815, Val Loss: 1.6465
+Train Acc: 0.2531, Val Acc: 0.5794
+Time per sample: 0.000134 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 3/100
+[heartbeat T+86h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h27m)
+[heartbeat T+86h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h28m)
+[heartbeat T+86h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h29m)
+[heartbeat T+86h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h30m)
+[heartbeat T+86h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h31m)
+[heartbeat T+86h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h32m)
+[heartbeat T+86h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h33m)
+[heartbeat T+86h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h34m)
+[heartbeat T+86h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h35m)
+[heartbeat T+86h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h36m)
+[heartbeat T+86h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h37m)
+Train Loss: 1.2188, Val Loss: 0.7393
+Train Acc: 0.7616, Val Acc: 0.8863
+Time per sample: 0.000113 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 4/100
+[heartbeat T+86h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h38m)
+[heartbeat T+86h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h39m)
+[heartbeat T+86h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h40m)
+[heartbeat T+86h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h41m)
+[heartbeat T+86h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h42m)
+[heartbeat T+86h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h43m)
+[heartbeat T+86h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h44m)
+[heartbeat T+86h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h45m)
+Train Loss: 0.3545, Val Loss: 0.1044
+Train Acc: 0.9508, Val Acc: 0.9928
+Time per sample: 0.000108 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 5/100
+[heartbeat T+86h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h46m)
+[heartbeat T+86h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h47m)
+[heartbeat T+86h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h48m)
+[heartbeat T+86h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h49m)
+[heartbeat T+86h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h50m)
+[heartbeat T+86h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h51m)
+[heartbeat T+86h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h52m)
+[heartbeat T+86h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h53m)
+[heartbeat T+86h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h54m)
+Train Loss: 0.0532, Val Loss: 0.0228
+Train Acc: 0.9966, Val Acc: 0.9989
+Time per sample: 0.000115 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 6/100
+[heartbeat T+86h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h55m)
+[heartbeat T+86h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h56m)
+[heartbeat T+86h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h57m)
+[heartbeat T+86h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h58m)
+[heartbeat T+86h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 0h59m)
+[heartbeat T+86h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h00m)
+[heartbeat T+86h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h01m)
+[heartbeat T+86h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h02m)
+[heartbeat T+86h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h03m)
+Train Loss: 0.0170, Val Loss: 0.0101
+Train Acc: 0.9999, Val Acc: 0.9998
+Time per sample: 0.000108 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 7/100
+[heartbeat T+86h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h04m)
+[heartbeat T+86h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h05m)
+[heartbeat T+86h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h06m)
+[heartbeat T+86h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h07m)
+[heartbeat T+86h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h08m)
+[heartbeat T+86h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h09m)
+[heartbeat T+87h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h10m)
+[heartbeat T+87h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h11m)
+[heartbeat T+87h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h12m)
+Train Loss: 0.0086, Val Loss: 0.0060
+Train Acc: 0.9999, Val Acc: 0.9998
+Time per sample: 0.000114 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 8/100
+[heartbeat T+87h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h13m)
+[heartbeat T+87h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h14m)
+[heartbeat T+87h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h15m)
+[heartbeat T+87h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h16m)
+[heartbeat T+87h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h17m)
+[heartbeat T+87h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h18m)
+[heartbeat T+87h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h19m)
+[heartbeat T+87h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h20m)
+[heartbeat T+87h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h21m)
+Train Loss: 0.0052, Val Loss: 0.0040
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000111 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 9/100
+[heartbeat T+87h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h22m)
+[heartbeat T+87h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h23m)
+[heartbeat T+87h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h24m)
+[heartbeat T+87h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h25m)
+[heartbeat T+87h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h26m)
+[heartbeat T+87h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h27m)
+[heartbeat T+87h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h28m)
+[heartbeat T+87h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h29m)
+[heartbeat T+87h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h30m)
+Train Loss: 0.0036, Val Loss: 0.0028
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000111 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 10/100
+[heartbeat T+87h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h31m)
+[heartbeat T+87h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h32m)
+[heartbeat T+87h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h33m)
+[heartbeat T+87h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h34m)
+[heartbeat T+87h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h35m)
+[heartbeat T+87h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h36m)
+[heartbeat T+87h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h37m)
+[heartbeat T+87h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h38m)
+[heartbeat T+87h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h39m)
+Train Loss: 0.0027, Val Loss: 0.0021
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000108 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 11/100
+[heartbeat T+87h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h40m)
+[heartbeat T+87h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h41m)
+[heartbeat T+87h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h42m)
+[heartbeat T+87h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h43m)
+[heartbeat T+87h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h44m)
+[heartbeat T+87h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h45m)
+[heartbeat T+87h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h46m)
+[heartbeat T+87h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h47m)
+[heartbeat T+87h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h48m)
+Train Loss: 0.0019, Val Loss: 0.0016
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000115 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 12/100
+[heartbeat T+87h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h49m)
+[heartbeat T+87h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h50m)
+[heartbeat T+87h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h51m)
+[heartbeat T+87h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h52m)
+[heartbeat T+87h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h53m)
+[heartbeat T+87h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h54m)
+[heartbeat T+87h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h55m)
+[heartbeat T+87h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h56m)
+Train Loss: 0.0015, Val Loss: 0.0013
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000121 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 13/100
+[heartbeat T+87h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h57m)
+[heartbeat T+87h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h58m)
+[heartbeat T+87h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 1h59m)
+[heartbeat T+87h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h00m)
+[heartbeat T+87h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h01m)
+[heartbeat T+87h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h02m)
+[heartbeat T+87h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h03m)
+[heartbeat T+87h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h04m)
+[heartbeat T+87h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h05m)
+Train Loss: 0.0012, Val Loss: 0.0010
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000112 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 14/100
+[heartbeat T+87h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h06m)
+[heartbeat T+87h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h07m)
+[heartbeat T+87h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h08m)
+[heartbeat T+87h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h09m)
+[heartbeat T+88h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h10m)
+[heartbeat T+88h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h11m)
+[heartbeat T+88h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h12m)
+[heartbeat T+88h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h13m)
+[heartbeat T+88h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h14m)
+Train Loss: 0.0009, Val Loss: 0.0009
+Train Acc: 1.0000, Val Acc: 0.9998
+Time per sample: 0.000106 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 15/100
+[heartbeat T+88h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h15m)
+[heartbeat T+88h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h16m)
+[heartbeat T+88h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h17m)
+[heartbeat T+88h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h18m)
+[heartbeat T+88h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h19m)
+[heartbeat T+88h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h20m)
+[heartbeat T+88h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h21m)
+[heartbeat T+88h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h22m)
+[heartbeat T+88h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h23m)
+[heartbeat T+88h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h24m)
+Train Loss: 0.0007, Val Loss: 0.0007
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000126 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 16/100
+[heartbeat T+88h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h25m)
+[heartbeat T+88h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h26m)
+[heartbeat T+88h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h27m)
+[heartbeat T+88h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h28m)
+[heartbeat T+88h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h29m)
+[heartbeat T+88h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h30m)
+[heartbeat T+88h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h31m)
+[heartbeat T+88h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h32m)
+[heartbeat T+88h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h33m)
+[heartbeat T+88h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h34m)
+[heartbeat T+88h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h35m)
+[heartbeat T+88h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h36m)
+[heartbeat T+88h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h37m)
+[heartbeat T+88h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h38m)
+[heartbeat T+88h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h39m)
+[heartbeat T+88h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h40m)
+Train Loss: 0.0006, Val Loss: 0.0006
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000107 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 17/100
+[heartbeat T+88h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h41m)
+[heartbeat T+88h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h42m)
+[heartbeat T+88h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h43m)
+[heartbeat T+88h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h44m)
+[heartbeat T+88h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h45m)
+[heartbeat T+88h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h46m)
+[heartbeat T+88h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h47m)
+[heartbeat T+88h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h48m)
+[heartbeat T+88h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h49m)
+[heartbeat T+88h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h50m)
+[heartbeat T+88h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h51m)
+[heartbeat T+88h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h52m)
+[heartbeat T+88h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h53m)
+[heartbeat T+88h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h54m)
+[heartbeat T+88h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h55m)
+[heartbeat T+88h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h56m)
+Train Loss: 0.0005, Val Loss: 0.0005
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000102 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 18/100
+[heartbeat T+88h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h57m)
+[heartbeat T+88h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h58m)
+[heartbeat T+88h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 2h59m)
+[heartbeat T+88h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h00m)
+[heartbeat T+88h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h01m)
+[heartbeat T+88h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h02m)
+[heartbeat T+88h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h03m)
+[heartbeat T+88h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h04m)
+[heartbeat T+88h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h05m)
+[heartbeat T+88h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h06m)
+[heartbeat T+88h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h07m)
+[heartbeat T+88h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h08m)
+[heartbeat T+88h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h09m)
+[heartbeat T+89h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h10m)
+[heartbeat T+89h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h11m)
+[heartbeat T+89h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h12m)
+Train Loss: 0.0004, Val Loss: 0.0004
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000140 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 19/100
+[heartbeat T+89h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h13m)
+[heartbeat T+89h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h14m)
+[heartbeat T+89h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h15m)
+[heartbeat T+89h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h16m)
+[heartbeat T+89h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h17m)
+[heartbeat T+89h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h18m)
+[heartbeat T+89h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h19m)
+[heartbeat T+89h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h20m)
+[heartbeat T+89h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h21m)
+[heartbeat T+89h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h22m)
+[heartbeat T+89h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h23m)
+[heartbeat T+89h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h24m)
+[heartbeat T+89h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h25m)
+[heartbeat T+89h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h26m)
+[heartbeat T+89h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h27m)
+Train Loss: 0.0003, Val Loss: 0.0004
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000132 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 20/100
+[heartbeat T+89h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h28m)
+[heartbeat T+89h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h29m)
+[heartbeat T+89h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h30m)
+[heartbeat T+89h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h31m)
+[heartbeat T+89h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h32m)
+[heartbeat T+89h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h33m)
+[heartbeat T+89h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h34m)
+[heartbeat T+89h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h35m)
+[heartbeat T+89h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h36m)
+[heartbeat T+89h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h37m)
+[heartbeat T+89h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h38m)
+[heartbeat T+89h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h39m)
+[heartbeat T+89h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h40m)
+[heartbeat T+89h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h41m)
+[heartbeat T+89h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h42m)
+[heartbeat T+89h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h43m)
+Train Loss: 0.0003, Val Loss: 0.0003
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000141 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 21/100
+[heartbeat T+89h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h44m)
+[heartbeat T+89h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h45m)
+[heartbeat T+89h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h46m)
+[heartbeat T+89h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h47m)
+[heartbeat T+89h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h48m)
+[heartbeat T+89h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h49m)
+[heartbeat T+89h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h50m)
+[heartbeat T+89h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h51m)
+[heartbeat T+89h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h52m)
+[heartbeat T+89h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h53m)
+[heartbeat T+89h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h54m)
+[heartbeat T+89h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h55m)
+[heartbeat T+89h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h56m)
+[heartbeat T+89h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h57m)
+[heartbeat T+89h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h58m)
+Train Loss: 0.0003, Val Loss: 0.0003
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000095 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 22/100
+[heartbeat T+89h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 3h59m)
+[heartbeat T+89h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h00m)
+[heartbeat T+89h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h01m)
+[heartbeat T+89h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h02m)
+[heartbeat T+89h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h03m)
+[heartbeat T+89h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h04m)
+[heartbeat T+89h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h05m)
+[heartbeat T+89h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h06m)
+[heartbeat T+89h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h07m)
+[heartbeat T+89h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h08m)
+[heartbeat T+89h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h09m)
+[heartbeat T+90h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h10m)
+[heartbeat T+90h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h11m)
+[heartbeat T+90h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h12m)
+[heartbeat T+90h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h13m)
+Train Loss: 0.0002, Val Loss: 0.0002
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000110 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 23/100
+[heartbeat T+90h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h14m)
+[heartbeat T+90h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h15m)
+[heartbeat T+90h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h16m)
+[heartbeat T+90h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h17m)
+[heartbeat T+90h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h18m)
+[heartbeat T+90h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h19m)
+[heartbeat T+90h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h20m)
+[heartbeat T+90h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h21m)
+[heartbeat T+90h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h22m)
+[heartbeat T+90h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h23m)
+[heartbeat T+90h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h24m)
+[heartbeat T+90h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h25m)
+Train Loss: 0.0002, Val Loss: 0.0002
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000113 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 24/100
+[heartbeat T+90h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h26m)
+[heartbeat T+90h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h27m)
+[heartbeat T+90h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h28m)
+[heartbeat T+90h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h29m)
+[heartbeat T+90h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h30m)
+[heartbeat T+90h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h31m)
+Train Loss: 0.0002, Val Loss: 0.0002
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000102 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 25/100
+[heartbeat T+90h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h32m)
+[heartbeat T+90h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h33m)
+[heartbeat T+90h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h34m)
+[heartbeat T+90h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h35m)
+[heartbeat T+90h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h36m)
+[heartbeat T+90h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h37m)
+[heartbeat T+90h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h38m)
+Train Loss: 0.0002, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000090 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 26/100
+[heartbeat T+90h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h39m)
+[heartbeat T+90h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h40m)
+[heartbeat T+90h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h41m)
+[heartbeat T+90h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h42m)
+[heartbeat T+90h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h43m)
+[heartbeat T+90h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h44m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000097 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 27/100
+[heartbeat T+90h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h45m)
+[heartbeat T+90h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h46m)
+[heartbeat T+90h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h47m)
+[heartbeat T+90h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h48m)
+[heartbeat T+90h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h49m)
+[heartbeat T+90h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h50m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000096 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 28/100
+[heartbeat T+90h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h51m)
+[heartbeat T+90h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h52m)
+[heartbeat T+90h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h53m)
+[heartbeat T+90h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h54m)
+[heartbeat T+90h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h55m)
+[heartbeat T+90h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h56m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000092 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 29/100
+[heartbeat T+90h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h57m)
+[heartbeat T+90h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h58m)
+[heartbeat T+90h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 4h59m)
+[heartbeat T+90h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h00m)
+[heartbeat T+90h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h01m)
+[heartbeat T+90h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h02m)
+[heartbeat T+90h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h03m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000091 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 30/100
+[heartbeat T+90h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h04m)
+[heartbeat T+90h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h05m)
+[heartbeat T+90h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h06m)
+[heartbeat T+90h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h07m)
+[heartbeat T+90h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h08m)
+[heartbeat T+90h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h09m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000092 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 31/100
+[heartbeat T+91h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h10m)
+[heartbeat T+91h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h11m)
+[heartbeat T+91h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h12m)
+[heartbeat T+91h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h13m)
+[heartbeat T+91h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h14m)
+[heartbeat T+91h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h15m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Epoch 32/100
+[heartbeat T+91h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h16m)
+[heartbeat T+91h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h17m)
+[heartbeat T+91h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h18m)
+[heartbeat T+91h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h19m)
+[heartbeat T+91h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h20m)
+[heartbeat T+91h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h21m)
+Train Loss: 0.0001, Val Loss: 0.0001
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000093 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 33/100
+[heartbeat T+91h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h22m)
+[heartbeat T+91h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h23m)
+[heartbeat T+91h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h24m)
+[heartbeat T+91h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h25m)
+[heartbeat T+91h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h26m)
+[heartbeat T+91h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h27m)
+[heartbeat T+91h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h28m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000091 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 34/100
+[heartbeat T+91h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h29m)
+[heartbeat T+91h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h30m)
+[heartbeat T+91h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h31m)
+[heartbeat T+91h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h32m)
+[heartbeat T+91h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h33m)
+[heartbeat T+91h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h34m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000091 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 35/100
+[heartbeat T+91h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h35m)
+[heartbeat T+91h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h36m)
+[heartbeat T+91h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h37m)
+[heartbeat T+91h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h38m)
+[heartbeat T+91h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h39m)
+[heartbeat T+91h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h40m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 36/100
+[heartbeat T+91h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h41m)
+[heartbeat T+91h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h42m)
+[heartbeat T+91h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h43m)
+[heartbeat T+91h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h44m)
+[heartbeat T+91h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h45m)
+[heartbeat T+91h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h46m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000099 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 37/100
+[heartbeat T+91h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h47m)
+[heartbeat T+91h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h48m)
+[heartbeat T+91h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h49m)
+[heartbeat T+91h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h50m)
+[heartbeat T+91h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h51m)
+[heartbeat T+91h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h52m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000050 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 38/100
+[heartbeat T+91h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h53m)
+[heartbeat T+91h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h54m)
+[heartbeat T+91h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h55m)
+[heartbeat T+91h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h56m)
+[heartbeat T+91h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h57m)
+[heartbeat T+91h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h58m)
+[heartbeat T+91h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 5h59m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 39/100
+[heartbeat T+91h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h00m)
+[heartbeat T+91h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h01m)
+[heartbeat T+91h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h02m)
+[heartbeat T+91h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h03m)
+[heartbeat T+91h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h04m)
+[heartbeat T+91h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h05m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000091 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 40/100
+[heartbeat T+91h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h06m)
+[heartbeat T+91h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h07m)
+[heartbeat T+91h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h08m)
+[heartbeat T+91h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h09m)
+[heartbeat T+92h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h10m)
+[heartbeat T+92h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h11m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000096 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 41/100
+[heartbeat T+92h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h12m)
+[heartbeat T+92h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h13m)
+[heartbeat T+92h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h14m)
+[heartbeat T+92h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h15m)
+[heartbeat T+92h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h16m)
+[heartbeat T+92h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h17m)
+[heartbeat T+92h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h18m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000085 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 42/100
+[heartbeat T+92h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h19m)
+[heartbeat T+92h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h20m)
+[heartbeat T+92h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h21m)
+[heartbeat T+92h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h22m)
+[heartbeat T+92h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h23m)
+[heartbeat T+92h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h24m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000101 seconds
+Epoch 43/100
+[heartbeat T+92h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h25m)
+[heartbeat T+92h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h26m)
+[heartbeat T+92h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h27m)
+[heartbeat T+92h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h28m)
+[heartbeat T+92h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h29m)
+[heartbeat T+92h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h30m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000090 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 44/100
+[heartbeat T+92h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h31m)
+[heartbeat T+92h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h32m)
+[heartbeat T+92h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h33m)
+[heartbeat T+92h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h34m)
+[heartbeat T+92h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h35m)
+[heartbeat T+92h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h36m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000103 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 45/100
+[heartbeat T+92h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h37m)
+[heartbeat T+92h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h38m)
+[heartbeat T+92h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h39m)
+[heartbeat T+92h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h40m)
+[heartbeat T+92h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h41m)
+[heartbeat T+92h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h42m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000093 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 46/100
+[heartbeat T+92h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h43m)
+[heartbeat T+92h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h44m)
+[heartbeat T+92h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h45m)
+[heartbeat T+92h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h46m)
+[heartbeat T+92h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h47m)
+[heartbeat T+92h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h48m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 47/100
+[heartbeat T+92h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h49m)
+[heartbeat T+92h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h50m)
+[heartbeat T+92h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h51m)
+[heartbeat T+92h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h52m)
+[heartbeat T+92h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h53m)
+[heartbeat T+92h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h54m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000089 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 48/100
+[heartbeat T+92h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h55m)
+[heartbeat T+92h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h56m)
+[heartbeat T+92h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h57m)
+[heartbeat T+92h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h58m)
+[heartbeat T+92h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 6h59m)
+[heartbeat T+92h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h00m)
+[heartbeat T+92h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h01m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000094 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 49/100
+[heartbeat T+92h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h02m)
+[heartbeat T+92h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h03m)
+[heartbeat T+92h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h04m)
+[heartbeat T+92h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h05m)
+[heartbeat T+92h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h06m)
+[heartbeat T+92h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h07m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 50/100
+[heartbeat T+92h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h08m)
+[heartbeat T+92h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h09m)
+[heartbeat T+93h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h10m)
+[heartbeat T+93h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h11m)
+[heartbeat T+93h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h12m)
+[heartbeat T+93h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h13m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000090 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 51/100
+[heartbeat T+93h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h14m)
+[heartbeat T+93h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h15m)
+[heartbeat T+93h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h16m)
+[heartbeat T+93h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h17m)
+[heartbeat T+93h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h18m)
+[heartbeat T+93h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h19m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000092 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 52/100
+[heartbeat T+93h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h20m)
+[heartbeat T+93h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h21m)
+[heartbeat T+93h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h22m)
+[heartbeat T+93h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h23m)
+[heartbeat T+93h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h24m)
+[heartbeat T+93h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h25m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000095 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 53/100
+[heartbeat T+93h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h26m)
+[heartbeat T+93h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h27m)
+[heartbeat T+93h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h28m)
+[heartbeat T+93h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h29m)
+[heartbeat T+93h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h30m)
+[heartbeat T+93h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h31m)
+[heartbeat T+93h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h32m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000091 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 54/100
+[heartbeat T+93h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h33m)
+[heartbeat T+93h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h34m)
+[heartbeat T+93h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h35m)
+[heartbeat T+93h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h36m)
+[heartbeat T+93h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h37m)
+[heartbeat T+93h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h38m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 55/100
+[heartbeat T+93h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h39m)
+[heartbeat T+93h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h40m)
+[heartbeat T+93h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h41m)
+[heartbeat T+93h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h42m)
+[heartbeat T+93h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h43m)
+[heartbeat T+93h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h44m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000102 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 56/100
+[heartbeat T+93h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h45m)
+[heartbeat T+93h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h46m)
+[heartbeat T+93h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h47m)
+[heartbeat T+93h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h48m)
+[heartbeat T+93h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h49m)
+[heartbeat T+93h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h50m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000097 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/best_model.pt
+Epoch 57/100
+[heartbeat T+93h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h51m)
+[heartbeat T+93h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h52m)
+[heartbeat T+93h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h53m)
+[heartbeat T+93h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h54m)
+[heartbeat T+93h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h55m)
+[heartbeat T+93h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h56m)
+Train Loss: 0.0213, Val Loss: 0.0185
+Train Acc: 0.9948, Val Acc: 0.9948
+Time per sample: 0.000099 seconds
+Epoch 58/100
+[heartbeat T+93h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h57m)
+[heartbeat T+93h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h58m)
+[heartbeat T+93h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 7h59m)
+[heartbeat T+93h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h00m)
+[heartbeat T+93h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h01m)
+[heartbeat T+93h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h02m)
+[heartbeat T+93h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h03m)
+Train Loss: 0.0043, Val Loss: 0.0012
+Train Acc: 0.9985, Val Acc: 0.9998
+Time per sample: 0.000092 seconds
+Epoch 59/100
+[heartbeat T+93h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h04m)
+[heartbeat T+93h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h05m)
+[heartbeat T+93h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h06m)
+[heartbeat T+93h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h07m)
+[heartbeat T+93h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h08m)
+[heartbeat T+93h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h09m)
+[heartbeat T+94h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h10m)
+Train Loss: 0.0005, Val Loss: 0.0000
+Train Acc: 0.9999, Val Acc: 1.0000
+Time per sample: 0.000097 seconds
+Epoch 60/100
+[heartbeat T+94h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h11m)
+[heartbeat T+94h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h12m)
+[heartbeat T+94h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h13m)
+[heartbeat T+94h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h14m)
+[heartbeat T+94h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h15m)
+[heartbeat T+94h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h16m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000093 seconds
+Epoch 61/100
+[heartbeat T+94h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h17m)
+[heartbeat T+94h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h18m)
+[heartbeat T+94h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h19m)
+[heartbeat T+94h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h20m)
+[heartbeat T+94h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h21m)
+[heartbeat T+94h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h22m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Epoch 62/100
+[heartbeat T+94h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h23m)
+[heartbeat T+94h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h24m)
+[heartbeat T+94h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h25m)
+[heartbeat T+94h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h26m)
+[heartbeat T+94h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h27m)
+[heartbeat T+94h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h28m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Epoch 63/100
+[heartbeat T+94h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h29m)
+[heartbeat T+94h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h30m)
+[heartbeat T+94h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h31m)
+[heartbeat T+94h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h32m)
+[heartbeat T+94h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h33m)
+[heartbeat T+94h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h34m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Epoch 64/100
+[heartbeat T+94h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h35m)
+[heartbeat T+94h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h36m)
+[heartbeat T+94h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h37m)
+[heartbeat T+94h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h38m)
+[heartbeat T+94h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h39m)
+[heartbeat T+94h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h40m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Epoch 65/100
+[heartbeat T+94h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h41m)
+[heartbeat T+94h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h42m)
+[heartbeat T+94h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h43m)
+[heartbeat T+94h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h44m)
+[heartbeat T+94h35m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h45m)
+[heartbeat T+94h36m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h46m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000093 seconds
+Epoch 66/100
+[heartbeat T+94h37m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h47m)
+[heartbeat T+94h38m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h48m)
+[heartbeat T+94h39m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h49m)
+[heartbeat T+94h40m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h50m)
+[heartbeat T+94h41m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h51m)
+[heartbeat T+94h42m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h52m)
+[heartbeat T+94h43m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h53m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000094 seconds
+Epoch 67/100
+[heartbeat T+94h44m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h54m)
+[heartbeat T+94h45m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h55m)
+[heartbeat T+94h46m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h56m)
+[heartbeat T+94h47m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h57m)
+[heartbeat T+94h48m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h58m)
+[heartbeat T+94h49m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 8h59m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000098 seconds
+Epoch 68/100
+[heartbeat T+94h50m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h00m)
+[heartbeat T+94h51m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h01m)
+[heartbeat T+94h52m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h02m)
+[heartbeat T+94h53m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h03m)
+[heartbeat T+94h54m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h04m)
+[heartbeat T+94h55m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h05m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000086 seconds
+Epoch 69/100
+[heartbeat T+94h56m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h06m)
+[heartbeat T+94h57m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h07m)
+[heartbeat T+94h58m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h08m)
+[heartbeat T+94h59m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h09m)
+[heartbeat T+95h00m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h10m)
+[heartbeat T+95h01m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h11m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000094 seconds
+Epoch 70/100
+[heartbeat T+95h02m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h12m)
+[heartbeat T+95h03m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h13m)
+[heartbeat T+95h04m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h14m)
+[heartbeat T+95h05m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h15m)
+[heartbeat T+95h06m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h16m)
+[heartbeat T+95h07m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h17m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000096 seconds
+Epoch 71/100
+[heartbeat T+95h08m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h18m)
+[heartbeat T+95h09m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h19m)
+[heartbeat T+95h10m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h20m)
+[heartbeat T+95h11m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h21m)
+[heartbeat T+95h12m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h22m)
+[heartbeat T+95h13m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h23m)
+Train Loss: 0.0000, Val Loss: 0.0000
+Train Acc: 1.0000, Val Acc: 1.0000
+Time per sample: 0.000088 seconds
+Early stopping triggered after 15 epochs without improvement.
+[heartbeat T+95h14m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h24m)
+
+Evaluating on test splits:
+Evaluating on test split (4602 samples):
+[heartbeat T+95h15m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h25m)
+[heartbeat T+95h16m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h26m)
+[heartbeat T+95h17m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h27m)
+Predictions shape: (4602,), unique values: [0 2 3 4 5 6]
+Targets shape: (4602,), unique values: [0 2 3 4 5 6]
+Classification report saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/classification_report_unknown.csv
+test accuracy: 1.0000, F1-score: 1.0000
+Generating confusion matrix for test split...
+[heartbeat T+95h18m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h28m)
+Evaluating on test_cross_device split (9631 samples):
+[heartbeat T+95h19m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h29m)
+[heartbeat T+95h20m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h30m)
+[heartbeat T+95h21m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h31m)
+Predictions shape: (9631,), unique values: [0 2 3 4 5 6]
+Targets shape: (9631,), unique values: [0 1 2 3 4 5 6]
+Classification report saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/classification_report_unknown.csv
+test_cross_device accuracy: 0.2406, F1-score: 0.1962
+Generating confusion matrix for test_cross_device split...
+[heartbeat T+95h22m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h32m)
+Evaluating on test_cross_user split (12109 samples):
+[heartbeat T+95h23m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h33m)
+[heartbeat T+95h24m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h34m)
+[heartbeat T+95h25m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h35m)
+[heartbeat T+95h26m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h36m)
+[heartbeat T+95h27m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h37m)
+Predictions shape: (12109,), unique values: [0 2 3 4 5 6]
+Targets shape: (12109,), unique values: [1]
+Classification report saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/classification_report_unknown.csv
+test_cross_user accuracy: 0.0000, F1-score: 0.0000
+Generating confusion matrix for test_cross_user split...
+[heartbeat T+95h28m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h38m)
+[heartbeat T+95h29m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h39m)
+Evaluating on test_cross_env split (6650 samples):
+[heartbeat T+95h30m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h40m)
+[heartbeat T+95h31m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h41m)
+[heartbeat T+95h32m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h42m)
+Predictions shape: (6650,), unique values: [0 2 3 4 5 6]
+Targets shape: (6650,), unique values: [4]
+Classification report saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/classification_report_unknown.csv
+test_cross_env accuracy: 0.2232, F1-score: 0.3649
+Generating confusion matrix for test_cross_env split...
+[heartbeat T+95h33m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h43m)
+[heartbeat T+95h34m] running=1 finished=30 queued=11 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/resnet18/seed42  (running 9h44m)
+***********************FEW_SHOTFalse
+
+Test Results Summary:
+Split                     Accuracy        F1-Score       
+-------------------------------------------------------
+test                      1.0000          1.0000         
+test_cross_device         0.2406          0.1962         
+test_cross_user           0.0000          0.0000         
+test_cross_env            0.2232          0.3649         
+
+Training and evaluation completed.
+Best model from epoch 56, saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639
+Results saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639
+New best model! Validation accuracy: 1.0000 (previous best: 0.0000)
+Supervised learning completed successfully.
+Configuration saved to model directory: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/resnet18/params_828dca1639/supervised_config.json
+
+HumanIdentification/resnet18/seed42: OK (584.07 min)
+
+============================================================
+Starting training: HumanIdentification/transformer/seed42
+============================================================
+
+Running supervised learning: /opt/conda/bin/python /home/zhuzih19/csi-project/csibench-official/scripts/train_supervised.py --data_dir="/home/zhuzih19/data/csi-bench-dataset" --task_name=HumanIdentification --model=transformer --batch_size=128 --epochs=100 --win_len=500 --feature_size=232 --save_dir="/home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official" --output_dir="/home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official" --num_workers=0 --use_root_data_path --no_pin_memory --test_splits="all" --learning_rate=0.001 --weight_decay=1e-05 --warmup_epochs=5 --patience=15 --seed=42
+Running in local environment
+Experiment ID: params_828dca1639
+Results will be saved to: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639
+Model checkpoints will be saved to: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639
+Using device: cuda
+********************splits_dir is /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification/splits
+Available test splits: ['test_id', 'test_cross_device', 'test_cross_user', 'test_cross_env']
+Using test splits: ['test_id', 'test_cross_device', 'test_cross_user', 'test_cross_env']
+Loading data from /home/zhuzih19/data/csi-bench-dataset for task HumanIdentification...
+________________________DATA DEBUG________/home/zhuzih19/data/csi-bench-dataset/tasks/HumanIdentification
+Root directory does not contain required subfolders, will try standard paths.
+Checking path: /home/zhuzih19/data/csi-bench-dataset/HumanIdentification
+Checking path: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+  Has metadata: True, Has splits: True
+Using task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+
+==== Task Directory Contents (/home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification) ====
+  Directory: metadata/ (2 items)
+    - label_mapping.json
+    - sample_metadata.csv
+  Directory: splits/ (6 items)
+    - train_id.json
+    - test_id.json
+    - test_cross_device.json
+    - test_cross_user.json
+    - test_cross_env.json
+    - val_id.json
+================================================
+
+Using metadata path: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification/metadata/sample_metadata.csv
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 21473 samples for HumanIdentification - train_id
+Loaded 21473 samples for HumanIdentification - train_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 4601 samples for HumanIdentification - val_id
+Loaded 4601 samples for HumanIdentification - val_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 4602 samples for HumanIdentification - test_id
+Loaded 4602 samples for HumanIdentification - test_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 9631 samples for HumanIdentification - test_cross_device
+Loaded 9631 samples for HumanIdentification - test_cross_device
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 12109 samples for HumanIdentification - test_cross_user
+Loaded 12109 samples for HumanIdentification - test_cross_user
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanIdentification
+Loaded 6650 samples for HumanIdentification - test_cross_env
+Loaded 6650 samples for HumanIdentification - test_cross_env
+Detected 7 classes in the dataset
+Loaded 4 test splits: ['test', 'test_cross_device', 'test_cross_user', 'test_cross_env']
+Creating TRANSFORMER model...
+Model parameters: 3353863
+Starting supervised training phase...
+Epoch 1/100
+[heartbeat T+95h35m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h00m)
+[heartbeat T+95h36m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h01m)
+[heartbeat T+95h37m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h02m)
+[heartbeat T+95h38m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h03m)
+[heartbeat T+95h39m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h04m)
+Train Loss: 1.9310, Val Loss: 1.9278
+Train Acc: 0.1697, Val Acc: 0.1545
+Time per sample: 0.000117 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 2/100
+[heartbeat T+95h40m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h05m)
+[heartbeat T+95h41m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h06m)
+[heartbeat T+95h42m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h07m)
+[heartbeat T+95h43m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h08m)
+[heartbeat T+95h44m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h09m)
+[heartbeat T+95h45m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h10m)
+[heartbeat T+95h46m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h11m)
+Train Loss: 1.8550, Val Loss: 1.7770
+Train Acc: 0.2412, Val Acc: 0.3173
+Time per sample: 0.000109 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 3/100
+[heartbeat T+95h47m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h12m)
+[heartbeat T+95h48m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h13m)
+[heartbeat T+95h49m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h14m)
+[heartbeat T+95h50m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h15m)
+[heartbeat T+95h51m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h16m)
+[heartbeat T+95h52m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h17m)
+Train Loss: 1.6792, Val Loss: 1.5468
+Train Acc: 0.4274, Val Acc: 0.5066
+Time per sample: 0.000097 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 4/100
+[heartbeat T+95h53m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h18m)
+[heartbeat T+95h54m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h19m)
+[heartbeat T+95h55m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h20m)
+[heartbeat T+95h56m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h21m)
+[heartbeat T+95h57m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h22m)
+[heartbeat T+95h58m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h23m)
+[heartbeat T+95h59m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h24m)
+Train Loss: 1.4139, Val Loss: 1.2181
+Train Acc: 0.5760, Val Acc: 0.6516
+Time per sample: 0.000096 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 5/100
+[heartbeat T+96h00m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h25m)
+[heartbeat T+96h01m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h26m)
+[heartbeat T+96h02m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h27m)
+[heartbeat T+96h03m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h28m)
+[heartbeat T+96h04m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h29m)
+[heartbeat T+96h05m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h30m)
+Train Loss: 1.0873, Val Loss: 0.8908
+Train Acc: 0.6942, Val Acc: 0.7590
+Time per sample: 0.000104 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 6/100
+[heartbeat T+96h06m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h31m)
+[heartbeat T+96h07m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h32m)
+[heartbeat T+96h08m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h33m)
+[heartbeat T+96h09m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h34m)
+[heartbeat T+96h10m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h35m)
+[heartbeat T+96h11m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h36m)
+Train Loss: 0.7798, Val Loss: 0.6064
+Train Acc: 0.8131, Val Acc: 0.8707
+Time per sample: 0.000099 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 7/100
+[heartbeat T+96h12m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h37m)
+[heartbeat T+96h13m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h38m)
+[heartbeat T+96h14m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h39m)
+[heartbeat T+96h15m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h40m)
+[heartbeat T+96h16m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h41m)
+[heartbeat T+96h17m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h42m)
+Train Loss: 0.5142, Val Loss: 0.3736
+Train Acc: 0.8974, Val Acc: 0.9187
+Time per sample: 0.000103 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 8/100
+[heartbeat T+96h18m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h43m)
+[heartbeat T+96h19m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h44m)
+[heartbeat T+96h20m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h45m)
+[heartbeat T+96h21m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h46m)
+[heartbeat T+96h22m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h47m)
+[heartbeat T+96h23m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h48m)
+[heartbeat T+96h24m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h49m)
+Train Loss: 0.3151, Val Loss: 0.2291
+Train Acc: 0.9343, Val Acc: 0.9472
+Time per sample: 0.000098 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 9/100
+[heartbeat T+96h25m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h50m)
+[heartbeat T+96h26m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h51m)
+[heartbeat T+96h27m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h52m)
+[heartbeat T+96h28m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h53m)
+[heartbeat T+96h29m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h54m)
+[heartbeat T+96h30m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h55m)
+[heartbeat T+96h31m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h56m)
+Train Loss: 0.1918, Val Loss: 0.1349
+Train Acc: 0.9633, Val Acc: 0.9730
+Time per sample: 0.000097 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 10/100
+[heartbeat T+96h32m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h57m)
+[heartbeat T+96h33m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h58m)
+[heartbeat T+96h34m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 0h59m)
+[heartbeat T+96h35m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h00m)
+[heartbeat T+96h36m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h01m)
+[heartbeat T+96h37m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h02m)
+[heartbeat T+96h38m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h03m)
+[heartbeat T+96h39m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h04m)
+[heartbeat T+96h40m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h05m)
+[heartbeat T+96h41m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h06m)
+Train Loss: 0.1098, Val Loss: 0.0710
+Train Acc: 0.9820, Val Acc: 0.9876
+Time per sample: 0.000120 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 11/100
+[heartbeat T+96h42m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h07m)
+[heartbeat T+96h43m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h08m)
+[heartbeat T+96h44m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h09m)
+[heartbeat T+96h45m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h10m)
+[heartbeat T+96h46m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h11m)
+[heartbeat T+96h47m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h12m)
+Train Loss: 0.0620, Val Loss: 0.0391
+Train Acc: 0.9912, Val Acc: 0.9937
+Time per sample: 0.000097 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 12/100
+[heartbeat T+96h48m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h13m)
+[heartbeat T+96h49m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h14m)
+[heartbeat T+96h50m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h15m)
+[heartbeat T+96h51m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h16m)
+[heartbeat T+96h52m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h17m)
+[heartbeat T+96h53m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h18m)
+[heartbeat T+96h54m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h19m)
+Train Loss: 0.0348, Val Loss: 0.0196
+Train Acc: 0.9966, Val Acc: 0.9976
+Time per sample: 0.000034 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 13/100
+[heartbeat T+96h55m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h20m)
+[heartbeat T+96h56m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h21m)
+[heartbeat T+96h57m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h22m)
+[heartbeat T+96h58m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h23m)
+[heartbeat T+96h59m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h24m)
+[heartbeat T+97h00m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h25m)
+Train Loss: 0.0195, Val Loss: 0.0105
+Train Acc: 0.9982, Val Acc: 0.9991
+Time per sample: 0.000095 seconds
+Best model saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official/HumanIdentification/transformer/params_828dca1639/best_model.pt
+Epoch 14/100
+[heartbeat T+97h01m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h26m)
+[heartbeat T+97h02m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h27m)
+[heartbeat T+97h03m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h28m)
+[heartbeat T+97h04m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h29m)
+[heartbeat T+97h05m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h30m)
+[heartbeat T+97h06m] running=1 finished=31 queued=10 (of 42 pending; skipped=0, total=42)
+  - [gpu -1] HumanIdentification/transformer/seed42  (running 1h31m)
