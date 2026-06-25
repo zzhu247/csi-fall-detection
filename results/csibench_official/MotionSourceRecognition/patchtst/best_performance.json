@@ -1,13 +1,13 @@
 {
-    "best_val_accuracy": 0.9854294478527608,
-    "best_val_loss": 0.05115102405628123,
+    "best_val_accuracy": 0.9910166520595969,
+    "best_val_loss": 0.03629706415971561,
     "best_experiment_id": "params_828dca1639",
     "best_experiment_params": {
         "model": "patchtst",
         "task": "MotionSourceRecognition",
         "task_name": "MotionSourceRecognition",
         "seed": 42,
-        "num_classes": 2,
+        "num_classes": 4,
         "batch_size": 128,
         "learning_rate": 0.001,
         "weight_decay": 1e-05,
@@ -24,16 +24,16 @@
         ]
     },
     "best_test_accuracies": {
-        "test_easy": 0.9861271676300578,
-        "test": 0.9855437520534444,
-        "test_hard": 0.9750499001996008,
-        "test_medium": 0.9888214627914405
+        "test_easy": 0.9872832369942196,
+        "test": 0.9895958821596759,
+        "test_hard": 0.9840319361277445,
+        "test_medium": 0.9916959437879271
     },
     "best_test_f1_scores": {
-        "test_easy": 0.9861560445032775,
-        "test": 0.9855387298575318,
-        "test_hard": 0.9750452378243047,
-        "test_medium": 0.9888095314102697
+        "test_easy": 0.9884331821847683,
+        "test": 0.9896014019314862,
+        "test_hard": 0.9840370405773456,
+        "test_medium": 0.9916988663901251
     },
-    "timestamp": "2026-06-19 09:22:51"
+    "timestamp": "2026-06-24 07:47:57"
 }

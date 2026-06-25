@@ -1,0 +1,9 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep500_mask0.75_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 1,469,077

@@ -1,0 +1,26 @@
+{
+    "test": {
+        "loss": 0.00016906604120612686,
+        "accuracy": 1.0,
+        "f1_score": 1.0,
+        "n_samples": 4602
+    },
+    "test_cross_device": {
+        "loss": 10.223591196486035,
+        "accuracy": 0.29675007787353336,
+        "f1_score": 0.2601932351415972,
+        "n_samples": 9631
+    },
+    "test_cross_user": {
+        "loss": 19.135867126474924,
+        "accuracy": 0.0,
+        "f1_score": 0.0,
+        "n_samples": 12109
+    },
+    "test_cross_env": {
+        "loss": 11.780147540443823,
+        "accuracy": 0.1887218045112782,
+        "f1_score": 0.31752055660974066,
+        "n_samples": 6650
+    }
+}

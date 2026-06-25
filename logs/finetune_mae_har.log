@@ -1,0 +1,33 @@
+Loaded: checkpoints/mae_har/mae_har_ep300_mask0.75_enc6_dim128_bs128_best.pt
+
+Phase 1: training head only (10 epochs)...
+  Epoch 5/10
+  Epoch 10/10
+
+Phase 2: end-to-end fine-tune (40 epochs)...
+
+  Epoch 10 eval:
+    test_id                   (in-dist) acc=52.0% f1=36.4%
+    test_cross_device         (OOD)     acc=50.9% f1=34.5%
+    test_cross_env            (OOD)     acc=51.3% f1=34.8%
+    test_cross_user           (OOD)     acc=50.5% f1=34.2%
+
+  Epoch 20 eval:
+    test_id                   (in-dist) acc=52.3% f1=37.4%
+    test_cross_device         (OOD)     acc=50.9% f1=34.6%
+    test_cross_env            (OOD)     acc=51.3% f1=34.8%
+    test_cross_user           (OOD)     acc=50.4% f1=34.9%
+
+  Epoch 30 eval:
+    test_id                   (in-dist) acc=52.4% f1=37.7%
+    test_cross_device         (OOD)     acc=50.8% f1=34.6%
+    test_cross_env            (OOD)     acc=51.3% f1=34.8%
+    test_cross_user           (OOD)     acc=50.4% f1=35.1%
+
+  Epoch 40 eval:
+    test_id                   (in-dist) acc=52.5% f1=37.8%
+    test_cross_device         (OOD)     acc=50.8% f1=34.6%
+    test_cross_env            (OOD)     acc=51.3% f1=34.8%
+    test_cross_user           (OOD)     acc=50.3% f1=35.1%
+
+Done. Results: /home/zhuzih19/csi-project/csi-fall-detection/results/mae_har/finetune_mae_har_ep300_mask0.75_enc6_dim128_bs128_ep50.json
