@@ -38,6 +38,8 @@ The project explores different learning strategies for fall detection classifica
 | Per-Task (Fall) | MAE-500 | 92.77% | 87.29% | -5.5pp | Multi-task training |
 | User-Independent | MAE-200 | 85.91% | 83.77% | -2.1pp | Held-out users |
 
+- **HAR Mask Ratio Sweep**: CSI Bench `HumanActivityRecognition` MAE experiments show `mask_ratio=0.75` is optimal. Time-based masking achieved the best in-distribution KNN accuracy (~95.4%) and highest LP accuracy (~58.8%).
+
 ### Critical Insight: KNN Outperforms Linear Probe Due to Data Leakage
 
 **KNN significantly outperforms Linear Probe across all tasks, with gaps ranging from 2-34 percentage points.** This is not a sign that KNN features are "better" - rather, **it reveals data leakage in the Linear Probe evaluation protocol**.
@@ -580,6 +582,12 @@ OUTPUT (Reconstructed full input)
 - Supervised: 82.2% (direct classification, no transfer)
 - I-JEPA: 65.6% LP (limited data, short training)
 - MAE-500: 85.91% KNN (user-independent, honest)
+
+**CSI Bench HAR Replication**:
+- `train_mae_har.py` is used to reproduce CSI Bench `HumanActivityRecognition` results.
+- Official CSI Bench evaluation splits include `test_id`, `test_cross_device`, `test_cross_env`, and `test_cross_user`.
+- Best HAR MAE setting: `mask_ratio=0.75`, `strategy=time`, `encoder_depth=6`, `batch_size=128`.
+- This configuration yielded top in-distribution MAE KNN accuracy of **95.4%** and top LP accuracy of **58.8%**.
 
 **Conclusion**: MAE successfully creates a foundation model competitive with or exceeding supervised baseline, with strong generalization to unseen users and tasks.
 

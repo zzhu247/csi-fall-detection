@@ -7,7 +7,7 @@ MAE pretraining on HAR train_id, followed by:
 Usage:
     python train_mae_har.py --epochs 300 --mask_ratio 0.75 --encoder_depth 6
 """
-import os, sys, json, argparse, torch, pandas as pd
+import os, sys, json, argparse, random, torch, numpy as np, pandas as pd
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
@@ -107,10 +107,21 @@ def main():
     parser.add_argument('--eval_layers',   type=str,   default='1,3,6')
     parser.add_argument('--eval_every',    type=int,   default=50)
     parser.add_argument('--mask_strategy', type=str, default='random', choices=['random','time','freq','mixed','2d'])
+    parser.add_argument('--patch_h',       type=int,   default=29)
+    parser.add_argument('--patch_w',       type=int,   default=25)
+    parser.add_argument('--seed',          type=int,   default=42)
     args = parser.parse_args()
 
+    # Seed control for reproducibility
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
     eval_layers = [int(x) for x in args.eval_layers.split(',')]
-    exp_name = (f"mae_har_ep{args.epochs}_mask{args.mask_ratio}_strategy{args.mask_strategy}"
+    exp_name = (f"mae_har_ep{args.epochs}_mask{args.mask_ratio}_strategy{args.mask_strategy}_ph{args.patch_h}pw{args.patch_w}_seed{args.seed}"
                 f"_enc{args.encoder_depth}_dim{args.encoder_dim}_bs{args.batch_size}")
     print(f"\nExperiment: {exp_name}")
 
@@ -145,7 +156,7 @@ def main():
     if args.mask_strategy == 'random':
         model = MAE(
             in_channels=1, img_h=232, img_w=500,
-            patch_h=29, patch_w=25,
+            patch_h=args.patch_h, patch_w=args.patch_w,
             encoder_dim=args.encoder_dim,
             encoder_ff_dim=args.encoder_dim * 4,
             encoder_heads=4, encoder_depth=args.encoder_depth,
@@ -156,7 +167,7 @@ def main():
     else:
         model = MAEv2(
             in_channels=1, img_h=232, img_w=500,
-            patch_h=29, patch_w=25,
+            patch_h=args.patch_h, patch_w=args.patch_w,
             encoder_dim=args.encoder_dim,
             encoder_ff_dim=args.encoder_dim * 4,
             encoder_heads=4, encoder_depth=args.encoder_depth,

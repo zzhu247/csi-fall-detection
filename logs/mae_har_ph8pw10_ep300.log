@@ -1,0 +1,21 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph8pw10_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 1,592,272
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 249, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 184, in main
+    csi = csi.to(device)
+torch.AcceleratorError: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

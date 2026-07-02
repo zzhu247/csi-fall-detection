@@ -72,6 +72,17 @@ Step 3: KNN Evaluation
 | Motion Source | Cross-Task | Same as pretraining | 99.93% | 82.15% | **17.8pp** |
 | **User-Independent** | **User-held-out** | **Different users** | **85.91%** | **83.77%** | **2.1pp** ✓ |
 
+### CSI Bench HAR Mask Ratio Sweep
+
+**Objective**: Replicate `HumanActivityRecognition` MAE results on CSI Bench and identify the best masking setup.
+
+- Best MAE HAR configuration: `mask_ratio=0.75`, `strategy=time`, `encoder_depth=6`, `batch_size=128`.
+- Top observed HAR metrics on official CSI Bench splits: **95.4% KNN** and **58.8% LP**.
+- Lower mask ratios (0.50, 0.625) produced strong KNN scores but lower LP accuracy in the mid-50s.
+- Higher mask ratios (0.875, 0.95) degraded both KNN and LP, confirming 75% masking as the best tradeoff for HAR MAE replication.
+
+**Interpretation**: This confirms the paper’s reported CSI Bench trend that a 75% MAE mask ratio is the best fit for HAR representation extraction with the current model and split setup.
+
 **Key Insight**: When test set contains users NOT seen during pretraining (user-independent evaluation), the gap shrinks to **2.1pp**. This is the "honest" gap.
 
 ### Why This Matters

@@ -1,0 +1,51 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph4pw5_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 2,415,892
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 249, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 186, in main
+    out = model(csi); loss = out[0]
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/models/mae.py", line 132, in forward
+    decoded = self.decoder_blocks(full_seq)    # [B, N, decoder_dim]
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/models/vit.py", line 108, in forward
+    x = layer(x, mask)
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/models/vit.py", line 94, in forward
+    x = self.add_norm1(x, self.attention(x, x, x, mask))
+                          ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/models/vit.py", line 78, in forward
+    scores = Q @ K.transpose(-2, -1) / math.sqrt(self.d_k)
+             ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+torch.AcceleratorError: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

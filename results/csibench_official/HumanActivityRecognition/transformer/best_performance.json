@@ -1,6 +1,6 @@
 {
-    "best_val_accuracy": 0.9467507063681808,
-    "best_val_loss": 0.17364597878742932,
+    "best_val_accuracy": 0.9521843077591828,
+    "best_val_loss": 0.1498917880363016,
     "best_experiment_id": "params_828dca1639",
     "best_experiment_params": {
         "model": "transformer",
@@ -26,20 +26,20 @@
         ]
     },
     "best_test_accuracies": {
-        "test": 0.9471968709256845,
-        "test_cross_device": 0.3098328314816738,
-        "test_cross_user_env": 0.4134015672477211,
-        "test_instance": 0.39414414414414417,
-        "test_cross_user": 0.49343463539516064,
-        "test_cross_env": 0.26766917293233083
+        "test": 0.9326379834854411,
+        "test_cross_device": 0.29020870106946317,
+        "test_cross_user_env": 0.40039447731755423,
+        "test_instance": 0.3783783783783784,
+        "test_cross_user": 0.47245850194070527,
+        "test_cross_env": 0.26917293233082706
     },
     "best_test_f1_scores": {
-        "test": 0.9470990259487084,
-        "test_cross_device": 0.33646270671243983,
-        "test_cross_user_env": 0.41405924306930586,
-        "test_instance": 0.31568657716704224,
-        "test_cross_user": 0.4483903755065905,
-        "test_cross_env": 0.289359323419225
+        "test": 0.9327977741919373,
+        "test_cross_device": 0.31659096993828917,
+        "test_cross_user_env": 0.40846694406675843,
+        "test_instance": 0.28670109970568686,
+        "test_cross_user": 0.440642925082193,
+        "test_cross_env": 0.286099219543765
     },
-    "timestamp": "2026-06-20 23:09:47"
+    "timestamp": "2026-06-26 23:59:26"
 }

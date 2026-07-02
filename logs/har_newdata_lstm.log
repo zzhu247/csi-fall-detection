@@ -1,0 +1,580 @@
+nohup: ignoring input
+Running in local environment
+Experiment ID: params_828dca1639
+Results will be saved to: /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official_newdata/HumanActivityRecognition/lstm/params_828dca1639
+Model checkpoints will be saved to: results/HumanActivityRecognition/lstm/params_828dca1639
+Using device: cuda
+********************splits_dir is /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition/splits
+  Ignoring split file (other task): train_id_p5.json
+  Ignoring split file (other task): p5_info.json
+Available test splits: ['test_id', 'test_cross_device', 'test_cross_user_env', 'test_instance', 'test_cross_user', 'test_cross_env']
+Using test splits: ['test_id', 'test_cross_device', 'test_cross_user_env', 'test_instance', 'test_cross_user', 'test_cross_env']
+Loading data from /home/zhuzih19/data/csi-bench-dataset for task HumanActivityRecognition...
+________________________DATA DEBUG________/home/zhuzih19/data/csi-bench-dataset/tasks/HumanActivityRecognition
+Checking path: /home/zhuzih19/data/csi-bench-dataset/HumanActivityRecognition
+Checking path: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+  Has metadata: True, Has splits: True
+Using task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+
+==== Task Directory Contents (/home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition) ====
+  Directory: metadata/ (2 items)
+    - label_mapping.json
+    - sample_metadata.csv
+  Directory: splits/ (10 items)
+    - train_id_p5.json
+    - train_id.json
+    - test_id.json
+    - test_cross_device.json
+    - p5_info.json
+    - test_cross_user_env.json
+    - test_instance.json
+    - test_cross_user.json
+    - test_cross_env.json
+    - val_id.json
+================================================
+
+Using metadata path: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition/metadata/sample_metadata.csv
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 21473 samples for HumanActivityRecognition - train_id
+Loaded 21473 samples for HumanActivityRecognition - train_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 4601 samples for HumanActivityRecognition - val_id
+Loaded 4601 samples for HumanActivityRecognition - val_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 4602 samples for HumanActivityRecognition - test_id
+Loaded 4602 samples for HumanActivityRecognition - test_id
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 9631 samples for HumanActivityRecognition - test_cross_device
+Loaded 9631 samples for HumanActivityRecognition - test_cross_device
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 18759 samples for HumanActivityRecognition - test_cross_user_env
+Loaded 18759 samples for HumanActivityRecognition - test_cross_user_env
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 444 samples for HumanActivityRecognition - test_instance
+Loaded 444 samples for HumanActivityRecognition - test_instance
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 12109 samples for HumanActivityRecognition - test_cross_user
+Loaded 12109 samples for HumanActivityRecognition - test_cross_user
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Using provided task directory: /home/zhuzih19/data/csi-bench-dataset/Multitask/HumanActivityRecognition
+Loaded 6650 samples for HumanActivityRecognition - test_cross_env
+Loaded 6650 samples for HumanActivityRecognition - test_cross_env
+Detected 5 classes in the dataset
+Loaded 6 test splits: ['test', 'test_cross_device', 'test_cross_user_env', 'test_instance', 'test_cross_user', 'test_cross_env']
+Creating LSTM model...
+Model parameters: 2713093
+Starting supervised training phase...
+Epoch 1/100
+Train Loss: 1.6299, Val Loss: 1.6286
+Train Acc: 0.1267, Val Acc: 0.1376
+Time per sample: 0.003957 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 2/100
+Train Loss: 1.6266, Val Loss: 1.6216
+Train Acc: 0.1285, Val Acc: 0.1371
+Time per sample: 0.007387 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 3/100
+Train Loss: 1.6156, Val Loss: 1.6065
+Train Acc: 0.1278, Val Acc: 0.1354
+Time per sample: 0.009515 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 4/100
+Train Loss: 1.5924, Val Loss: 1.5722
+Train Acc: 0.2925, Val Acc: 0.4675
+Time per sample: 0.008574 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 5/100
+Train Loss: 1.5196, Val Loss: 1.4411
+Train Acc: 0.5018, Val Acc: 0.4982
+Time per sample: 0.007930 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 6/100
+Train Loss: 1.3779, Val Loss: 1.3605
+Train Acc: 0.5104, Val Acc: 0.4977
+Time per sample: 0.010524 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 7/100
+Train Loss: 1.3363, Val Loss: 1.3340
+Train Acc: 0.5102, Val Acc: 0.4979
+Time per sample: 0.011780 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 8/100
+Train Loss: 1.3093, Val Loss: 1.3030
+Train Acc: 0.5117, Val Acc: 0.4990
+Time per sample: 0.010580 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 9/100
+Train Loss: 1.2660, Val Loss: 1.2458
+Train Acc: 0.5143, Val Acc: 0.5066
+Time per sample: 0.007880 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 10/100
+Train Loss: 1.2114, Val Loss: 1.2133
+Train Acc: 0.5234, Val Acc: 0.5099
+Time per sample: 0.011617 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 11/100
+Train Loss: 1.1746, Val Loss: 1.1775
+Train Acc: 0.5300, Val Acc: 0.5184
+Time per sample: 0.011019 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 12/100
+Train Loss: 1.1546, Val Loss: 1.1857
+Train Acc: 0.5345, Val Acc: 0.5192
+Time per sample: 0.007776 seconds
+Epoch 13/100
+Train Loss: 1.1309, Val Loss: 1.1556
+Train Acc: 0.5377, Val Acc: 0.5249
+Time per sample: 0.010351 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 14/100
+Train Loss: 1.1085, Val Loss: 1.1230
+Train Acc: 0.5405, Val Acc: 0.5290
+Time per sample: 0.008278 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 15/100
+Train Loss: 1.0957, Val Loss: 1.1169
+Train Acc: 0.5437, Val Acc: 0.5279
+Time per sample: 0.008681 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 16/100
+Train Loss: 1.0881, Val Loss: 1.1046
+Train Acc: 0.5483, Val Acc: 0.5392
+Time per sample: 0.009183 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 17/100
+Train Loss: 1.0762, Val Loss: 1.0754
+Train Acc: 0.5600, Val Acc: 0.5575
+Time per sample: 0.007902 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 18/100
+Train Loss: 1.0572, Val Loss: 1.0830
+Train Acc: 0.5725, Val Acc: 0.5744
+Time per sample: 0.012075 seconds
+Epoch 19/100
+Train Loss: 1.0428, Val Loss: 1.0580
+Train Acc: 0.5833, Val Acc: 0.5825
+Time per sample: 0.012115 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 20/100
+Train Loss: 1.0238, Val Loss: 1.1091
+Train Acc: 0.5973, Val Acc: 0.5886
+Time per sample: 0.013807 seconds
+Epoch 21/100
+Train Loss: 1.0026, Val Loss: 0.9776
+Train Acc: 0.6102, Val Acc: 0.6162
+Time per sample: 0.011379 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 22/100
+Train Loss: 0.9894, Val Loss: 1.0473
+Train Acc: 0.6137, Val Acc: 0.6025
+Time per sample: 0.011052 seconds
+Epoch 23/100
+Train Loss: 0.9642, Val Loss: 0.9994
+Train Acc: 0.6285, Val Acc: 0.6207
+Time per sample: 0.011672 seconds
+Epoch 24/100
+Train Loss: 0.9645, Val Loss: 0.9633
+Train Acc: 0.6223, Val Acc: 0.6255
+Time per sample: 0.011115 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 25/100
+Train Loss: 0.9243, Val Loss: 0.9302
+Train Acc: 0.6346, Val Acc: 0.6260
+Time per sample: 0.012184 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 26/100
+Train Loss: 0.9047, Val Loss: 0.8838
+Train Acc: 0.6429, Val Acc: 0.6481
+Time per sample: 0.009083 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 27/100
+Train Loss: 0.8932, Val Loss: 0.9123
+Train Acc: 0.6457, Val Acc: 0.6475
+Time per sample: 0.014668 seconds
+Epoch 28/100
+Train Loss: 0.8759, Val Loss: 0.9163
+Train Acc: 0.6504, Val Acc: 0.6427
+Time per sample: 0.014472 seconds
+Epoch 29/100
+Train Loss: 0.8755, Val Loss: 0.9769
+Train Acc: 0.6525, Val Acc: 0.6281
+Time per sample: 0.014674 seconds
+Epoch 30/100
+Train Loss: 0.8491, Val Loss: 0.8640
+Train Acc: 0.6635, Val Acc: 0.6636
+Time per sample: 0.013087 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 31/100
+Train Loss: 0.8250, Val Loss: 0.8382
+Train Acc: 0.6682, Val Acc: 0.6675
+Time per sample: 0.015717 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 32/100
+Train Loss: 0.8165, Val Loss: 0.8332
+Train Acc: 0.6741, Val Acc: 0.6622
+Time per sample: 0.014530 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 33/100
+Train Loss: 0.8058, Val Loss: 0.8246
+Train Acc: 0.6772, Val Acc: 0.6777
+Time per sample: 0.015059 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 34/100
+Train Loss: 0.8066, Val Loss: 0.8192
+Train Acc: 0.6779, Val Acc: 0.6690
+Time per sample: 0.013536 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 35/100
+Train Loss: 0.7975, Val Loss: 0.7776
+Train Acc: 0.6822, Val Acc: 0.6859
+Time per sample: 0.010893 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 36/100
+Train Loss: 0.7405, Val Loss: 0.8009
+Train Acc: 0.7033, Val Acc: 0.6899
+Time per sample: 0.016054 seconds
+Epoch 37/100
+Train Loss: 0.7332, Val Loss: 0.7917
+Train Acc: 0.7093, Val Acc: 0.6827
+Time per sample: 0.012167 seconds
+Epoch 38/100
+Train Loss: 0.7238, Val Loss: 0.7200
+Train Acc: 0.7112, Val Acc: 0.7166
+Time per sample: 0.012673 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 39/100
+Train Loss: 0.7159, Val Loss: 0.7181
+Train Acc: 0.7128, Val Acc: 0.7233
+Time per sample: 0.012375 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 40/100
+Train Loss: 0.6787, Val Loss: 0.6767
+Train Acc: 0.7322, Val Acc: 0.7305
+Time per sample: 0.012193 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 41/100
+Train Loss: 0.6445, Val Loss: 0.6219
+Train Acc: 0.7412, Val Acc: 0.7570
+Time per sample: 0.012503 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 42/100
+Train Loss: 0.6463, Val Loss: 0.6458
+Train Acc: 0.7478, Val Acc: 0.7461
+Time per sample: 0.012866 seconds
+Epoch 43/100
+Train Loss: 0.6144, Val Loss: 0.6219
+Train Acc: 0.7586, Val Acc: 0.7461
+Time per sample: 0.014115 seconds
+Epoch 44/100
+Train Loss: 0.5961, Val Loss: 0.7130
+Train Acc: 0.7654, Val Acc: 0.7153
+Time per sample: 0.014479 seconds
+Epoch 45/100
+Train Loss: 0.5831, Val Loss: 0.5724
+Train Acc: 0.7691, Val Acc: 0.7705
+Time per sample: 0.014439 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 46/100
+Train Loss: 0.5419, Val Loss: 0.5601
+Train Acc: 0.7858, Val Acc: 0.7864
+Time per sample: 0.014335 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 47/100
+Train Loss: 0.5349, Val Loss: 0.5369
+Train Acc: 0.7882, Val Acc: 0.7820
+Time per sample: 0.012413 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 48/100
+Train Loss: 0.5162, Val Loss: 0.5474
+Train Acc: 0.7984, Val Acc: 0.7940
+Time per sample: 0.011027 seconds
+Epoch 49/100
+Train Loss: 0.4910, Val Loss: 0.4934
+Train Acc: 0.8102, Val Acc: 0.8129
+Time per sample: 0.012642 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 50/100
+Train Loss: 0.4861, Val Loss: 0.4993
+Train Acc: 0.8133, Val Acc: 0.8042
+Time per sample: 0.011202 seconds
+Epoch 51/100
+Train Loss: 0.4902, Val Loss: 0.5119
+Train Acc: 0.8152, Val Acc: 0.8053
+Time per sample: 0.011107 seconds
+Epoch 52/100
+Train Loss: 0.4587, Val Loss: 0.4667
+Train Acc: 0.8224, Val Acc: 0.8209
+Time per sample: 0.013552 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 53/100
+Train Loss: 0.4325, Val Loss: 0.4908
+Train Acc: 0.8318, Val Acc: 0.8161
+Time per sample: 0.010891 seconds
+Epoch 54/100
+Train Loss: 0.4415, Val Loss: 0.4237
+Train Acc: 0.8322, Val Acc: 0.8396
+Time per sample: 0.012814 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 55/100
+Train Loss: 0.4215, Val Loss: 0.5161
+Train Acc: 0.8412, Val Acc: 0.8074
+Time per sample: 0.012553 seconds
+Epoch 56/100
+Train Loss: 0.3925, Val Loss: 0.3912
+Train Acc: 0.8518, Val Acc: 0.8552
+Time per sample: 0.011236 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 57/100
+Train Loss: 0.3997, Val Loss: 0.4159
+Train Acc: 0.8501, Val Acc: 0.8435
+Time per sample: 0.012320 seconds
+Epoch 58/100
+Train Loss: 0.3734, Val Loss: 0.3931
+Train Acc: 0.8617, Val Acc: 0.8509
+Time per sample: 0.013078 seconds
+Epoch 59/100
+Train Loss: 0.3552, Val Loss: 0.4057
+Train Acc: 0.8673, Val Acc: 0.8611
+Time per sample: 0.012125 seconds
+Epoch 60/100
+Train Loss: 0.3411, Val Loss: 0.3881
+Train Acc: 0.8751, Val Acc: 0.8561
+Time per sample: 0.012962 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 61/100
+Train Loss: 0.3504, Val Loss: 0.4057
+Train Acc: 0.8734, Val Acc: 0.8570
+Time per sample: 0.014616 seconds
+Epoch 62/100
+Train Loss: 0.3331, Val Loss: 0.3535
+Train Acc: 0.8761, Val Acc: 0.8748
+Time per sample: 0.011517 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 63/100
+Train Loss: 0.3140, Val Loss: 0.3448
+Train Acc: 0.8859, Val Acc: 0.8759
+Time per sample: 0.008130 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 64/100
+Train Loss: 0.3151, Val Loss: 0.4987
+Train Acc: 0.8833, Val Acc: 0.8357
+Time per sample: 0.009915 seconds
+Epoch 65/100
+Train Loss: 0.2979, Val Loss: 0.3121
+Train Acc: 0.8913, Val Acc: 0.8848
+Time per sample: 0.010877 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 66/100
+Train Loss: 0.2942, Val Loss: 0.3161
+Train Acc: 0.8923, Val Acc: 0.8907
+Time per sample: 0.011739 seconds
+Epoch 67/100
+Train Loss: 0.2856, Val Loss: 0.3069
+Train Acc: 0.8960, Val Acc: 0.8872
+Time per sample: 0.014437 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 68/100
+Train Loss: 0.2677, Val Loss: 0.3563
+Train Acc: 0.9034, Val Acc: 0.8759
+Time per sample: 0.013689 seconds
+Epoch 69/100
+Train Loss: 0.2775, Val Loss: 0.2937
+Train Acc: 0.9008, Val Acc: 0.8937
+Time per sample: 0.013427 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 70/100
+Train Loss: 0.2556, Val Loss: 0.3082
+Train Acc: 0.9103, Val Acc: 0.8928
+Time per sample: 0.013484 seconds
+Epoch 71/100
+Train Loss: 0.2511, Val Loss: 0.2681
+Train Acc: 0.9108, Val Acc: 0.9105
+Time per sample: 0.014145 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 72/100
+Train Loss: 0.2551, Val Loss: 0.4065
+Train Acc: 0.9085, Val Acc: 0.8679
+Time per sample: 0.014766 seconds
+Epoch 73/100
+Train Loss: 0.2414, Val Loss: 0.2907
+Train Acc: 0.9137, Val Acc: 0.9018
+Time per sample: 0.015048 seconds
+Epoch 74/100
+Train Loss: 0.2375, Val Loss: 0.2785
+Train Acc: 0.9140, Val Acc: 0.9024
+Time per sample: 0.013107 seconds
+Epoch 75/100
+Train Loss: 0.2420, Val Loss: 0.2691
+Train Acc: 0.9135, Val Acc: 0.9092
+Time per sample: 0.014063 seconds
+Epoch 76/100
+Train Loss: 0.2225, Val Loss: 0.2326
+Train Acc: 0.9197, Val Acc: 0.9194
+Time per sample: 0.014687 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 77/100
+Train Loss: 0.2258, Val Loss: 0.2320
+Train Acc: 0.9216, Val Acc: 0.9218
+Time per sample: 0.020542 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 78/100
+Train Loss: 0.2073, Val Loss: 0.2253
+Train Acc: 0.9266, Val Acc: 0.9215
+Time per sample: 0.032337 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 79/100
+Train Loss: 0.2084, Val Loss: 0.2540
+Train Acc: 0.9267, Val Acc: 0.9115
+Time per sample: 0.031774 seconds
+Epoch 80/100
+Train Loss: 0.1963, Val Loss: 0.2647
+Train Acc: 0.9298, Val Acc: 0.9072
+Time per sample: 0.032253 seconds
+Epoch 81/100
+Train Loss: 0.2105, Val Loss: 0.2249
+Train Acc: 0.9268, Val Acc: 0.9231
+Time per sample: 0.029544 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 82/100
+Train Loss: 0.2029, Val Loss: 0.2526
+Train Acc: 0.9275, Val Acc: 0.9163
+Time per sample: 0.002749 seconds
+Epoch 83/100
+Train Loss: 0.1918, Val Loss: 0.2202
+Train Acc: 0.9303, Val Acc: 0.9191
+Time per sample: 0.002670 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 84/100
+Train Loss: 0.1699, Val Loss: 0.2087
+Train Acc: 0.9361, Val Acc: 0.9257
+Time per sample: 0.002557 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 85/100
+Train Loss: 0.1773, Val Loss: 0.2118
+Train Acc: 0.9370, Val Acc: 0.9265
+Time per sample: 0.002630 seconds
+Epoch 86/100
+Train Loss: 0.1578, Val Loss: 0.1908
+Train Acc: 0.9437, Val Acc: 0.9300
+Time per sample: 0.002801 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 87/100
+Train Loss: 0.1639, Val Loss: 0.1950
+Train Acc: 0.9412, Val Acc: 0.9318
+Time per sample: 0.002846 seconds
+Epoch 88/100
+Train Loss: 0.1538, Val Loss: 0.1957
+Train Acc: 0.9465, Val Acc: 0.9309
+Time per sample: 0.002597 seconds
+Epoch 89/100
+Train Loss: 0.1554, Val Loss: 0.1917
+Train Acc: 0.9449, Val Acc: 0.9291
+Time per sample: 0.002708 seconds
+Epoch 90/100
+Train Loss: 0.1637, Val Loss: 0.1976
+Train Acc: 0.9436, Val Acc: 0.9302
+Time per sample: 0.001369 seconds
+Epoch 91/100
+Train Loss: 0.1546, Val Loss: 0.1697
+Train Acc: 0.9456, Val Acc: 0.9411
+Time per sample: 0.001648 seconds
+Best model saved to results/HumanActivityRecognition/lstm/params_828dca1639/best_model.pt
+Epoch 92/100
+Train Loss: 0.1400, Val Loss: 0.2304
+Train Acc: 0.9510, Val Acc: 0.9211
+Time per sample: 0.001348 seconds
+Epoch 93/100
+Train Loss: 0.1399, Val Loss: 0.1809
+Train Acc: 0.9505, Val Acc: 0.9337
+Time per sample: 0.001307 seconds
+Epoch 94/100
+Train Loss: 0.1369, Val Loss: 0.1779
+Train Acc: 0.9528, Val Acc: 0.9352
+Time per sample: 0.001352 seconds
+Epoch 95/100
+Train Loss: 0.1326, Val Loss: 0.1795
+Train Acc: 0.9528, Val Acc: 0.9407
+Time per sample: 0.001346 seconds
+Epoch 96/100
+Train Loss: 0.1324, Val Loss: 0.2042
+Train Acc: 0.9532, Val Acc: 0.9272
+Time per sample: 0.001325 seconds
+Epoch 97/100
+Train Loss: 0.1420, Val Loss: 0.1958
+Train Acc: 0.9511, Val Acc: 0.9315
+Time per sample: 0.001244 seconds
+Epoch 98/100
+Train Loss: 0.1308, Val Loss: 0.1794
+Train Acc: 0.9540, Val Acc: 0.9404
+Time per sample: 0.001272 seconds
+Epoch 99/100
+Train Loss: 0.1353, Val Loss: 0.1872
+Train Acc: 0.9544, Val Acc: 0.9311
+Time per sample: 0.001267 seconds
+Epoch 100/100
+Train Loss: 0.1386, Val Loss: 0.2160
+Train Acc: 0.9499, Val Acc: 0.9315
+Time per sample: 0.001321 seconds
+
+Evaluating on test splits:
+Evaluating on test split (4602 samples):
+Predictions shape: (4602,), unique values: [0 1 2 3 4]
+Targets shape: (4602,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test accuracy: 0.9457, F1-score: 0.9454
+Generating confusion matrix for test split...
+Evaluating on test_cross_device split (9631 samples):
+Predictions shape: (9631,), unique values: [0 1 2 3 4]
+Targets shape: (9631,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test_cross_device accuracy: 0.2936, F1-score: 0.3199
+Generating confusion matrix for test_cross_device split...
+Evaluating on test_cross_user_env split (18759 samples):
+Predictions shape: (18759,), unique values: [0 1 2 3 4]
+Targets shape: (18759,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test_cross_user_env accuracy: 0.3714, F1-score: 0.3740
+Generating confusion matrix for test_cross_user_env split...
+Evaluating on test_instance split (444 samples):
+Predictions shape: (444,), unique values: [0 1 2 3 4]
+Targets shape: (444,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test_instance accuracy: 0.4437, F1-score: 0.3848
+Generating confusion matrix for test_instance split...
+Evaluating on test_cross_user split (12109 samples):
+Predictions shape: (12109,), unique values: [0 1 2 3 4]
+Targets shape: (12109,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test_cross_user accuracy: 0.4233, F1-score: 0.4090
+Generating confusion matrix for test_cross_user split...
+Evaluating on test_cross_env split (6650 samples):
+Predictions shape: (6650,), unique values: [0 1 2 3 4]
+Targets shape: (6650,), unique values: [0 1 2 3 4]
+Classification report saved to results/HumanActivityRecognition/lstm/params_828dca1639/classification_report_unknown.csv
+test_cross_env accuracy: 0.2768, F1-score: 0.2936
+Generating confusion matrix for test_cross_env split...
+***********************FEW_SHOTFalse
+
+Test Results Summary:
+Split                     Accuracy        F1-Score       
+-------------------------------------------------------
+test                      0.9457          0.9454         
+test_cross_device         0.2936          0.3199         
+test_cross_user_env       0.3714          0.3740         
+test_instance             0.4437          0.3848         
+test_cross_user           0.4233          0.4090         
+test_cross_env            0.2768          0.2936         
+
+Training and evaluation completed.
+Best model from epoch 91, saved to results/HumanActivityRecognition/lstm/params_828dca1639
+Results saved to /home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official_newdata/HumanActivityRecognition/lstm/params_828dca1639
+New best model! Validation accuracy: 0.9411 (previous best: 0.0000)

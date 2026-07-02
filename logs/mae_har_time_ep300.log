@@ -67,3 +67,31 @@ Epoch 210/300 | loss=0.1163 | best=0.1163 | lr=3.09e-05
 Epoch 220/300 | loss=0.1163 | best=0.1162 | lr=2.48e-05
 Epoch 230/300 | loss=0.1162 | best=0.1162 | lr=1.93e-05
 Epoch 240/300 | loss=0.1161 | best=0.1160 | lr=1.43e-05
+Epoch 250/300 | loss=0.1160 | best=0.1159 | lr=1.00e-05
+Epoch 260/300 | loss=0.1159 | best=0.1159 | lr=6.48e-06
+Epoch 270/300 | loss=0.1159 | best=0.1158 | lr=3.67e-06
+Epoch 280/300 | loss=0.1158 | best=0.1158 | lr=1.64e-06
+Epoch 290/300 | loss=0.1158 | best=0.1157 | lr=4.11e-07
+Epoch 300/300 | loss=0.1158 | best=0.1157 | lr=0.00e+00
+
+--- Eval at epoch 300 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.7% LP=52.8%
+    test_cross_device         (OOD)     KNN=25.9% LP=51.5%
+    test_cross_env            (OOD)     KNN=33.6% LP=45.1%
+    test_cross_user           (OOD)     KNN=45.2% LP=50.2%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.9% LP=57.8%
+    test_cross_device         (OOD)     KNN=28.6% LP=44.0%
+    test_cross_env            (OOD)     KNN=35.8% LP=45.0%
+    test_cross_user           (OOD)     KNN=46.8% LP=51.4%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.4% LP=58.8%
+    test_cross_device         (OOD)     KNN=25.0% LP=34.8%
+    test_cross_env            (OOD)     KNN=34.7% LP=43.8%
+    test_cross_user           (OOD)     KNN=42.8% LP=49.4%
+
+
+Done. Best pretrain loss: 0.1157
+Results: /home/zhuzih19/csi-project/csi-fall-detection/results/mae_har/mae_har_ep300_mask0.75_strategytime_enc6_dim128_bs128.json
+Checkpoint: /home/zhuzih19/csi-project/csi-fall-detection/checkpoints/mae_har/mae_har_ep300_mask0.75_strategytime_enc6_dim128_bs128_best.pt

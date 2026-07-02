@@ -1,0 +1,100 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph29pw50_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 1,593,642
+Epoch 010/300 | loss=0.2548 | best=0.2548 | lr=1.50e-04
+Epoch 020/300 | loss=0.1679 | best=0.1679 | lr=1.48e-04
+Epoch 030/300 | loss=0.1462 | best=0.1462 | lr=1.46e-04
+Epoch 040/300 | loss=0.1343 | best=0.1343 | lr=1.44e-04
+Epoch 050/300 | loss=0.1298 | best=0.1298 | lr=1.40e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.5% LP=53.0%
+    test_cross_device         (OOD)     KNN=20.9% LP=47.8%
+    test_cross_env            (OOD)     KNN=38.5% LP=49.7%
+    test_cross_user           (OOD)     KNN=43.0% LP=49.4%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.3% LP=53.4%
+    test_cross_device         (OOD)     KNN=17.1% LP=45.8%
+    test_cross_env            (OOD)     KNN=37.0% LP=45.0%
+    test_cross_user           (OOD)     KNN=41.7% LP=49.4%
+  Layer 6:
+    test_id                   (in-dist) KNN=94.7% LP=53.9%
+    test_cross_device         (OOD)     KNN=22.5% LP=49.2%
+    test_cross_env            (OOD)     KNN=36.4% LP=44.2%
+    test_cross_user           (OOD)     KNN=42.1% LP=49.4%
+
+Epoch 060/300 | loss=0.1267 | best=0.1267 | lr=1.36e-04
+Epoch 070/300 | loss=0.1250 | best=0.1250 | lr=1.31e-04
+Epoch 080/300 | loss=0.1238 | best=0.1237 | lr=1.25e-04
+Epoch 090/300 | loss=0.1224 | best=0.1224 | lr=1.19e-04
+Epoch 100/300 | loss=0.1215 | best=0.1215 | lr=1.12e-04
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.4% LP=53.2%
+    test_cross_device         (OOD)     KNN=18.2% LP=45.2%
+    test_cross_env            (OOD)     KNN=39.7% LP=48.9%
+    test_cross_user           (OOD)     KNN=41.8% LP=49.7%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.0% LP=55.1%
+    test_cross_device         (OOD)     KNN=18.0% LP=41.5%
+    test_cross_env            (OOD)     KNN=36.9% LP=46.7%
+    test_cross_user           (OOD)     KNN=41.0% LP=47.7%
+  Layer 6:
+    test_id                   (in-dist) KNN=94.8% LP=55.4%
+    test_cross_device         (OOD)     KNN=26.7% LP=43.6%
+    test_cross_env            (OOD)     KNN=37.9% LP=47.1%
+    test_cross_user           (OOD)     KNN=41.4% LP=49.7%
+
+Epoch 110/300 | loss=0.1208 | best=0.1208 | lr=1.06e-04
+Epoch 120/300 | loss=0.1204 | best=0.1203 | lr=9.82e-05
+Epoch 130/300 | loss=0.1198 | best=0.1197 | lr=9.06e-05
+Epoch 140/300 | loss=0.1192 | best=0.1192 | lr=8.28e-05
+Epoch 150/300 | loss=0.1189 | best=0.1188 | lr=7.50e-05
+
+--- Eval at epoch 150 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.6% LP=53.7%
+    test_cross_device         (OOD)     KNN=18.3% LP=45.9%
+    test_cross_env            (OOD)     KNN=39.2% LP=49.2%
+    test_cross_user           (OOD)     KNN=42.4% LP=50.1%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.8% LP=55.9%
+    test_cross_device         (OOD)     KNN=19.1% LP=39.1%
+    test_cross_env            (OOD)     KNN=38.7% LP=48.8%
+    test_cross_user           (OOD)     KNN=41.3% LP=48.7%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.1% LP=56.9%
+    test_cross_device         (OOD)     KNN=23.1% LP=38.4%
+    test_cross_env            (OOD)     KNN=38.6% LP=47.2%
+    test_cross_user           (OOD)     KNN=41.0% LP=49.3%
+
+Epoch 160/300 | loss=0.1185 | best=0.1184 | lr=6.72e-05
+Epoch 170/300 | loss=0.1184 | best=0.1181 | lr=5.94e-05
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 249, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 186, in main
+    out = model(csi); loss = out[0]
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/models/mae.py", line 145, in forward
+    loss = loss[mask].mean()                   # scalar
+           ~~~~^^^^^^
+torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

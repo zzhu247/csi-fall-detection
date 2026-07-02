@@ -1,0 +1,138 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph58pw50_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 1,865,812
+Epoch 010/300 | loss=0.2095 | best=0.2095 | lr=1.50e-04
+Epoch 020/300 | loss=0.1607 | best=0.1607 | lr=1.48e-04
+Epoch 030/300 | loss=0.1450 | best=0.1450 | lr=1.46e-04
+Epoch 040/300 | loss=0.1354 | best=0.1354 | lr=1.44e-04
+Epoch 050/300 | loss=0.1287 | best=0.1287 | lr=1.40e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.7% LP=53.7%
+    test_cross_device         (OOD)     KNN=22.5% LP=51.2%
+    test_cross_env            (OOD)     KNN=37.0% LP=49.1%
+    test_cross_user           (OOD)     KNN=43.7% LP=49.8%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.8% LP=55.2%
+    test_cross_device         (OOD)     KNN=24.4% LP=51.6%
+    test_cross_env            (OOD)     KNN=42.9% LP=47.2%
+    test_cross_user           (OOD)     KNN=45.1% LP=50.0%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.0% LP=56.5%
+    test_cross_device         (OOD)     KNN=31.0% LP=52.2%
+    test_cross_env            (OOD)     KNN=44.0% LP=46.3%
+    test_cross_user           (OOD)     KNN=46.3% LP=49.5%
+
+Epoch 060/300 | loss=0.1266 | best=0.1266 | lr=1.36e-04
+Epoch 070/300 | loss=0.1251 | best=0.1251 | lr=1.31e-04
+Epoch 080/300 | loss=0.1237 | best=0.1237 | lr=1.25e-04
+Epoch 090/300 | loss=0.1227 | best=0.1226 | lr=1.19e-04
+Epoch 100/300 | loss=0.1216 | best=0.1216 | lr=1.12e-04
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.7% LP=53.6%
+    test_cross_device         (OOD)     KNN=22.6% LP=49.1%
+    test_cross_env            (OOD)     KNN=33.9% LP=46.3%
+    test_cross_user           (OOD)     KNN=43.7% LP=48.6%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.1% LP=55.8%
+    test_cross_device         (OOD)     KNN=26.0% LP=51.9%
+    test_cross_env            (OOD)     KNN=38.9% LP=46.3%
+    test_cross_user           (OOD)     KNN=44.9% LP=48.9%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.0% LP=56.7%
+    test_cross_device         (OOD)     KNN=22.0% LP=51.4%
+    test_cross_env            (OOD)     KNN=41.7% LP=46.7%
+    test_cross_user           (OOD)     KNN=41.9% LP=48.1%
+
+Epoch 110/300 | loss=0.1211 | best=0.1211 | lr=1.06e-04
+Epoch 120/300 | loss=0.1206 | best=0.1204 | lr=9.82e-05
+Epoch 130/300 | loss=0.1198 | best=0.1198 | lr=9.06e-05
+Epoch 140/300 | loss=0.1193 | best=0.1193 | lr=8.28e-05
+Epoch 150/300 | loss=0.1190 | best=0.1190 | lr=7.50e-05
+
+--- Eval at epoch 150 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.7% LP=53.5%
+    test_cross_device         (OOD)     KNN=23.3% LP=49.1%
+    test_cross_env            (OOD)     KNN=34.4% LP=46.4%
+    test_cross_user           (OOD)     KNN=44.2% LP=49.5%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.1% LP=56.2%
+    test_cross_device         (OOD)     KNN=27.2% LP=52.5%
+    test_cross_env            (OOD)     KNN=39.0% LP=44.0%
+    test_cross_user           (OOD)     KNN=44.8% LP=46.4%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.1% LP=56.6%
+    test_cross_device         (OOD)     KNN=19.5% LP=49.7%
+    test_cross_env            (OOD)     KNN=37.5% LP=41.0%
+    test_cross_user           (OOD)     KNN=42.2% LP=42.2%
+
+Epoch 160/300 | loss=0.1185 | best=0.1185 | lr=6.72e-05
+Epoch 170/300 | loss=0.1182 | best=0.1182 | lr=5.94e-05
+Epoch 180/300 | loss=0.1180 | best=0.1179 | lr=5.18e-05
+Epoch 190/300 | loss=0.1177 | best=0.1176 | lr=4.45e-05
+Epoch 200/300 | loss=0.1174 | best=0.1174 | lr=3.75e-05
+
+--- Eval at epoch 200 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.5% LP=53.7%
+    test_cross_device         (OOD)     KNN=24.4% LP=48.5%
+    test_cross_env            (OOD)     KNN=34.4% LP=46.3%
+    test_cross_user           (OOD)     KNN=44.0% LP=49.1%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.2% LP=56.8%
+    test_cross_device         (OOD)     KNN=27.3% LP=52.3%
+    test_cross_env            (OOD)     KNN=38.1% LP=43.3%
+    test_cross_user           (OOD)     KNN=44.5% LP=46.8%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.2% LP=56.8%
+    test_cross_device         (OOD)     KNN=21.1% LP=50.0%
+    test_cross_env            (OOD)     KNN=36.8% LP=42.5%
+    test_cross_user           (OOD)     KNN=42.6% LP=43.9%
+
+Epoch 210/300 | loss=0.1175 | best=0.1173 | lr=3.09e-05
+Epoch 220/300 | loss=0.1172 | best=0.1172 | lr=2.48e-05
+Epoch 230/300 | loss=0.1172 | best=0.1171 | lr=1.93e-05
+Epoch 240/300 | loss=0.1172 | best=0.1169 | lr=1.43e-05
+Epoch 250/300 | loss=0.1169 | best=0.1169 | lr=1.00e-05
+
+--- Eval at epoch 250 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=94.6% LP=54.0%
+    test_cross_device         (OOD)     KNN=25.0% LP=48.4%
+    test_cross_env            (OOD)     KNN=34.5% LP=46.3%
+    test_cross_user           (OOD)     KNN=44.2% LP=49.1%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.2% LP=56.5%
+    test_cross_device         (OOD)     KNN=28.7% LP=52.5%
+    test_cross_env            (OOD)     KNN=38.8% LP=43.9%
+    test_cross_user           (OOD)     KNN=44.6% LP=48.2%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.1% LP=57.1%
+    test_cross_device         (OOD)     KNN=23.1% LP=49.9%
+    test_cross_env            (OOD)     KNN=36.5% LP=40.9%
+    test_cross_user           (OOD)     KNN=42.6% LP=43.8%
+
+Epoch 260/300 | loss=0.1170 | best=0.1169 | lr=6.48e-06
+Epoch 270/300 | loss=0.1169 | best=0.1168 | lr=3.67e-06
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 249, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train_mae_har.py", line 184, in main
+    csi = csi.to(device)
+torch.AcceleratorError: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

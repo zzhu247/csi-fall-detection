@@ -1,6 +1,39 @@
 {
-    "best_test_accuracy": 0.0,
-    "best_test_f1_score": 0.0,
-    "best_experiment_id": null,
-    "best_experiment_params": {}
+    "best_val_accuracy": 1.0,
+    "best_val_loss": 7.455163142414428e-06,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "lstm",
+        "task": "HumanIdentification",
+        "task_name": "HumanIdentification",
+        "seed": 42,
+        "num_classes": 7,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_cross_device",
+            "test_cross_user",
+            "test_cross_env"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 0.9997827031725337,
+        "test_cross_device": 0.23735852974768976,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.14015037593984964
+    },
+    "best_test_f1_scores": {
+        "test": 0.9997827030854896,
+        "test_cross_device": 0.20644606169605398,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.24584542337114218
+    },
+    "timestamp": "2026-06-27 15:28:47"
 }

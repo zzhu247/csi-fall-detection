@@ -1,6 +1,6 @@
 {
-    "best_val_accuracy": 0.9406650728102587,
-    "best_val_loss": 0.18972915770164964,
+    "best_val_accuracy": 0.9415344490328189,
+    "best_val_loss": 0.17244146753590772,
     "best_experiment_id": "params_828dca1639",
     "best_experiment_params": {
         "model": "resnet18",
@@ -26,20 +26,20 @@
         ]
     },
     "best_test_accuracies": {
-        "test": 0.9513255106475446,
-        "test_cross_device": 0.34690063337140487,
-        "test_cross_user_env": 0.4240098086251932,
-        "test_instance": 0.40315315315315314,
-        "test_cross_user": 0.4583367743001074,
-        "test_cross_env": 0.3615037593984962
+        "test": 0.944154715341156,
+        "test_cross_device": 0.3374519779877479,
+        "test_cross_user_env": 0.41729303267764806,
+        "test_instance": 0.42567567567567566,
+        "test_cross_user": 0.4765050788669585,
+        "test_cross_env": 0.3094736842105263
     },
     "best_test_f1_scores": {
-        "test": 0.9509393105423373,
-        "test_cross_device": 0.3528833596770239,
-        "test_cross_user_env": 0.3987667196595146,
-        "test_instance": 0.33948391076415146,
-        "test_cross_user": 0.41423272216498164,
-        "test_cross_env": 0.34900438494716945
+        "test": 0.944317866016417,
+        "test_cross_device": 0.3548058597991211,
+        "test_cross_user_env": 0.3941326376556476,
+        "test_instance": 0.36378339224482453,
+        "test_cross_user": 0.4183384034587501,
+        "test_cross_env": 0.31190872282441806
     },
-    "timestamp": "2026-06-20 13:20:48"
+    "timestamp": "2026-06-26 11:22:15"
 }
