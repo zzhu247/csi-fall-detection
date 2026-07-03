@@ -1,0 +1,50 @@
+
+Experiment: mae_har_ep300_mask0.75_strategy2d_ph29pw25_seed42_enc6_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 1,469,077
+Epoch 010/300 | loss=0.2587 | best=0.2587 | lr=1.50e-04
+Epoch 020/300 | loss=0.1694 | best=0.1694 | lr=1.48e-04
+Epoch 030/300 | loss=0.1463 | best=0.1463 | lr=1.46e-04
+Epoch 040/300 | loss=0.1375 | best=0.1375 | lr=1.44e-04
+Epoch 050/300 | loss=0.1331 | best=0.1331 | lr=1.40e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.3% LP=52.2%
+    test_cross_device         (OOD)     KNN=21.5% LP=50.9%
+    test_cross_env            (OOD)     KNN=33.5% LP=46.3%
+    test_cross_user           (OOD)     KNN=42.4% LP=50.0%
+  Layer 3:
+    test_id                   (in-dist) KNN=95.1% LP=52.8%
+    test_cross_device         (OOD)     KNN=24.3% LP=42.4%
+    test_cross_env            (OOD)     KNN=32.9% LP=46.4%
+    test_cross_user           (OOD)     KNN=42.1% LP=48.9%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.3% LP=54.8%
+    test_cross_device         (OOD)     KNN=26.9% LP=38.6%
+    test_cross_env            (OOD)     KNN=32.3% LP=42.1%
+    test_cross_user           (OOD)     KNN=42.7% LP=50.4%
+
+Epoch 060/300 | loss=0.1307 | best=0.1307 | lr=1.36e-04
+Epoch 070/300 | loss=0.1290 | best=0.1290 | lr=1.31e-04
+Epoch 080/300 | loss=0.1281 | best=0.1278 | lr=1.25e-04
+Epoch 090/300 | loss=0.1272 | best=0.1270 | lr=1.19e-04
+Epoch 100/300 | loss=0.1262 | best=0.1262 | lr=1.12e-04
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.3% LP=52.2%
+    test_cross_device         (OOD)     KNN=22.7% LP=48.8%
+    test_cross_env            (OOD)     KNN=32.4% LP=48.5%
+    test_cross_user           (OOD)     KNN=43.2% LP=49.9%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.7% LP=55.0%
+    test_cross_device         (OOD)     KNN=22.7% LP=35.4%
+    test_cross_env            (OOD)     KNN=32.9% LP=47.7%
+    test_cross_user           (OOD)     KNN=42.5% LP=45.8%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.0% LP=56.3%

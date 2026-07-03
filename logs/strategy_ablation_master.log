@@ -2,3 +2,13 @@ nohup: ignoring input
 === Starting strategy=time seed=42 ===
 === Finished strategy=time seed=42 ===
 === Starting strategy=time seed=43 ===
+=== Finished strategy=time seed=43 ===
+=== Starting strategy=freq seed=42 ===
+=== Finished strategy=freq seed=42 ===
+=== Starting strategy=freq seed=43 ===
+=== Finished strategy=freq seed=43 ===
+=== Starting strategy=mixed seed=42 ===
+=== Finished strategy=mixed seed=42 ===
+=== Starting strategy=mixed seed=43 ===
+=== Finished strategy=mixed seed=43 ===
+=== Starting strategy=2d seed=42 ===
