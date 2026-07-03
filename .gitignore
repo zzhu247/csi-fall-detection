@@ -3,4 +3,7 @@ __pycache__/
 *.pth
 checkpoints/
 
-tets log.md
+tets log.md# model checkpoints — too large for git, sync separately if needed
+**/best_model.pt
+*.pt
+*.pth
