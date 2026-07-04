@@ -12,3 +12,7 @@ nohup: ignoring input
 === Starting strategy=mixed seed=43 ===
 === Finished strategy=mixed seed=43 ===
 === Starting strategy=2d seed=42 ===
+=== Finished strategy=2d seed=42 ===
+=== Starting strategy=2d seed=43 ===
+=== Finished strategy=2d seed=43 ===
+ALL DONE

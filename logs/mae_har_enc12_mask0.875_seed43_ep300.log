@@ -1,0 +1,210 @@
+
+Experiment: mae_har_ep300_mask0.875_strategyrandom_ph29pw25_seed43_enc12_dim128_bs128
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 2,658,709
+Epoch 010/300 | loss=0.2342 | best=0.2342 | lr=1.50e-04
+Epoch 020/300 | loss=0.1625 | best=0.1625 | lr=1.48e-04
+Epoch 030/300 | loss=0.1434 | best=0.1434 | lr=1.46e-04
+Epoch 040/300 | loss=0.1325 | best=0.1325 | lr=1.44e-04
+Epoch 050/300 | loss=0.1286 | best=0.1286 | lr=1.40e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.4% LP=52.5%
+    test_cross_device         (OOD)     KNN=26.6% LP=44.8%
+    test_cross_env            (OOD)     KNN=40.2% LP=48.9%
+    test_cross_user           (OOD)     KNN=45.6% LP=46.7%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.8% LP=54.0%
+    test_cross_device         (OOD)     KNN=24.4% LP=49.1%
+    test_cross_env            (OOD)     KNN=35.9% LP=42.7%
+    test_cross_user           (OOD)     KNN=44.7% LP=50.0%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.2% LP=55.8%
+    test_cross_device         (OOD)     KNN=28.8% LP=42.3%
+    test_cross_env            (OOD)     KNN=38.0% LP=45.1%
+    test_cross_user           (OOD)     KNN=45.3% LP=50.3%
+  Layer 9:
+    test_id                   (in-dist) KNN=95.1% LP=55.8%
+    test_cross_device         (OOD)     KNN=22.9% LP=47.4%
+    test_cross_env            (OOD)     KNN=38.0% LP=46.8%
+    test_cross_user           (OOD)     KNN=42.0% LP=49.5%
+  Layer 12:
+    test_id                   (in-dist) KNN=94.0% LP=54.8%
+    test_cross_device         (OOD)     KNN=29.2% LP=48.4%
+    test_cross_env            (OOD)     KNN=37.8% LP=48.9%
+    test_cross_user           (OOD)     KNN=45.8% LP=49.0%
+
+Epoch 060/300 | loss=0.1273 | best=0.1267 | lr=1.36e-04
+Epoch 070/300 | loss=0.1248 | best=0.1248 | lr=1.31e-04
+Epoch 080/300 | loss=0.1236 | best=0.1236 | lr=1.25e-04
+Epoch 090/300 | loss=0.1231 | best=0.1228 | lr=1.19e-04
+Epoch 100/300 | loss=0.1222 | best=0.1222 | lr=1.12e-04
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.3% LP=52.5%
+    test_cross_device         (OOD)     KNN=26.7% LP=46.7%
+    test_cross_env            (OOD)     KNN=38.9% LP=46.7%
+    test_cross_user           (OOD)     KNN=44.6% LP=48.0%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.2% LP=54.8%
+    test_cross_device         (OOD)     KNN=22.7% LP=43.5%
+    test_cross_env            (OOD)     KNN=31.4% LP=40.5%
+    test_cross_user           (OOD)     KNN=44.2% LP=49.9%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.1% LP=56.6%
+    test_cross_device         (OOD)     KNN=28.0% LP=42.3%
+    test_cross_env            (OOD)     KNN=36.0% LP=45.7%
+    test_cross_user           (OOD)     KNN=43.7% LP=51.6%
+  Layer 9:
+    test_id                   (in-dist) KNN=94.6% LP=58.3%
+    test_cross_device         (OOD)     KNN=28.4% LP=45.7%
+    test_cross_env            (OOD)     KNN=36.1% LP=45.4%
+    test_cross_user           (OOD)     KNN=42.7% LP=49.5%
+  Layer 12:
+    test_id                   (in-dist) KNN=94.5% LP=57.0%
+    test_cross_device         (OOD)     KNN=31.5% LP=47.2%
+    test_cross_env            (OOD)     KNN=41.4% LP=47.1%
+    test_cross_user           (OOD)     KNN=44.4% LP=49.5%
+
+Epoch 110/300 | loss=0.1214 | best=0.1214 | lr=1.06e-04
+Epoch 120/300 | loss=0.1207 | best=0.1207 | lr=9.82e-05
+Epoch 130/300 | loss=0.1203 | best=0.1203 | lr=9.06e-05
+Epoch 140/300 | loss=0.1201 | best=0.1200 | lr=8.28e-05
+Epoch 150/300 | loss=0.1195 | best=0.1195 | lr=7.50e-05
+
+--- Eval at epoch 150 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.3%
+    test_cross_device         (OOD)     KNN=25.3% LP=45.4%
+    test_cross_env            (OOD)     KNN=39.3% LP=45.3%
+    test_cross_user           (OOD)     KNN=43.5% LP=47.9%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.3% LP=54.8%
+    test_cross_device         (OOD)     KNN=26.6% LP=46.6%
+    test_cross_env            (OOD)     KNN=34.7% LP=42.2%
+    test_cross_user           (OOD)     KNN=44.3% LP=49.2%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.0% LP=58.6%
+    test_cross_device         (OOD)     KNN=28.4% LP=40.7%
+    test_cross_env            (OOD)     KNN=36.7% LP=41.6%
+    test_cross_user           (OOD)     KNN=44.3% LP=51.6%
+  Layer 9:
+    test_id                   (in-dist) KNN=95.0% LP=59.4%
+    test_cross_device         (OOD)     KNN=31.0% LP=45.5%
+    test_cross_env            (OOD)     KNN=38.3% LP=45.1%
+    test_cross_user           (OOD)     KNN=45.2% LP=48.7%
+  Layer 12:
+    test_id                   (in-dist) KNN=94.9% LP=57.5%
+    test_cross_device         (OOD)     KNN=29.8% LP=48.1%
+    test_cross_env            (OOD)     KNN=39.5% LP=47.1%
+    test_cross_user           (OOD)     KNN=43.2% LP=48.8%
+
+Epoch 160/300 | loss=0.1193 | best=0.1193 | lr=6.72e-05
+Epoch 170/300 | loss=0.1191 | best=0.1189 | lr=5.94e-05
+Epoch 180/300 | loss=0.1189 | best=0.1187 | lr=5.18e-05
+Epoch 190/300 | loss=0.1186 | best=0.1186 | lr=4.45e-05
+Epoch 200/300 | loss=0.1185 | best=0.1184 | lr=3.75e-05
+
+--- Eval at epoch 200 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.3% LP=52.4%
+    test_cross_device         (OOD)     KNN=24.2% LP=45.7%
+    test_cross_env            (OOD)     KNN=39.9% LP=44.2%
+    test_cross_user           (OOD)     KNN=42.4% LP=48.6%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.4% LP=54.7%
+    test_cross_device         (OOD)     KNN=27.6% LP=46.0%
+    test_cross_env            (OOD)     KNN=35.7% LP=41.5%
+    test_cross_user           (OOD)     KNN=44.7% LP=48.8%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.3% LP=59.6%
+    test_cross_device         (OOD)     KNN=29.2% LP=39.3%
+    test_cross_env            (OOD)     KNN=35.4% LP=40.7%
+    test_cross_user           (OOD)     KNN=45.3% LP=52.0%
+  Layer 9:
+    test_id                   (in-dist) KNN=95.5% LP=60.5%
+    test_cross_device         (OOD)     KNN=28.5% LP=44.4%
+    test_cross_env            (OOD)     KNN=35.2% LP=47.3%
+    test_cross_user           (OOD)     KNN=45.3% LP=49.2%
+  Layer 12:
+    test_id                   (in-dist) KNN=94.9% LP=58.5%
+    test_cross_device         (OOD)     KNN=28.7% LP=45.4%
+    test_cross_env            (OOD)     KNN=37.5% LP=44.9%
+    test_cross_user           (OOD)     KNN=42.7% LP=48.8%
+
+Epoch 210/300 | loss=0.1183 | best=0.1182 | lr=3.09e-05
+Epoch 220/300 | loss=0.1182 | best=0.1182 | lr=2.48e-05
+Epoch 230/300 | loss=0.1182 | best=0.1180 | lr=1.93e-05
+Epoch 240/300 | loss=0.1180 | best=0.1180 | lr=1.43e-05
+Epoch 250/300 | loss=0.1178 | best=0.1178 | lr=1.00e-05
+
+--- Eval at epoch 250 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.6%
+    test_cross_device         (OOD)     KNN=23.6% LP=46.1%
+    test_cross_env            (OOD)     KNN=39.5% LP=44.5%
+    test_cross_user           (OOD)     KNN=42.3% LP=47.7%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.4% LP=55.8%
+    test_cross_device         (OOD)     KNN=25.1% LP=45.5%
+    test_cross_env            (OOD)     KNN=36.8% LP=40.5%
+    test_cross_user           (OOD)     KNN=42.7% LP=48.5%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.4% LP=60.0%
+    test_cross_device         (OOD)     KNN=28.2% LP=38.1%
+    test_cross_env            (OOD)     KNN=36.4% LP=36.8%
+    test_cross_user           (OOD)     KNN=43.9% LP=51.8%
+  Layer 9:
+    test_id                   (in-dist) KNN=95.4% LP=61.1%
+    test_cross_device         (OOD)     KNN=28.8% LP=41.9%
+    test_cross_env            (OOD)     KNN=33.1% LP=45.8%
+    test_cross_user           (OOD)     KNN=45.4% LP=49.4%
+  Layer 12:
+    test_id                   (in-dist) KNN=95.0% LP=59.2%
+    test_cross_device         (OOD)     KNN=29.6% LP=45.6%
+    test_cross_env            (OOD)     KNN=38.1% LP=47.2%
+    test_cross_user           (OOD)     KNN=42.6% LP=48.8%
+
+Epoch 260/300 | loss=0.1179 | best=0.1177 | lr=6.48e-06
+Epoch 270/300 | loss=0.1178 | best=0.1177 | lr=3.67e-06
+Epoch 280/300 | loss=0.1177 | best=0.1177 | lr=1.64e-06
+Epoch 290/300 | loss=0.1178 | best=0.1176 | lr=4.11e-07
+Epoch 300/300 | loss=0.1176 | best=0.1176 | lr=0.00e+00
+
+--- Eval at epoch 300 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.6%
+    test_cross_device         (OOD)     KNN=23.8% LP=46.0%
+    test_cross_env            (OOD)     KNN=39.4% LP=44.2%
+    test_cross_user           (OOD)     KNN=42.3% LP=47.9%
+  Layer 3:
+    test_id                   (in-dist) KNN=94.5% LP=55.4%
+    test_cross_device         (OOD)     KNN=25.9% LP=45.8%
+    test_cross_env            (OOD)     KNN=36.8% LP=40.9%
+    test_cross_user           (OOD)     KNN=42.7% LP=48.8%
+  Layer 6:
+    test_id                   (in-dist) KNN=95.3% LP=59.8%
+    test_cross_device         (OOD)     KNN=27.6% LP=37.4%
+    test_cross_env            (OOD)     KNN=36.1% LP=35.4%
+    test_cross_user           (OOD)     KNN=43.9% LP=51.9%
+  Layer 9:
+    test_id                   (in-dist) KNN=95.5% LP=61.1%
+    test_cross_device         (OOD)     KNN=27.8% LP=41.9%
+    test_cross_env            (OOD)     KNN=32.8% LP=46.0%
+    test_cross_user           (OOD)     KNN=45.0% LP=49.4%
+  Layer 12:
+    test_id                   (in-dist) KNN=95.0% LP=58.7%
+    test_cross_device         (OOD)     KNN=29.4% LP=44.9%
+    test_cross_env            (OOD)     KNN=37.7% LP=47.9%
+    test_cross_user           (OOD)     KNN=42.6% LP=48.7%
+
+
+Done. Best pretrain loss: 0.1176
+Results: /home/zhuzih19/csi-project/csi-fall-detection/results/mae_har/mae_har_ep300_mask0.875_strategyrandom_ph29pw25_seed43_enc12_dim128_bs128.json
+Checkpoint: /home/zhuzih19/csi-project/csi-fall-detection/checkpoints/mae_har/mae_har_ep300_mask0.875_strategyrandom_ph29pw25_seed43_enc12_dim128_bs128_best.pt
