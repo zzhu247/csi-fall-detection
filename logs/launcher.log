@@ -1,0 +1,22 @@
+nohup: ignoring input
+=== Starting strategy=random seed=42 (enc12) ===
+=== Finished strategy=random seed=42 (enc12) ===
+=== Starting strategy=random seed=43 (enc12) ===
+=== Finished strategy=random seed=43 (enc12) ===
+=== Starting strategy=freq seed=42 (enc12) ===
+=== Finished strategy=freq seed=42 (enc12) ===
+=== Starting strategy=freq seed=43 (enc12) ===
+=== Finished strategy=freq seed=43 (enc12) ===
+=== Starting strategy=mixed seed=42 (enc12) ===
+=== Finished strategy=mixed seed=42 (enc12) ===
+=== Starting strategy=mixed seed=43 (enc12) ===
+=== Finished strategy=mixed seed=43 (enc12) ===
+=== Starting strategy=time seed=42 (enc12) ===
+=== Finished strategy=time seed=42 (enc12) ===
+=== Starting strategy=time seed=43 (enc12) ===
+=== Finished strategy=time seed=43 (enc12) ===
+=== Starting strategy=2d seed=42 (enc12) ===
+=== Finished strategy=2d seed=42 (enc12) ===
+=== Starting strategy=2d seed=43 (enc12) ===
+=== Finished strategy=2d seed=43 (enc12) ===
+ALL DONE

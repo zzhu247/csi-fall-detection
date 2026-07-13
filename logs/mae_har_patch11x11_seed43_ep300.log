@@ -1,0 +1,14 @@
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph11pw11_seed43_enc12_dim128_bs128
+[patch-pad] patch_h=11, patch_w=11 do not evenly divide 232x500 -- zero-padding input to 242x506 (+10 subcarriers, +6 timesteps). num_patches=1012 (n_h=22, n_w=46)
+[mem-check] num_patches=1012  batch_size=128  encoder_depth=12  attention-score memory: 1.95 GB/layer, 23.44 GB cumulative (all layers retained for backward)
+
+[mem-check] REFUSING TO START: projected CUMULATIVE attention memory (23.4 GB across 12 layers) exceeds the safety budget (20.0 GB).
+  num_patches=1012 at patch size given is too large for batch_size=128, encoder_depth=12 with this naive (non-flash) attention implementation.
+  Suggested max safe batch_size for this config: ~109
+  Options:
+    1. Re-run with --batch_size 109 (or lower)
+    2. Use a larger patch size (fewer patches -> quadratically less attention memory)
+    3. Pass --skip_mem_check to bypass this check (not recommended --
+       you will very likely hit a mid-run CUDA OOM instead)
+

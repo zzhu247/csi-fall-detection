@@ -1,0 +1,6 @@
+nohup: ignoring input
+=== Starting patch=11x11 seed=42 (enc12, batch_size=96) ===
+=== Finished patch=11x11 seed=42 (enc12) ===
+=== Starting patch=11x11 seed=43 (enc12, batch_size=96) ===
+=== Finished patch=11x11 seed=43 (enc12) ===
+ALL DONE

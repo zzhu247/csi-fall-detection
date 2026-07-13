@@ -64,3 +64,8 @@ Traceback (most recent call last):
     s.connect(address)
     ~~~~~~~~~^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory
+=== Starting patch=11x11 seed=42 ===
+=== Finished patch=11x11 seed=42 ===
+=== Starting patch=11x11 seed=43 ===
+=== Finished patch=11x11 seed=43 ===
+=== Starting patch=13x13 seed=42 ===

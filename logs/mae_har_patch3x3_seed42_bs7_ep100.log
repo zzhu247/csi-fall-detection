@@ -1,0 +1,10 @@
+
+Experiment: mae_har_ep100_mask0.75_strategyrandom_ph3pw3_seed42_enc6_dim128_bs7
+[patch-pad] patch_h=3, patch_w=3 do not evenly divide 232x500 -- zero-padding input to 234x501 (+2 subcarriers, +1 timesteps). num_patches=13026 (n_h=78, n_w=167)
+[mem-check] num_patches=13026  batch_size=7  estimated attention-score memory per layer: 17.70 GB (x6 layers if all retained for backward: 106.19 GB)
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 3,801,161
