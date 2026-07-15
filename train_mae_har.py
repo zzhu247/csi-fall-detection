@@ -191,6 +191,215 @@ def linear_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
                    average='weighted', zero_division=0)
     return acc, f1
 
+
+class MAEDownstreamHead(nn.Module):
+    """
+    Downstream evaluation/fine-tuning wrapper for MAE/MAEv2 backbones.
+
+    This is the single, shared implementation for fine-tuning -- it replaces two
+    previously-separate, non-comparable implementations (finetune_eval()\'s old inline
+    head, and a standalone MAEv2ForDownstream class) so there is one source of truth
+    for fine-tune numbers instead of two head designs that couldn\'t be compared.
+
+    Supports:
+    1. Extracting embeddings at any specific encoder `layer` (not just the final one),
+       matching the `layer` argument used by every other eval protocol (KNN / Linear
+       Probe / MLP Probe), so fine-tune results are directly comparable layer-for-layer.
+    2. Freezing the backbone entirely, unfreezing only the last k encoder blocks, or
+       unfreezing the whole backbone -- see `unfreeze_last_n_layers`.
+    3. Safety: the constructor deepcopies the passed-in model internally, so training
+       this wrapper (even fully unfrozen) NEVER mutates the caller\'s original model --
+       this was a real bug in the standalone-class version this replaces (it stored
+       direct references to the pretrained model\'s submodules, so training it would
+       have silently rewritten the caller\'s checkpoint in place).
+    """
+    def __init__(self, pretrained_model, num_classes, layer=None,
+                 hidden_dim=256, unfreeze_last_n_layers=0):
+        super().__init__()
+        import copy
+        backbone = copy.deepcopy(pretrained_model)  # never mutate the caller's model
+
+        self.patch_embedding   = backbone.patch_embedding
+        self.encoder_pos_embed = backbone.encoder_pos_embed
+        self.encoder_blocks    = backbone.encoder_blocks
+        self.encoder_norm      = backbone.encoder_norm
+        self.layer = layer or len(self.encoder_blocks.layers)  # default: deepest layer
+
+        self.mlp_head = nn.Sequential(
+            nn.Linear(backbone.encoder_dim, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(hidden_dim, num_classes),
+        )
+
+        self.set_backbone_trainable(unfreeze_last_n_layers)
+
+    def set_backbone_trainable(self, unfreeze_last_n_layers):
+        """
+        unfreeze_last_n_layers:
+            0    -> freeze the entire backbone (linear/MLP probing, via end-to-end training
+                    rather than the two-stage extract-then-probe pipeline mlp_probe_eval uses
+                    -- included mainly as a cross-check that the two give similar numbers)
+            k>0  -> unfreeze only the last k encoder blocks, freeze the rest (a middle ground
+                    that's less prone to catastrophic forgetting than a full unfreeze)
+            None -> unfreeze the entire backbone (full fine-tune)
+        """
+        for p in self.patch_embedding.parameters():
+            p.requires_grad = False
+        self.encoder_pos_embed.requires_grad = False
+        for block in self.encoder_blocks.layers:
+            for p in block.parameters():
+                p.requires_grad = False
+
+        if unfreeze_last_n_layers is None:
+            for p in self.patch_embedding.parameters():
+                p.requires_grad = True
+            self.encoder_pos_embed.requires_grad = True
+            for block in self.encoder_blocks.layers:
+                for p in block.parameters():
+                    p.requires_grad = True
+        elif unfreeze_last_n_layers > 0:
+            for block in list(self.encoder_blocks.layers)[-unfreeze_last_n_layers:]:
+                for p in block.parameters():
+                    p.requires_grad = True
+        # unfreeze_last_n_layers == 0 -> backbone stays fully frozen (nothing more to do)
+
+        status = ("frozen" if unfreeze_last_n_layers == 0
+                  else "fully unfrozen" if unfreeze_last_n_layers is None
+                  else f"last {unfreeze_last_n_layers} block(s) unfrozen")
+        print(f"[MAEDownstreamHead] backbone: {status}, probing layer {self.layer}")
+
+    def backbone_parameters(self):
+        """Trainable backbone params only (excludes mlp_head) -- used to build the
+        differential-LR optimizer param groups in finetune_eval()."""
+        params = list(self.patch_embedding.parameters()) + [self.encoder_pos_embed] + \
+                 list(self.encoder_blocks.parameters())
+        return [p for p in params if p.requires_grad]
+
+    def forward(self, x):
+        """x: [B, 1, H, W] (already padded to a patch-size-compatible shape).
+        Processes the FULL sequence, no masking (masking is pretraining-only),
+        mean-pools over patch tokens at self.layer -- matches extract_layer_embeddings()."""
+        h = self.patch_embedding(x) + self.encoder_pos_embed
+        for i, block in enumerate(self.encoder_blocks.layers):
+            h = block(h)
+            if (i + 1) == self.layer:
+                h = self.encoder_norm(h)
+                break
+        features = h.mean(dim=1)  # [B, encoder_dim]
+        return self.mlp_head(features)
+
+
+def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
+                  padded_h, padded_w, epochs=25, backbone_lr=1e-5, head_lr=1e-3,
+                  unfreeze_last_n_layers=None, hidden_dim=256):
+    """
+    Full (or partial) fine-tuning of the pretrained encoder + a downstream MLP head,
+    evaluated end-to-end -- NOT a frozen-feature probe (see mlp_probe_eval for that).
+    Thin wrapper around MAEDownstreamHead (see its docstring for design details);
+    this function owns the training loop and differential-LR optimizer setup.
+
+    NOTE: hidden_dim default changed from 128 (old inline head) to 256 (matches
+    MAEDownstreamHead's default) as part of merging the two implementations -- pass
+    hidden_dim=128 explicitly if you need to exactly reproduce numbers from before
+    this merge.
+
+    Uses a differential learning rate (backbone_lr << head_lr) specifically to reduce
+    the risk of catastrophic forgetting -- an unconstrained full-LR fine-tune of the
+    backbone can inflate test_id accuracy while silently destroying the domain-invariant
+    structure that OOD generalization depends on. Keep epochs short (paired with the low
+    backbone_lr) for the same reason -- this is NOT meant to be trained as long as pretraining.
+
+    Returns a dict: {split_name: {'acc': ..., 'f1': ...}} for every split in eval_loaders,
+    in the same shape as the rest of the evals dict so it plugs into the existing
+    plot_final_accuracy_by_group / plot_summary_table_image / print_summary_table
+    functions unchanged -- just store it under a new key, e.g. results['finetune'][...].
+    """
+    wrapper = MAEDownstreamHead(model, num_classes, layer=layer, hidden_dim=hidden_dim,
+                                unfreeze_last_n_layers=unfreeze_last_n_layers).to(device)
+
+    param_groups = [{'params': wrapper.mlp_head.parameters(), 'lr': head_lr}]
+    backbone_params = wrapper.backbone_parameters()
+    if backbone_params:
+        param_groups.append({'params': backbone_params, 'lr': backbone_lr})
+    optim = torch.optim.AdamW(param_groups, weight_decay=0.05)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
+    crit = nn.CrossEntropyLoss()
+
+    for epoch in range(epochs):
+        wrapper.train()
+        for csi, y in train_loader:
+            csi = pad_csi(csi.to(device), padded_h, padded_w)
+            y = y.to(device)
+            loss = crit(wrapper(csi), y)
+            optim.zero_grad(); loss.backward(); optim.step()
+        sched.step()
+
+    wrapper.eval()
+    results = {}
+    with torch.no_grad():
+        for split_name, loader in eval_loaders.items():
+            preds_all, labels_all = [], []
+            for csi, y in loader:
+                csi = pad_csi(csi.to(device), padded_h, padded_w)
+                preds_all.append(wrapper(csi).argmax(1).cpu())
+                labels_all.append(y)
+            preds_all = torch.cat(preds_all)
+            labels_all = torch.cat(labels_all)
+            acc = (preds_all == labels_all).float().mean().item()
+            f1 = f1_score(labels_all.numpy(), preds_all.numpy(), average='weighted', zero_division=0)
+            results[split_name] = {'acc': acc, 'f1': f1}
+    return results
+
+
+def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
+                   num_classes, device, epochs=50, hidden_dim=128):
+    """
+    Same protocol as linear_probe_eval (identical normalization, optimizer, schedule,
+    epoch count, batch size) but with a 1-hidden-layer MLP instead of nn.Linear.
+
+    Purpose: directly test whether the LP accuracy ceiling is a REPRESENTATIONAL limit
+    (a single hyperplane per class structurally cannot separate a non-convex, multi-modal
+    class distribution) rather than an optimization/undertraining issue -- if MLP >> LP,
+    that confirms the ceiling is about linear separability specifically. Note this also
+    sidesteps the t-SNE-distortion caveat: t-SNE's local-neighborhood objective doesn't
+    preserve linear relationships, so "looks non-convex in a 2D t-SNE plot" alone doesn't
+    prove "not linearly separable in the original embedding space" -- this eval operates
+    on the real, full-dimensional embedding, not a 2D projection, so it's decisive either way.
+    """
+    mu  = train_feats.mean(0, keepdim=True)
+    std = train_feats.std(0,  keepdim=True) + 1e-8
+    tf = (train_feats - mu) / std
+    ef = (eval_feats  - mu) / std
+
+    head = nn.Sequential(
+        nn.Linear(tf.shape[1], hidden_dim),
+        nn.ReLU(),
+        nn.Linear(hidden_dim, num_classes),
+    ).to(device)
+    optim = torch.optim.Adam(head.parameters(), lr=1e-3, weight_decay=1e-4)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
+    crit  = nn.CrossEntropyLoss()
+
+    ds  = torch.utils.data.TensorDataset(tf, train_labels)
+    ldr = torch.utils.data.DataLoader(ds, batch_size=256, shuffle=True)
+
+    for _ in range(epochs):
+        head.train()
+        for xb, yb in ldr:
+            loss = crit(head(xb.to(device)), yb.to(device))
+            optim.zero_grad(); loss.backward(); optim.step()
+        sched.step()
+
+    head.eval()
+    with torch.no_grad():
+        preds = head(ef.to(device)).argmax(1).cpu()
+    acc = (preds == eval_labels).float().mean().item()
+    f1  = f1_score(eval_labels.numpy(), preds.numpy(),
+                   average='weighted', zero_division=0)
+    return acc, f1
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser()
@@ -359,13 +568,22 @@ def main():
                     lp_acc, lp_f1 = linear_probe_eval(
                         train_feats, train_labels, eval_feats, eval_labels,
                         num_classes, device, epochs=50)
+                    # Non-linear probe, same protocol as LP (see mlp_probe_eval docstring) --
+                    # if this tracks close to KNN rather than LP, that's direct evidence the
+                    # LP ceiling is about linear separability specifically, not undertraining
+                    # or a t-SNE visualization artifact. Only run at args.eval_every intervals
+                    # like the others -- it costs about the same as one extra LP eval.
+                    mlp_acc, mlp_f1 = mlp_probe_eval(
+                        train_feats, train_labels, eval_feats, eval_labels,
+                        num_classes, device, epochs=50)
 
                     tag = '(in-dist)' if sname == 'test_id' else '(OOD)    '
                     print(f"    {sname:25s} {tag} "
-                          f"KNN={knn_acc*100:.1f}% LP={lp_acc*100:.1f}%")
+                          f"KNN={knn_acc*100:.1f}% LP={lp_acc*100:.1f}% MLP={mlp_acc*100:.1f}%")
                     layer_results[sname] = {
                         'knn_acc': knn_acc, 'knn_f1': knn_f1,
                         'lp_acc':  lp_acc,  'lp_f1':  lp_f1,
+                        'mlp_acc': mlp_acc, 'mlp_f1': mlp_f1,
                     }
                 epoch_results[f'layer_{layer}'] = layer_results
 
