@@ -235,6 +235,43 @@ class MAEDownstreamHead(nn.Module):
 
         self.set_backbone_trainable(unfreeze_last_n_layers)
 
+        # L2-SP (Li et al. 2018): snapshot pretrained backbone weights ONCE, at construction
+        # time, before any fine-tuning happens. l2sp_penalty() later measures how far the
+        # (currently trainable) backbone params have drifted from this snapshot -- this is
+        # taken BEFORE set_backbone_trainable() has any chance to be called again, so it is
+        # always the true pretrained starting point, never a partially-fine-tuned state.
+        # Only backbone params are snapshotted -- the head is randomly initialized and has
+        # no meaningful "starting point" to regularize toward.
+        self._pretrained_backbone_state = {
+            name: p.detach().clone()
+            for name, p in self._backbone_named_parameters()
+        }
+
+    def _backbone_named_parameters(self):
+        """Yields (name, param) for every backbone parameter (patch_embedding,
+        encoder_pos_embed, encoder_blocks), regardless of requires_grad -- used both to
+        build the L2-SP snapshot and to compute the penalty against it."""
+        for name, p in self.patch_embedding.named_parameters():
+            yield f"patch_embedding.{name}", p
+        yield "encoder_pos_embed", self.encoder_pos_embed
+        for name, p in self.encoder_blocks.named_parameters():
+            yield f"encoder_blocks.{name}", p
+
+    def l2sp_penalty(self):
+        """Sum of squared L2 distance between each currently-TRAINABLE backbone parameter
+        and its pretrained (snapshotted) value. Frozen parameters are skipped (they can't
+        have moved, so their contribution would always be exactly zero anyway, but skipping
+        them avoids walking the whole backbone every step when most of it is frozen).
+        Returns a 0-dim tensor on the same device as the model; safe to add directly into
+        a training loss. Multiply by an l2sp_lambda coefficient before adding -- this
+        function does not apply any weighting itself."""
+        device = self.encoder_pos_embed.device
+        penalty = torch.zeros((), device=device)
+        for name, p in self._backbone_named_parameters():
+            if p.requires_grad:
+                penalty = penalty + (p - self._pretrained_backbone_state[name]).pow(2).sum()
+        return penalty
+
     def set_backbone_trainable(self, unfreeze_last_n_layers):
         """
         unfreeze_last_n_layers:
@@ -293,64 +330,194 @@ class MAEDownstreamHead(nn.Module):
 
 def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
                   padded_h, padded_w, epochs=25, backbone_lr=1e-5, head_lr=1e-3,
-                  unfreeze_last_n_layers=None, hidden_dim=256):
+                  unfreeze_last_n_layers=None, hidden_dim=256,
+                  eval_every=5, early_stop_patience=5, early_stop_split='ood_avg',
+                  monitor_metric='loss', use_plateau_scheduler=False,
+                  l2sp_lambda=0.0, verbose=True):
     """
     Full (or partial) fine-tuning of the pretrained encoder + a downstream MLP head,
     evaluated end-to-end -- NOT a frozen-feature probe (see mlp_probe_eval for that).
     Thin wrapper around MAEDownstreamHead (see its docstring for design details);
     this function owns the training loop and differential-LR optimizer setup.
 
-    NOTE: hidden_dim default changed from 128 (old inline head) to 256 (matches
-    MAEDownstreamHead's default) as part of merging the two implementations -- pass
-    hidden_dim=128 explicitly if you need to exactly reproduce numbers from before
-    this merge.
+    BREAKING CHANGE from the previous version: now returns (results, history) instead
+    of just results -- update any caller that does `x = finetune_eval(...)` to
+    `x, history = finetune_eval(...)`.
 
-    Uses a differential learning rate (backbone_lr << head_lr) specifically to reduce
-    the risk of catastrophic forgetting -- an unconstrained full-LR fine-tune of the
-    backbone can inflate test_id accuracy while silently destroying the domain-invariant
-    structure that OOD generalization depends on. Keep epochs short (paired with the low
-    backbone_lr) for the same reason -- this is NOT meant to be trained as long as pretraining.
+    OOD-aware early stopping + best-checkpoint selection:
+    Fixed-epoch full-backbone fine-tuning showed monotonic OOD degradation even with a
+    low backbone_lr (catastrophic forgetting continues to accumulate epoch over epoch,
+    it doesn't just plateau) -- see the "2d" enc12 result in RESULTS.md. Lowering
+    backbone_lr further only slows this down, it doesn't necessarily stop it from
+    happening by the time training finishes. So instead of reporting whatever the model
+    looks like at the LAST epoch, this evaluates every `eval_every` epochs, tracks the
+    epoch with the best OOD performance, and reports/returns THAT checkpoint's results
+    (reloaded via a deepcopied state_dict) -- not the final epoch's.
 
-    Returns a dict: {split_name: {'acc': ..., 'f1': ...}} for every split in eval_loaders,
-    in the same shape as the rest of the evals dict so it plugs into the existing
-    plot_final_accuracy_by_group / plot_summary_table_image / print_summary_table
-    functions unchanged -- just store it under a new key, e.g. results['finetune'][...].
+    monitor_metric: 'loss' (default) or 'acc'. 'loss' monitors CROSS-ENTROPY LOSS on the
+        monitored split(s) -- computed at eval time (model.eval(), no_grad), NOT the
+        training loss (which is only ever computed on train_id and never touches OOD
+        data). Lower is better for 'loss', so the improvement direction, best_metric
+        initialization, and ReduceLROnPlateau's `mode` all flip relative to 'acc' --
+        this is handled internally, you don't need to adjust anything else when switching.
+    early_stop_split: which split is monitored (via monitor_metric) for both early
+        stopping and the optional plateau scheduler. 'ood_avg' (default) averages across
+        every split except 'test_id' -- monitoring test_id (or anything that includes it)
+        would miss forgetting entirely, since test_id keeps improving even as OOD
+        degrades. Pass an explicit split name (e.g. 'test_cross_device') to monitor a
+        single split instead. Requires at least one non-test_id split in eval_loaders
+        unless you pass an explicit split name.
+    early_stop_patience: stop if the monitored metric hasn't improved for this many
+        *evaluations* (i.e. patience * eval_every epochs of no improvement), not epochs.
+    use_plateau_scheduler: if True, use ReduceLROnPlateau (factor=0.5, patience=2 evals)
+        driven by the same monitored metric, instead of CosineAnnealingLR. Off by
+        default -- CosineAnnealingLR remains the default schedule for backward compatibility.
+    l2sp_lambda: L2-SP regularization strength (Li et al. 2018). 0.0 (default) = off,
+        matching prior behavior. When > 0, adds `l2sp_lambda * ||backbone_params -
+        pretrained_backbone_params||^2` to the training loss -- this penalizes the
+        backbone for drifting from its pretrained starting point directly, rather than
+        relying on a low backbone_lr to indirectly limit drift. Motivation: the "2d"
+        enc12 catastrophic-forgetting result showed OOD loss degrading monotonically
+        from the very first evaluated epoch even with backbone_lr=1e-5 and OOD-aware
+        early stopping -- suggesting the backbone's gradient direction itself (not just
+        how far it moves) is the problem, which L2-SP addresses more directly than LR
+        alone. When l2sp_lambda > 0, standard weight_decay on the backbone param group is
+        automatically set to 0 (L2-SP replaces it for backbone params, per Li et al.'s
+        formulation -- combining both would pull the same parameters toward two different
+        targets, zero and the pretrained value, at the same time). weight_decay on the
+        head remains unchanged (the head has no pretrained starting point to regularize
+        toward -- ordinary L2-to-zero is the standard choice there).
+
+    Returns (results, history):
+        results -- {split_name: {'acc': ..., 'f1': ..., 'loss': ...}}, evaluated at the
+                   BEST epoch found (by early_stop_split + monitor_metric), not
+                   necessarily the last epoch trained. 'loss' is a new key added to each
+                   split's dict alongside the existing 'acc'/'f1' -- still plugs into
+                   plot_final_accuracy_by_group / plot_summary_table_image /
+                   print_summary_table unchanged (they only ever read 'acc'/'f1'/etc by
+                   name, so the extra 'loss' key is simply ignored by those functions).
+        history -- list of dicts, one per evaluation:
+                   [{'epoch': ..., 'monitored_metric': ..., split_name: {'acc':...,'f1':...,'loss':...}, ...}, ...]
+                   Useful for plotting OOD loss (or accuracy) vs. epoch to see exactly
+                   where forgetting starts.
     """
+    import copy
+
     wrapper = MAEDownstreamHead(model, num_classes, layer=layer, hidden_dim=hidden_dim,
                                 unfreeze_last_n_layers=unfreeze_last_n_layers).to(device)
 
-    param_groups = [{'params': wrapper.mlp_head.parameters(), 'lr': head_lr}]
+    param_groups = [{'params': wrapper.mlp_head.parameters(), 'lr': head_lr, 'weight_decay': 0.05}]
     backbone_params = wrapper.backbone_parameters()
     if backbone_params:
-        param_groups.append({'params': backbone_params, 'lr': backbone_lr})
-    optim = torch.optim.AdamW(param_groups, weight_decay=0.05)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
+        # If L2-SP is active, zero out ordinary weight_decay on the backbone group --
+        # L2-SP (added into the loss below) replaces it for backbone params. See the
+        # l2sp_lambda docstring above for why combining both would be ill-posed.
+        backbone_wd = 0.0 if l2sp_lambda > 0 else 0.05
+        param_groups.append({'params': backbone_params, 'lr': backbone_lr, 'weight_decay': backbone_wd})
+    optim = torch.optim.AdamW(param_groups)
+
+    plateau_mode = 'min' if monitor_metric == 'loss' else 'max'
+    if use_plateau_scheduler:
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode=plateau_mode, factor=0.5, patience=2)
+    else:
+        sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
     crit = nn.CrossEntropyLoss()
 
-    for epoch in range(epochs):
+    def evaluate_all_splits():
+        wrapper.eval()
+        split_results = {}
+        with torch.no_grad():
+            for split_name, loader in eval_loaders.items():
+                preds_all, labels_all, losses_all, n_all = [], [], 0.0, 0
+                for csi, y in loader:
+                    csi = pad_csi(csi.to(device), padded_h, padded_w)
+                    y_dev = y.to(device)
+                    logits = wrapper(csi)
+                    batch_loss = crit(logits, y_dev)
+                    losses_all += batch_loss.item() * y.shape[0]  # sum, weighted by batch size
+                    n_all += y.shape[0]
+                    preds_all.append(logits.argmax(1).cpu())
+                    labels_all.append(y)
+                preds_all = torch.cat(preds_all)
+                labels_all = torch.cat(labels_all)
+                acc = (preds_all == labels_all).float().mean().item()
+                f1 = f1_score(labels_all.numpy(), preds_all.numpy(), average='weighted', zero_division=0)
+                avg_loss = losses_all / n_all
+                split_results[split_name] = {'acc': acc, 'f1': f1, 'loss': avg_loss}
+        wrapper.train()
+        return split_results
+
+    def compute_monitored_metric(split_results):
+        if early_stop_split == 'ood_avg':
+            ood_splits = [s for s in split_results if s != 'test_id']
+            if not ood_splits:
+                raise ValueError("No OOD splits found in eval_loaders for 'ood_avg' -- "
+                                 "pass an explicit split name via early_stop_split.")
+            return sum(split_results[s][monitor_metric] for s in ood_splits) / len(ood_splits)
+        if early_stop_split not in split_results:
+            raise ValueError(f"early_stop_split={early_stop_split!r} not in eval_loaders "
+                             f"keys: {list(split_results.keys())}")
+        return split_results[early_stop_split][monitor_metric]
+
+    def is_improvement(monitored, best):
+        return monitored < best if monitor_metric == 'loss' else monitored > best
+
+    best_metric = float('inf') if monitor_metric == 'loss' else -float('inf')
+    best_state = None
+    best_epoch = 0
+    evals_without_improvement = 0
+    history = []
+
+    for epoch in range(1, epochs + 1):
         wrapper.train()
         for csi, y in train_loader:
             csi = pad_csi(csi.to(device), padded_h, padded_w)
             y = y.to(device)
             loss = crit(wrapper(csi), y)
+            if l2sp_lambda > 0:
+                loss = loss + l2sp_lambda * wrapper.l2sp_penalty()
             optim.zero_grad(); loss.backward(); optim.step()
-        sched.step()
+        if not use_plateau_scheduler:
+            sched.step()
 
-    wrapper.eval()
-    results = {}
-    with torch.no_grad():
-        for split_name, loader in eval_loaders.items():
-            preds_all, labels_all = [], []
-            for csi, y in loader:
-                csi = pad_csi(csi.to(device), padded_h, padded_w)
-                preds_all.append(wrapper(csi).argmax(1).cpu())
-                labels_all.append(y)
-            preds_all = torch.cat(preds_all)
-            labels_all = torch.cat(labels_all)
-            acc = (preds_all == labels_all).float().mean().item()
-            f1 = f1_score(labels_all.numpy(), preds_all.numpy(), average='weighted', zero_division=0)
-            results[split_name] = {'acc': acc, 'f1': f1}
-    return results
+        if epoch % eval_every == 0 or epoch == epochs:
+            split_results = evaluate_all_splits()
+            monitored = compute_monitored_metric(split_results)
+            history.append({'epoch': epoch, 'monitored_metric': monitored, **split_results})
+
+            is_best = is_improvement(monitored, best_metric)
+            if verbose:
+                lr_now = optim.param_groups[-1]['lr']
+                print(f"[finetune_eval] epoch {epoch}/{epochs}  "
+                      f"{early_stop_split} {monitor_metric}={monitored:.4f}  lr={lr_now:.2e}"
+                      + ("  <- best" if is_best else ""))
+
+            if use_plateau_scheduler:
+                sched.step(monitored)
+
+            if is_best:
+                best_metric = monitored
+                best_state = copy.deepcopy(wrapper.state_dict())
+                best_epoch = epoch
+                evals_without_improvement = 0
+            else:
+                evals_without_improvement += 1
+                if evals_without_improvement >= early_stop_patience:
+                    if verbose:
+                        print(f"[finetune_eval] early stopping at epoch {epoch} "
+                              f"(no improvement in {early_stop_patience} evals since "
+                              f"epoch {best_epoch}, best {early_stop_split} "
+                              f"{monitor_metric}={best_metric:.4f})")
+                    break
+
+    if best_state is not None:
+        wrapper.load_state_dict(best_state)
+        if verbose:
+            print(f"[finetune_eval] reporting results from epoch {best_epoch} "
+                  f"(best {early_stop_split} {monitor_metric}={best_metric:.4f}), "
+                  f"not the final epoch trained")
+    results = evaluate_all_splits()
+    return results, history
 
 
 def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,

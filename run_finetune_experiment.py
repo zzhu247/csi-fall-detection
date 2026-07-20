@@ -65,6 +65,22 @@ def main():
     parser.add_argument('--probe_epochs', type=int, default=50)
     parser.add_argument('--finetune_epochs', type=int, default=25)
     parser.add_argument('--batch_size', type=int, default=128)
+    parser.add_argument('--backbone_lr', type=float, default=1e-5)
+    parser.add_argument('--head_lr', type=float, default=1e-3)
+    parser.add_argument('--eval_every', type=int, default=5,
+                        help='Evaluate OOD splits every N epochs during fine-tuning (drives early stopping + plateau scheduler)')
+    parser.add_argument('--early_stop_patience', type=int, default=5,
+                        help='Stop if the monitored OOD metric has not improved for this many evaluations')
+    parser.add_argument('--early_stop_split', default='ood_avg',
+                        help='Which split to monitor for early stopping (default: average of all non-test_id splits)')
+    parser.add_argument('--use_plateau_scheduler', action='store_true',
+                        help='Use ReduceLROnPlateau (driven by the monitored OOD metric) instead of CosineAnnealingLR')
+    parser.add_argument('--monitor_metric', default='loss', choices=['loss', 'acc'],
+                        help="Metric to monitor for early stopping / plateau scheduler ('loss': cross-entropy, "
+                             "lower=better; 'acc': accuracy, higher=better). Default: loss")
+    parser.add_argument('--l2sp_lambda', type=float, default=0.0,
+                        help='L2-SP regularization strength (0.0 = off). Penalizes the backbone for drifting '
+                             'from its pretrained starting point, directly rather than via backbone_lr alone.')
     args = parser.parse_args()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -121,9 +137,16 @@ def main():
                                      num_classes, device, epochs=args.probe_epochs)
     print(f"mlp_probe_eval (extract-then-probe):     test_id acc={mlp_acc:.4f}  f1={mlp_f1:.4f}")
 
-    finetune_frozen = finetune_eval(model, train_loader_shuffled, {'test_id': eval_loaders['test_id']},
-                                    num_classes, args.layer, device, padded_h, padded_w,
-                                    epochs=args.probe_epochs, unfreeze_last_n_layers=0)
+    # NOTE: this call only ever passes 'test_id' (no OOD splits, on purpose -- Step 1 is
+    # just a consistency check against mlp_probe_eval, which also only evaluates test_id).
+    # early_stop_split MUST be set to 'test_id' explicitly here -- the 'ood_avg' default
+    # requires at least one non-test_id split to average over, and raises otherwise.
+    finetune_frozen, _ = finetune_eval(model, train_loader_shuffled, {'test_id': eval_loaders['test_id']},
+                                       num_classes, args.layer, device, padded_h, padded_w,
+                                       epochs=args.probe_epochs, unfreeze_last_n_layers=0,
+                                       eval_every=args.probe_epochs,  # only need the final number here
+                                       early_stop_patience=10**9, early_stop_split='test_id',
+                                       monitor_metric=args.monitor_metric, verbose=False)
     print(f"finetune_eval(unfreeze=0) (end-to-end):  test_id acc={finetune_frozen['test_id']['acc']:.4f}  "
           f"f1={finetune_frozen['test_id']['f1']:.4f}")
 
@@ -149,12 +172,37 @@ def main():
 
     print(f"\n{'split':<20}{'KNN':>10}{'LP':>10}{'finetune(0)':>14}{'finetune(2)':>14}{'finetune(full)':>16}")
 
-    results_frozen = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes, args.layer,
-                                   device, padded_h, padded_w, epochs=args.finetune_epochs, unfreeze_last_n_layers=0)
-    results_partial = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes, args.layer,
-                                    device, padded_h, padded_w, epochs=args.finetune_epochs, unfreeze_last_n_layers=2)
-    results_full = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes, args.layer,
-                                 device, padded_h, padded_w, epochs=args.finetune_epochs, unfreeze_last_n_layers=None)
+    common_kwargs = dict(
+        epochs=args.finetune_epochs, backbone_lr=args.backbone_lr, head_lr=args.head_lr,
+        eval_every=args.eval_every, early_stop_patience=args.early_stop_patience,
+        early_stop_split=args.early_stop_split, monitor_metric=args.monitor_metric,
+        use_plateau_scheduler=args.use_plateau_scheduler, l2sp_lambda=args.l2sp_lambda,
+    )
+    print(f"\n--- finetune(0): frozen ---")
+    results_frozen, history_frozen = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes,
+                                                    args.layer, device, padded_h, padded_w,
+                                                    unfreeze_last_n_layers=0, **common_kwargs)
+    print(f"\n--- finetune(2): last 2 layers unfrozen ---")
+    results_partial, history_partial = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes,
+                                                      args.layer, device, padded_h, padded_w,
+                                                      unfreeze_last_n_layers=2, **common_kwargs)
+    print(f"\n--- finetune(full): fully unfrozen ---")
+    results_full, history_full = finetune_eval(model, train_loader_shuffled, eval_loaders, num_classes,
+                                                args.layer, device, padded_h, padded_w,
+                                                unfreeze_last_n_layers=None, **common_kwargs)
+
+    # NOTE: direction depends on monitor_metric -- 'loss' wants min(), 'acc' wants max().
+    # This must match finetune_eval()'s own is_improvement() logic, or this summary line
+    # can report the wrong epoch as "best" even though finetune_eval() itself picked
+    # correctly (the actual reported results/rollback are unaffected by this -- only this
+    # printed summary line was at risk of being wrong).
+    pick_best = min if args.monitor_metric == 'loss' else max
+    best_epoch_frozen = pick_best(history_frozen, key=lambda h: h['monitored_metric'])['epoch']
+    best_epoch_partial = pick_best(history_partial, key=lambda h: h['monitored_metric'])['epoch']
+    best_epoch_full = pick_best(history_full, key=lambda h: h['monitored_metric'])['epoch']
+    print(f"\nBest epoch selected (by {args.early_stop_split} {args.monitor_metric}), "
+          f"out of max {args.finetune_epochs} each: "
+          f"frozen={best_epoch_frozen}, partial={best_epoch_partial}, full={best_epoch_full}")
 
     for split in OOD_SPLITS:
         knn = existing.get(split, {}).get('knn_acc')
