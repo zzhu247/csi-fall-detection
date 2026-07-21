@@ -1,6 +1,10 @@
 # config.py
+import os
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DATA_ROOT = "/home/zhuzih19/data/csi-bench-dataset"
+RESULTS_DIR = os.path.join(PROJECT_ROOT, "results")
 
 # Model
 IN_CHANNELS = 1
@@ -20,3 +24,6 @@ BATCH_SIZE  = 16
 LR          = 3e-5
 NUM_EPOCHS  = 10
 NUM_WORKERS = 0
+
+
+OOD_SPLITS = {'test_id', 'test_cross_device', 'test_cross_environment', 'test_cross_user'}

@@ -1,9 +1,24 @@
+# Python & Bytecode
 __pycache__/
-*.pyc
-*.pth
-checkpoints/
+*.py[cod]
+.pytest_cache/
 
-tets log.md# model checkpoints — too large for git, sync separately if needed
-**/best_model.pt
-*.pt
+# System & IDE
+.DS_Store
+.vscode/
+.idea/
+nohup.out
+8
+*.save
+
+# Large Datasets & Model Checkpoints
+data/
+datasets/
+results/
+checkpoints/
 *.pth
+*.pt
+*.npy
+*.mat
+*.h5
+*.csv
