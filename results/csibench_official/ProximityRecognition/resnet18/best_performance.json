@@ -1,0 +1,39 @@
+{
+    "best_val_accuracy": 0.9237122364703325,
+    "best_val_loss": 0.23787300991146648,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "resnet18",
+        "task": "ProximityRecognition",
+        "task_name": "ProximityRecognition",
+        "seed": 42,
+        "num_classes": 4,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_cross_device",
+            "test_cross_user",
+            "test_cross_env"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 0.9159061277705346,
+        "test_cross_device": 0.4430484892534524,
+        "test_cross_user": 0.39227021223883063,
+        "test_cross_env": 0.4242105263157895
+    },
+    "best_test_f1_scores": {
+        "test": 0.9160362015370304,
+        "test_cross_device": 0.44092100549328517,
+        "test_cross_user": 0.435586005652711,
+        "test_cross_env": 0.4259607916816622
+    },
+    "timestamp": "2026-06-25 14:13:58"
+}

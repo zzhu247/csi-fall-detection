@@ -1,0 +1,39 @@
+{
+    "best_val_accuracy": 0.9482721147576614,
+    "best_val_loss": 0.1517628222571148,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "vit",
+        "task": "ProximityRecognition",
+        "task_name": "ProximityRecognition",
+        "seed": 42,
+        "num_classes": 4,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_cross_device",
+            "test_cross_user",
+            "test_cross_env"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 0.9411125597566276,
+        "test_cross_device": 0.4767936870522272,
+        "test_cross_user": 0.4271203237261541,
+        "test_cross_env": 0.4724812030075188
+    },
+    "best_test_f1_scores": {
+        "test": 0.94087743897818,
+        "test_cross_device": 0.46628183084556657,
+        "test_cross_user": 0.4665703423841587,
+        "test_cross_env": 0.4591937407299249
+    },
+    "timestamp": "2026-06-26 16:14:33"
+}

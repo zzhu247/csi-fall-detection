@@ -1,0 +1,39 @@
+{
+    "best_val_accuracy": 0.801125703564728,
+    "best_val_loss": 0.5832591607020452,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "mlp",
+        "task": "Localization",
+        "task_name": "Localization",
+        "seed": 42,
+        "num_classes": 6,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_medium_id",
+            "test_easy_id",
+            "test_hard_id"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 0.8302919708029197,
+        "test_medium_id": null,
+        "test_easy_id": null,
+        "test_hard_id": 0.8302919708029197
+    },
+    "best_test_f1_scores": {
+        "test": 0.828611760597166,
+        "test_medium_id": null,
+        "test_easy_id": null,
+        "test_hard_id": 0.828611760597166
+    },
+    "timestamp": "2026-06-19 11:29:26"
+}

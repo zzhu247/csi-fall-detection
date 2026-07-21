@@ -1,0 +1,39 @@
+{
+    "best_val_accuracy": 0.9004024144869215,
+    "best_val_loss": 0.20895894048679284,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "mlp",
+        "task": "FallDetection",
+        "task_name": "FallDetection",
+        "seed": 42,
+        "num_classes": 2,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_easy",
+            "test_id",
+            "test_hard",
+            "test_medium"
+        ]
+    },
+    "best_test_accuracies": {
+        "test_easy": 0.9421579532814238,
+        "test": 0.9197969543147209,
+        "test_hard": 0.6521739130434783,
+        "test_medium": 0.8235294117647058
+    },
+    "best_test_f1_scores": {
+        "test_easy": 0.9421862573069774,
+        "test": 0.9199852513757407,
+        "test_hard": 0.6389515439060434,
+        "test_medium": 0.8222910216718267
+    },
+    "timestamp": "2026-06-18 22:51:09"
+}

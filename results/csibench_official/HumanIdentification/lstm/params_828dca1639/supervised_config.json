@@ -1,0 +1,22 @@
+{
+  "training_dir": "/home/zhuzih19/data/csi-bench-dataset",
+  "test_dirs": [],
+  "output_dir": "/home/zhuzih19/csi-project/csi-fall-detection/results/csibench_official",
+  "results_subdir": "lstm_humanidentification",
+  "train_ratio": 0.8,
+  "val_ratio": 0.2,
+  "batch_size": 128,
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "epochs": 100,
+  "warmup_epochs": 5,
+  "patience": 15,
+  "integrated_loader": true,
+  "task": "HumanIdentification",
+  "seed": 42,
+  "device": "cuda",
+  "model": "lstm",
+  "win_len": 500,
+  "feature_size": 232,
+  "test_splits": "all"
+}

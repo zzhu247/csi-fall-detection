@@ -1,0 +1,26 @@
+{
+    "test": {
+        "loss": 0.5059040776134407,
+        "accuracy": 0.8302919708029197,
+        "f1_score": 0.828611760597166,
+        "n_samples": 548
+    },
+    "test_medium_id": {
+        "loss": null,
+        "accuracy": null,
+        "f1_score": null,
+        "n_samples": 0
+    },
+    "test_easy_id": {
+        "loss": null,
+        "accuracy": null,
+        "f1_score": null,
+        "n_samples": 0
+    },
+    "test_hard_id": {
+        "loss": 0.5059040776134407,
+        "accuracy": 0.8302919708029197,
+        "f1_score": 0.828611760597166,
+        "n_samples": 548
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "best_val_accuracy": 1.0,
+    "best_val_loss": 5.258689475987741e-06,
+    "best_experiment_id": "params_828dca1639",
+    "best_experiment_params": {
+        "model": "vit",
+        "task": "HumanIdentification",
+        "task_name": "HumanIdentification",
+        "seed": 42,
+        "num_classes": 7,
+        "batch_size": 128,
+        "learning_rate": 0.001,
+        "weight_decay": 1e-05,
+        "epochs": 100,
+        "warmup_epochs": 5,
+        "patience": 15,
+        "win_len": 500,
+        "feature_size": 232,
+        "test_splits": [
+            "test_id",
+            "test_cross_device",
+            "test_cross_user",
+            "test_cross_env"
+        ]
+    },
+    "best_test_accuracies": {
+        "test": 1.0,
+        "test_cross_device": 0.1566815491641574,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.24406015037593984
+    },
+    "best_test_f1_scores": {
+        "test": 1.0,
+        "test_cross_device": 0.1429884177706226,
+        "test_cross_user": 0.0,
+        "test_cross_env": 0.39236069140577784
+    },
+    "timestamp": "2026-06-23 17:21:23"
+}
