@@ -143,6 +143,65 @@ def get_features(model, loader, layer, device, padded_h, padded_w):
         labels.append(y)
     return torch.cat(feats), torch.cat(labels)
 
+
+def compute_domain_shift_metrics(id_features, id_labels, ood_features, ood_labels):
+    """
+    Computes class-conditional centroid L2 distance and Cosine Similarity
+    between In-Distribution (ID) and OOD feature representations.
+
+    Rationale (from postdoc suggestion): classification accuracy is an INDIRECT probe
+    of representation quality -- when accuracy drops, it's ambiguous whether that's
+    because classes are locally confused or because the whole distribution shifted.
+    This is a direct, non-parametric, purely geometric measure: for each class, take
+    the ID centroid and OOD centroid (mean embedding), and measure how far apart /
+    misaligned they are. No classifier training involved.
+
+    Findings so far (see RESULTS.md / weekly updates): within a layer, this ranking
+    across OOD splits tracks KNN accuracy's ranking closely. Across layers, cosine
+    similarity (scale-invariant) reproduces the same U-shaped depth pattern seen in
+    classification accuracy, while raw L2 distance does not track as cleanly (likely
+    because L2 distance is NOT scale-invariant across layers with different embedding
+    norms -- prefer cosine similarity for cross-layer comparisons, L2 distance only
+    for within-layer comparisons).
+    """
+    if hasattr(id_features, 'numpy'): id_features = id_features.numpy()
+    if hasattr(id_labels, 'numpy'): id_labels = id_labels.numpy()
+    if hasattr(ood_features, 'numpy'): ood_features = ood_features.numpy()
+    if hasattr(ood_labels, 'numpy'): ood_labels = ood_labels.numpy()
+
+    unique_classes = np.unique(id_labels)
+    l2_distances = []
+    cosine_similarities = []
+
+    for cls in unique_classes:
+        if cls not in ood_labels:
+            continue
+
+        cls_id_features = id_features[id_labels == cls]
+        cls_ood_features = ood_features[ood_labels == cls]
+
+        centroid_id = np.mean(cls_id_features, axis=0)
+        centroid_ood = np.mean(cls_ood_features, axis=0)
+
+        l2_dist = np.linalg.norm(centroid_id - centroid_ood)
+        l2_distances.append(l2_dist)
+
+        dot_product = np.dot(centroid_id, centroid_ood)
+        norm_id = np.linalg.norm(centroid_id)
+        norm_ood = np.linalg.norm(centroid_ood)
+
+        cos_sim = dot_product / (norm_id * norm_ood + 1e-8)
+        cosine_similarities.append(cos_sim)
+
+    if not l2_distances:
+        return {"centroid_l2_dist": 0.0, "centroid_cos_sim": 0.0}
+
+    return {
+        "centroid_l2_dist": float(np.mean(l2_distances)),
+        "centroid_cos_sim": float(np.mean(cosine_similarities))
+    }
+
+
 def knn_eval(train_feats, train_labels, eval_feats, eval_labels, k=10):
     # Normalize
     mu  = train_feats.mean(0, keepdim=True)
@@ -160,6 +219,7 @@ def knn_eval(train_feats, train_labels, eval_feats, eval_labels, k=10):
                    average='weighted', zero_division=0)
     return acc, f1
 
+
 def linear_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
                       num_classes, device, epochs=50):
     mu  = train_feats.mean(0, keepdim=True)
@@ -175,7 +235,6 @@ def linear_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
     ds  = torch.utils.data.TensorDataset(tf, train_labels)
     ldr = torch.utils.data.DataLoader(ds, batch_size=256, shuffle=True)
 
-    best_acc, best_f1 = 0.0, 0.0
     for _ in range(epochs):
         head.train()
         for xb, yb in ldr:
@@ -197,9 +256,9 @@ class MAEDownstreamHead(nn.Module):
     Downstream evaluation/fine-tuning wrapper for MAE/MAEv2 backbones.
 
     This is the single, shared implementation for fine-tuning -- it replaces two
-    previously-separate, non-comparable implementations (finetune_eval()\'s old inline
+    previously-separate, non-comparable implementations (finetune_eval()'s old inline
     head, and a standalone MAEv2ForDownstream class) so there is one source of truth
-    for fine-tune numbers instead of two head designs that couldn\'t be compared.
+    for fine-tune numbers instead of two head designs that couldn't be compared.
 
     Supports:
     1. Extracting embeddings at any specific encoder `layer` (not just the final one),
@@ -208,13 +267,14 @@ class MAEDownstreamHead(nn.Module):
     2. Freezing the backbone entirely, unfreezing only the last k encoder blocks, or
        unfreezing the whole backbone -- see `unfreeze_last_n_layers`.
     3. Safety: the constructor deepcopies the passed-in model internally, so training
-       this wrapper (even fully unfrozen) NEVER mutates the caller\'s original model --
+       this wrapper (even fully unfrozen) NEVER mutates the caller's original model --
        this was a real bug in the standalone-class version this replaces (it stored
-       direct references to the pretrained model\'s submodules, so training it would
-       have silently rewritten the caller\'s checkpoint in place).
+       direct references to the pretrained model's submodules, so training it would
+       have silently rewritten the caller's checkpoint in place).
     """
     def __init__(self, pretrained_model, num_classes, layer=None,
-                 hidden_dim=256, unfreeze_last_n_layers=0):
+                 hidden_dim=256, unfreeze_last_n_layers=0, norm_type='layernorm',
+                 activation='relu'):
         super().__init__()
         import copy
         backbone = copy.deepcopy(pretrained_model)  # never mutate the caller's model
@@ -224,11 +284,59 @@ class MAEDownstreamHead(nn.Module):
         self.encoder_blocks    = backbone.encoder_blocks
         self.encoder_norm      = backbone.encoder_norm
         self.layer = layer or len(self.encoder_blocks.layers)  # default: deepest layer
+        self.norm_type = norm_type
+
+        # norm_type controls the normalization layer between the two Linears in mlp_head.
+        # 'layernorm' (default, unchanged from before): normalizes each sample independently
+        #   over the hidden_dim axis -- stable regardless of batch composition, and doesn't
+        #   need train/eval-mode distinct behavior. Matters here specifically because the
+        #   backbone may be unfrozen (finetune_eval with unfreeze_last_n_layers != 0), so the
+        #   feature distribution feeding into mlp_head can drift epoch to epoch as the
+        #   backbone's own weights change -- LayerNorm re-stabilizes that per-sample.
+        # 'batchnorm': normalizes each feature dim over the CURRENT BATCH. Two things to be
+        #   aware of vs LayerNorm: (1) needs batch_size > 1 in train() mode (nn.BatchNorm1d
+        #   raises on a batch of size 1 -- can happen on the last, possibly-partial batch of
+        #   an epoch); (2) behaves differently in train() (uses batch statistics) vs eval()
+        #   (uses running statistics accumulated during training) -- LayerNorm has no such
+        #   train/eval distinction, so this is a genuinely different mechanism, not just a
+        #   drop-in swap.
+        # 'none': no normalization layer (nn.Identity) -- included as the ablation control,
+        #   to see whether either LayerNorm or BatchNorm is doing anything at all here versus
+        #   just adding parameters/depth.
+        if norm_type == 'layernorm':
+            norm_layer = nn.LayerNorm(hidden_dim)
+        elif norm_type == 'batchnorm':
+            norm_layer = nn.BatchNorm1d(hidden_dim)
+        elif norm_type == 'none':
+            norm_layer = nn.Identity()
+        else:
+            raise ValueError(f"norm_type must be 'layernorm', 'batchnorm', or 'none', got {norm_type!r}")
+
+        # activation='none' -- IMPORTANT: with no non-linearity between the two Linear
+        # layers, this head is mathematically equivalent to a SINGLE linear layer at eval
+        # time (W2 @ (W1 @ x) = (W2 @ W1) @ x is still just one linear map), regardless of
+        # hidden_dim or how many parameters it has. This is intentionally included as an
+        # ablation control: if this variant performs similarly to plain LP (linear_probe_eval)
+        # rather than to the ReLU-activated MLP probe, that's direct evidence the ReLU
+        # non-linearity -- not the extra parameters/depth by themselves -- is what let the
+        # MLP/attentive probes access non-linearly-separable structure that LP cannot.
+        # NOTE: this equivalence is about the *function class*, not the *training dynamics*.
+        # Dropout still acts between train() batches even with no activation, and the
+        # optimization path (two matrices trained jointly via SGD) can differ from directly
+        # fitting one matrix -- so don't expect the numbers to be bit-identical to LP, just
+        # in the same ballpark if the "ReLU is the key ingredient" hypothesis is correct.
+        if activation == 'relu':
+            act_layer = nn.ReLU()
+        elif activation == 'none':
+            act_layer = nn.Identity()
+        else:
+            raise ValueError(f"activation must be 'relu' or 'none', got {activation!r}")
+        self.activation = activation
 
         self.mlp_head = nn.Sequential(
             nn.Linear(backbone.encoder_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),
-            nn.ReLU(),
+            norm_layer,
+            act_layer,
             nn.Dropout(0.3),
             nn.Linear(hidden_dim, num_classes),
         )
@@ -330,7 +438,8 @@ class MAEDownstreamHead(nn.Module):
 
 def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
                   padded_h, padded_w, epochs=25, backbone_lr=1e-5, head_lr=1e-3,
-                  unfreeze_last_n_layers=None, hidden_dim=256,
+                  unfreeze_last_n_layers=None, hidden_dim=256, norm_type='layernorm',
+                  activation='relu',
                   eval_every=5, early_stop_patience=5, early_stop_split='ood_avg',
                   monitor_metric='loss', use_plateau_scheduler=False,
                   l2sp_lambda=0.0, verbose=True):
@@ -376,42 +485,25 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
         matching prior behavior. When > 0, adds `l2sp_lambda * ||backbone_params -
         pretrained_backbone_params||^2` to the training loss -- this penalizes the
         backbone for drifting from its pretrained starting point directly, rather than
-        relying on a low backbone_lr to indirectly limit drift. Motivation: the "2d"
-        enc12 catastrophic-forgetting result showed OOD loss degrading monotonically
-        from the very first evaluated epoch even with backbone_lr=1e-5 and OOD-aware
-        early stopping -- suggesting the backbone's gradient direction itself (not just
-        how far it moves) is the problem, which L2-SP addresses more directly than LR
-        alone. When l2sp_lambda > 0, standard weight_decay on the backbone param group is
-        automatically set to 0 (L2-SP replaces it for backbone params, per Li et al.'s
-        formulation -- combining both would pull the same parameters toward two different
-        targets, zero and the pretrained value, at the same time). weight_decay on the
-        head remains unchanged (the head has no pretrained starting point to regularize
-        toward -- ordinary L2-to-zero is the standard choice there).
+        relying on a low backbone_lr to indirectly limit drift. When l2sp_lambda > 0,
+        standard weight_decay on the backbone param group is automatically set to 0
+        (L2-SP replaces it for backbone params, per Li et al.'s formulation).
 
     Returns (results, history):
         results -- {split_name: {'acc': ..., 'f1': ..., 'loss': ...}}, evaluated at the
                    BEST epoch found (by early_stop_split + monitor_metric), not
-                   necessarily the last epoch trained. 'loss' is a new key added to each
-                   split's dict alongside the existing 'acc'/'f1' -- still plugs into
-                   plot_final_accuracy_by_group / plot_summary_table_image /
-                   print_summary_table unchanged (they only ever read 'acc'/'f1'/etc by
-                   name, so the extra 'loss' key is simply ignored by those functions).
-        history -- list of dicts, one per evaluation:
-                   [{'epoch': ..., 'monitored_metric': ..., split_name: {'acc':...,'f1':...,'loss':...}, ...}, ...]
-                   Useful for plotting OOD loss (or accuracy) vs. epoch to see exactly
-                   where forgetting starts.
+                   necessarily the last epoch trained.
+        history -- list of dicts, one per evaluation.
     """
     import copy
 
     wrapper = MAEDownstreamHead(model, num_classes, layer=layer, hidden_dim=hidden_dim,
-                                unfreeze_last_n_layers=unfreeze_last_n_layers).to(device)
+                                unfreeze_last_n_layers=unfreeze_last_n_layers,
+                                norm_type=norm_type, activation=activation).to(device)
 
     param_groups = [{'params': wrapper.mlp_head.parameters(), 'lr': head_lr, 'weight_decay': 0.05}]
     backbone_params = wrapper.backbone_parameters()
     if backbone_params:
-        # If L2-SP is active, zero out ordinary weight_decay on the backbone group --
-        # L2-SP (added into the loss below) replaces it for backbone params. See the
-        # l2sp_lambda docstring above for why combining both would be ill-posed.
         backbone_wd = 0.0 if l2sp_lambda > 0 else 0.05
         param_groups.append({'params': backbone_params, 'lr': backbone_lr, 'weight_decay': backbone_wd})
     optim = torch.optim.AdamW(param_groups)
@@ -434,7 +526,7 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
                     y_dev = y.to(device)
                     logits = wrapper(csi)
                     batch_loss = crit(logits, y_dev)
-                    losses_all += batch_loss.item() * y.shape[0]  # sum, weighted by batch size
+                    losses_all += batch_loss.item() * y.shape[0]
                     n_all += y.shape[0]
                     preds_all.append(logits.argmax(1).cpu())
                     labels_all.append(y)
@@ -528,12 +620,7 @@ def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
 
     Purpose: directly test whether the LP accuracy ceiling is a REPRESENTATIONAL limit
     (a single hyperplane per class structurally cannot separate a non-convex, multi-modal
-    class distribution) rather than an optimization/undertraining issue -- if MLP >> LP,
-    that confirms the ceiling is about linear separability specifically. Note this also
-    sidesteps the t-SNE-distortion caveat: t-SNE's local-neighborhood objective doesn't
-    preserve linear relationships, so "looks non-convex in a 2D t-SNE plot" alone doesn't
-    prove "not linearly separable in the original embedding space" -- this eval operates
-    on the real, full-dimensional embedding, not a 2D projection, so it's decisive either way.
+    class distribution) rather than an optimization/undertraining issue.
     """
     mu  = train_feats.mean(0, keepdim=True)
     std = train_feats.std(0,  keepdim=True) + 1e-8
@@ -567,6 +654,139 @@ def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
                    average='weighted', zero_division=0)
     return acc, f1
 
+
+# ── Attentive probing (postdoc suggestion, V-JEPA style) ──────────────────────
+def extract_sequence_embeddings(model, x, layer):
+    """
+    Same layer-by-layer walk as model.extract_layer_embeddings() (models/mae.py),
+    but returns the UNPOOLED per-patch-token sequence [B, N, encoder_dim] at the given
+    layer instead of the mean-pooled [B, encoder_dim] vector that extract_layer_embeddings
+    always returns. Needed for attentive probing, which needs the full token sequence to
+    let a learned query attend over it -- mean-pooling (used by every other eval protocol
+    in this file, via get_features()) discards any information that's distributed
+    non-redundantly across tokens rather than duplicated across all of them.
+
+    x is assumed already padded (pad_csi) to a patch-size-compatible shape.
+    """
+    h = model.patch_embedding(x) + model.encoder_pos_embed
+    for i, block in enumerate(model.encoder_blocks.layers):
+        h = block(h)
+        if (i + 1) == layer:
+            return model.encoder_norm(h)  # [B, N, encoder_dim] -- NOT pooled
+    raise ValueError(f"layer={layer} exceeds encoder depth {len(model.encoder_blocks.layers)}")
+
+
+@torch.no_grad()
+def get_sequence_features(model, loader, layer, device, padded_h, padded_w):
+    """Sequence-level counterpart to get_features() -- returns [N_samples, N_tokens,
+    encoder_dim] instead of [N_samples, encoder_dim]. Memory note: this is N_tokens times
+    larger than get_features()'s output -- for small patch sizes (e.g. patch=11,
+    num_patches~1000+) combined with a large split (test_cross_user has 12k+ samples),
+    the cached sequence tensor can reach multiple GB even on CPU. Consider processing one
+    split at a time rather than caching all splits simultaneously if memory is tight."""
+    model.eval()
+    feats, labels = [], []
+    for csi, y in loader:
+        csi = pad_csi(csi.to(device), padded_h, padded_w)
+        seq = extract_sequence_embeddings(model, csi, layer)
+        feats.append(seq.cpu())
+        labels.append(y)
+    return torch.cat(feats), torch.cat(labels)
+
+
+class AttentiveProbe(nn.Module):
+    """
+    Attentive probe (V-JEPA style, arxiv.org/abs/2404.08471): a single learnable query
+    vector cross-attends over the full, UNPOOLED patch-token sequence to extract a
+    task-relevant summary -- instead of mean-pooling the sequence first (which every
+    other probe in this file does, via get_features()) and potentially averaging away
+    information that's distributed non-redundantly across tokens rather than duplicated
+    across all of them.
+
+    heavyweight=False (lightweight): a single cross-attention layer, query -> classifier.
+    heavyweight=True: adds a full transformer-block-style FFN after the attention (matching
+    V-JEPA's design) to extract more from the attended representation before classifying.
+
+    dropout: attentive probes have more parameters than linear/MLP probes and the
+    cross-attention itself can learn to key on spurious per-sample patterns in a small
+    downstream training set, so they're more prone to overfitting -- this dropout is a
+    light mitigation; if overfitting is still an issue in practice, data augmentation
+    (not implemented here) is the standard next step for this probe type specifically.
+    """
+    def __init__(self, encoder_dim, num_classes, num_heads=4, heavyweight=False,
+                ff_dim=None, dropout=0.1):
+        super().__init__()
+        self.query = nn.Parameter(torch.randn(1, 1, encoder_dim) * 0.02)
+        self.attn = nn.MultiheadAttention(encoder_dim, num_heads, dropout=dropout, batch_first=True)
+        self.attn_dropout = nn.Dropout(dropout)
+        self.heavyweight = heavyweight
+        if heavyweight:
+            ff_dim = ff_dim or encoder_dim * 4
+            self.norm1 = nn.LayerNorm(encoder_dim)
+            self.ffn = nn.Sequential(
+                nn.Linear(encoder_dim, ff_dim), nn.GELU(), nn.Dropout(dropout),
+                nn.Linear(ff_dim, encoder_dim), nn.Dropout(dropout),
+            )
+            self.norm2 = nn.LayerNorm(encoder_dim)
+        self.classifier = nn.Linear(encoder_dim, num_classes)
+
+    def forward(self, sequence):
+        """sequence: [B, N, encoder_dim], NOT pooled (from get_sequence_features())."""
+        B = sequence.shape[0]
+        q = self.query.expand(B, -1, -1)                    # [B, 1, D]
+        attended, _ = self.attn(q, sequence, sequence)       # [B, 1, D]
+        attended = self.attn_dropout(attended.squeeze(1))    # [B, D]
+        if self.heavyweight:
+            attended = self.norm1(attended)
+            attended = attended + self.ffn(attended)
+            attended = self.norm2(attended)
+        return self.classifier(attended)
+
+
+def attentive_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
+                         num_classes, device, epochs=50, heavyweight=False,
+                         num_heads=4, dropout=0.1):
+    """
+    train_feats/eval_feats: [N_samples, N_tokens, encoder_dim] -- UNPOOLED sequences from
+    get_sequence_features(), NOT get_features(). Backbone is already frozen by construction
+    here (these are precomputed, detached features) -- only the probe itself is trained,
+    same "extract-then-probe" two-stage design as mlp_probe_eval(), just operating on the
+    full sequence instead of a mean-pooled vector.
+
+    Normalization is per-feature-dim, computed across both the sample and token axes
+    (dim=(0,1)) -- analogous to mlp_probe_eval()'s per-feature normalization, just
+    accounting for the extra token dimension here.
+    """
+    mu = train_feats.mean(dim=(0, 1), keepdim=True)
+    std = train_feats.std(dim=(0, 1), keepdim=True) + 1e-8
+    tf = (train_feats - mu) / std
+    ef = (eval_feats - mu) / std
+
+    encoder_dim = tf.shape[-1]
+    probe = AttentiveProbe(encoder_dim, num_classes, num_heads=num_heads,
+                           heavyweight=heavyweight, dropout=dropout).to(device)
+    optim = torch.optim.Adam(probe.parameters(), lr=1e-3, weight_decay=1e-4)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
+    crit = nn.CrossEntropyLoss()
+
+    ds = torch.utils.data.TensorDataset(tf, train_labels)
+    ldr = torch.utils.data.DataLoader(ds, batch_size=256, shuffle=True)
+
+    for _ in range(epochs):
+        probe.train()
+        for xb, yb in ldr:
+            loss = crit(probe(xb.to(device)), yb.to(device))
+            optim.zero_grad(); loss.backward(); optim.step()
+        sched.step()
+
+    probe.eval()
+    with torch.no_grad():
+        preds = probe(ef.to(device)).argmax(1).cpu()
+    acc = (preds == eval_labels).float().mean().item()
+    f1 = f1_score(eval_labels.numpy(), preds.numpy(), average='weighted', zero_division=0)
+    return acc, f1
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser()
@@ -577,7 +797,7 @@ def main():
     parser.add_argument('--decoder_dim',   type=int,   default=64)
     parser.add_argument('--batch_size',    type=int,   default=128)
     parser.add_argument('--lr',            type=float, default=1.5e-4)
-    parser.add_argument('--eval_layers',   type=str,   default='1,3,6')
+    parser.add_argument('--eval_layers',   type=str,   default='1,3,6,9,12')
     parser.add_argument('--eval_every',    type=int,   default=50)
     parser.add_argument('--mask_strategy', type=str, default='random', choices=['random','time','freq','mixed','2d'])
     parser.add_argument('--patch_h',       type=int,   default=29)
@@ -586,7 +806,13 @@ def main():
     parser.add_argument('--skip_mem_check', action='store_true',
                          help='Bypass the pre-flight attention-memory safety check (not recommended)')
     parser.add_argument('--mem_budget_gb', type=float, default=20.0,
-                         help='Safety budget (GB) for a single attention layer before hard-stopping')
+                         help='Safety budget (GB) for the cumulative attention memory before hard-stopping')
+    parser.add_argument('--run_attentive_probe', action='store_true',
+                         help='Also run lightweight + heavyweight attentive probing at every eval checkpoint. '
+                              'OFF by default -- this roughly doubles per-checkpoint eval cost (extracting '
+                              'unpooled sequence features + training 2 extra probes per layer/split), and for '
+                              'small patch sizes the unpooled sequence cache can be several GB. Opt in explicitly.')
+    parser.add_argument('--attentive_probe_epochs', type=int, default=50)
     args = parser.parse_args()
 
     # Seed control for reproducibility
@@ -598,6 +824,24 @@ def main():
     torch.backends.cudnn.benchmark = False
 
     eval_layers = [int(x) for x in args.eval_layers.split(',')]
+    # Defensive filter: --eval_layers defaults to '1,3,6,9,12' (sized for encoder_depth=12),
+    # so a run with a shallower encoder_depth (e.g. 6) would otherwise KeyError inside
+    # get_features() when it hits a layer index that doesn't exist in this model. Silently
+    # drop any requested layer beyond the actual encoder depth instead of crashing, and warn
+    # so it's clear layers were dropped rather than intentionally excluded.
+    valid_eval_layers = [l for l in eval_layers if l <= args.encoder_depth]
+    if len(valid_eval_layers) < len(eval_layers):
+        dropped = [l for l in eval_layers if l > args.encoder_depth]
+        print(f"[eval-layers] WARNING: dropping requested eval layer(s) {dropped} -- "
+              f"encoder_depth={args.encoder_depth} only has layers 1..{args.encoder_depth}. "
+              f"Evaluating layers {valid_eval_layers} instead. Pass --eval_layers explicitly "
+              f"to silence this (e.g. --eval_layers 1,3,6 for encoder_depth=6).")
+    if not valid_eval_layers:
+        valid_eval_layers = [args.encoder_depth]
+        print(f"[eval-layers] No requested layers were valid -- falling back to "
+              f"the deepest layer only: {valid_eval_layers}")
+    eval_layers = valid_eval_layers
+
     exp_name = (f"mae_har_ep{args.epochs}_mask{args.mask_ratio}_strategy{args.mask_strategy}_ph{args.patch_h}pw{args.patch_w}_seed{args.seed}"
                 f"_enc{args.encoder_depth}_dim{args.encoder_dim}_bs{args.batch_size}")
     print(f"\nExperiment: {exp_name}")
@@ -726,6 +970,12 @@ def main():
                 train_feats, train_labels = get_features(
                     model, train_feat_loader, layer, device, padded_h, padded_w)
 
+                # Sequence features (unpooled) only extracted if attentive probing is on --
+                # this is the expensive/opt-in path, see --run_attentive_probe help text.
+                if args.run_attentive_probe:
+                    train_seq_feats, _ = get_sequence_features(
+                        model, train_feat_loader, layer, device, padded_h, padded_w)
+
                 layer_results = {}
                 for sname, ldr in ood_loaders.items():
                     eval_feats, eval_labels = get_features(model, ldr, layer, device, padded_h, padded_w)
@@ -737,21 +987,46 @@ def main():
                         num_classes, device, epochs=50)
                     # Non-linear probe, same protocol as LP (see mlp_probe_eval docstring) --
                     # if this tracks close to KNN rather than LP, that's direct evidence the
-                    # LP ceiling is about linear separability specifically, not undertraining
-                    # or a t-SNE visualization artifact. Only run at args.eval_every intervals
-                    # like the others -- it costs about the same as one extra LP eval.
+                    # LP ceiling is about linear separability specifically, not undertraining.
                     mlp_acc, mlp_f1 = mlp_probe_eval(
                         train_feats, train_labels, eval_feats, eval_labels,
                         num_classes, device, epochs=50)
 
-                    tag = '(in-dist)' if sname == 'test_id' else '(OOD)    '
-                    print(f"    {sname:25s} {tag} "
-                          f"KNN={knn_acc*100:.1f}% LP={lp_acc*100:.1f}% MLP={mlp_acc*100:.1f}%")
+                    # Domain-shift geometry: class-conditional centroid L2 distance and
+                    # cosine similarity between ID and this OOD split's features. Purely
+                    # geometric, no classifier -- see compute_domain_shift_metrics docstring.
+                    shift_metrics = compute_domain_shift_metrics(
+                        train_feats, train_labels, eval_feats, eval_labels)
+
+                    line = (f"    {sname:25s} {'(in-dist)' if sname == 'test_id' else '(OOD)    '} "
+                            f"KNN={knn_acc*100:.1f}% LP={lp_acc*100:.1f}% MLP={mlp_acc*100:.1f}% "
+                            f"L2_dist={shift_metrics['centroid_l2_dist']:.2f} "
+                            f"Cos_sim={shift_metrics['centroid_cos_sim']:.3f}")
+
                     layer_results[sname] = {
                         'knn_acc': knn_acc, 'knn_f1': knn_f1,
                         'lp_acc':  lp_acc,  'lp_f1':  lp_f1,
                         'mlp_acc': mlp_acc, 'mlp_f1': mlp_f1,
+                        'centroid_l2_dist': shift_metrics['centroid_l2_dist'],
+                        'centroid_cos_sim': shift_metrics['centroid_cos_sim'],
                     }
+
+                    if args.run_attentive_probe:
+                        eval_seq_feats, eval_seq_labels = get_sequence_features(
+                            model, ldr, layer, device, padded_h, padded_w)
+                        attn_light_acc, attn_light_f1 = attentive_probe_eval(
+                            train_seq_feats, train_labels, eval_seq_feats, eval_seq_labels,
+                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=False)
+                        attn_heavy_acc, attn_heavy_f1 = attentive_probe_eval(
+                            train_seq_feats, train_labels, eval_seq_feats, eval_seq_labels,
+                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=True)
+                        line += (f" AttnLight={attn_light_acc*100:.1f}% AttnHeavy={attn_heavy_acc*100:.1f}%")
+                        layer_results[sname].update({
+                            'attn_light_acc': attn_light_acc, 'attn_light_f1': attn_light_f1,
+                            'attn_heavy_acc': attn_heavy_acc, 'attn_heavy_f1': attn_heavy_f1,
+                        })
+
+                    print(line)
                 epoch_results[f'layer_{layer}'] = layer_results
 
             results['evals'][f'epoch_{epoch}'] = epoch_results
