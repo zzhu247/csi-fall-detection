@@ -34,7 +34,7 @@ from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
 sys.path.insert(0, '/home/zhuzih19/csi-project/csi-fall-detection')
 import config
-from data.dataset import MultiTaskDataset
+from data.dataset import MultiTaskDataset, load_and_normalize_csi
 from models.mae import MAE
 from models.mae_v2 import MAEv2
 
@@ -50,6 +50,89 @@ OOD_SPLITS = ['test_id', 'test_cross_device', 'test_cross_env', 'test_cross_user
 
 RAW_IMG_H, RAW_IMG_W = 232, 500  # standard CSI-Bench input shape (subcarriers x timesteps)
 ENCODER_HEADS = 4                # hardcoded to match existing model construction below
+
+# ── Domain-adversarial pretraining (DANN, Ganin & Lempitsky 2016) ─────────────
+class GradientReversalFunction(torch.autograd.Function):
+    """Forward: identity. Backward: negates and scales the incoming gradient by lambda_.
+    This is the entire mechanism behind domain-adversarial training -- the domain
+    classifier downstream of this layer is trained NORMALLY (gradient flows through
+    unchanged for its own parameters), but the SAME loss's gradient into whatever comes
+    BEFORE this layer (the encoder) is reversed, pushing the encoder to make domain
+    prediction harder rather than easier."""
+    @staticmethod
+    def forward(ctx, x, lambda_):
+        ctx.lambda_ = lambda_
+        return x.view_as(x)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        return grad_output.neg() * ctx.lambda_, None
+
+
+class GradientReversalLayer(nn.Module):
+    def __init__(self, lambda_=1.0):
+        super().__init__()
+        self.lambda_ = lambda_
+
+    def forward(self, x):
+        return GradientReversalFunction.apply(x, self.lambda_)
+
+
+class DomainClassifier(nn.Module):
+    """Small MLP predicting domain (e.g. device id) from a pooled encoder embedding.
+    Trained adversarially via GradientReversalLayer -- see train_mae_har.py's main()
+    for how this is wired into the pretraining loop."""
+    def __init__(self, encoder_dim, num_domains, hidden_dim=128):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(encoder_dim, hidden_dim), nn.ReLU(), nn.Linear(hidden_dim, num_domains)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+class DomainLabeledDataset(torch.utils.data.Dataset):
+    """
+    Same loading logic as MultiTaskDataset (models/data.dataset.py), but additionally
+    returns a domain label (e.g. device/environment/user id) alongside (csi, task_label).
+    Needed because MultiTaskDataset.__getitem__ only returns (csi, task_label) -- no
+    domain info -- and domain-adversarial pretraining needs a domain label per sample.
+
+    domain_map should be built from train_id's domain column ONLY (not the full metadata
+    table) -- the OOD splits' domains (e.g. held-out devices for test_cross_device) should
+    never appear in this label space, since the adversarial classifier's job is to fail to
+    distinguish among the domains seen DURING pretraining, not to have OOD domain classes
+    defined at all.
+    """
+    def __init__(self, meta_df, data_root, task, label_map, domain_column, domain_map):
+        self.meta = meta_df.reset_index(drop=True)
+        self.data_root = data_root
+        self.task = task
+        self.label_map = label_map
+        self.domain_column = domain_column
+        self.domain_map = domain_map
+
+    def __len__(self):
+        return len(self.meta)
+
+    def __getitem__(self, idx):
+        row = self.meta.iloc[idx]
+        h5_path = os.path.join(self.data_root, self.task, row["file_path"].lstrip("./"))
+        csi = load_and_normalize_csi(h5_path)
+        csi = (csi - csi.mean()) / (csi.std() + 1e-8)
+        csi = torch.tensor(csi, dtype=torch.float32).unsqueeze(0)
+        label = torch.tensor(self.label_map[row["label"]], dtype=torch.long)
+        domain_value = row[self.domain_column]
+        if domain_value not in self.domain_map:
+            raise KeyError(
+                f"domain value {domain_value!r} (column={self.domain_column!r}) not in "
+                f"domain_map -- this should only be built from train_id, so seeing an "
+                f"unexpected value here suggests train_df and domain_map were built from "
+                f"different data.")
+        domain = torch.tensor(self.domain_map[domain_value], dtype=torch.long)
+        return csi, label, domain
+
 
 # ── Patch-size padding utilities ──────────────────────────────────────────────
 def compute_padded_size(orig_size, patch_size):
@@ -807,6 +890,35 @@ def main():
                          help='Bypass the pre-flight attention-memory safety check (not recommended)')
     parser.add_argument('--mem_budget_gb', type=float, default=20.0,
                          help='Safety budget (GB) for the cumulative attention memory before hard-stopping')
+    parser.add_argument('--domain_adv_lambda', type=float, default=0.0,
+                         help='Domain-adversarial pretraining strength (DANN, Ganin & Lempitsky 2016). '
+                              '0.0 (default) = off. When > 0, adds a domain classifier on the FULL '
+                              '(unmasked) pooled encoder embedding, trained via gradient reversal to push '
+                              'the encoder toward domain-invariant representations. WARNING: this requires '
+                              'an extra full (unmasked) encoder forward pass per training step on top of '
+                              "MAE's existing masked forward -- meaningfully more compute, especially for "
+                              'small patch sizes (more tokens = the extra full-sequence attention is more '
+                              'expensive than the 25%-visible masked pass). Also: naive Adam-based joint '
+                              'optimization of this adversarial objective can fail silently (the domain '
+                              'classifier "wins" and stays highly accurate, meaning the encoder never '
+                              'became domain-invariant) -- watch the printed domain classifier accuracy '
+                              'during training; it should trend DOWN toward chance level (1/num_domains), '
+                              'not stay high. If it stays high, try --domain_adv_optimizer sgd.')
+    parser.add_argument('--domain_adv_column', default='device', choices=['device', 'environment', 'user'],
+                         help='Which metadata column to use as the domain-adversarial target')
+    parser.add_argument('--domain_adv_layer', type=int, default=None,
+                         help='Which encoder layer to attach the domain classifier to (default: '
+                              'encoder_depth, i.e. the deepest layer)')
+    parser.add_argument('--domain_adv_hidden_dim', type=int, default=128)
+    parser.add_argument('--domain_adv_optimizer', default='adamw', choices=['adamw', 'sgd'],
+                         help="Optimizer for the domain classifier's own parameters (separate from the "
+                              "main model optimizer, which stays AdamW regardless). sgd (with momentum) "
+                              "was empirically more reliable at actually driving domain accuracy toward "
+                              "chance level in isolated testing -- adamw can let the domain classifier "
+                              "win the adversarial game and stay highly accurate. Try sgd first if "
+                              "domain accuracy isn't dropping.")
+    parser.add_argument('--domain_adv_lr', type=float, default=0.01,
+                         help="Learning rate for the domain classifier's own optimizer")
     parser.add_argument('--run_attentive_probe', action='store_true',
                          help='Also run lightweight + heavyweight attentive probing at every eval checkpoint. '
                               'OFF by default -- this roughly doubles per-checkpoint eval cost (extracting '
@@ -877,11 +989,28 @@ def main():
     print(f"label_map: {label_map}  num_classes: {num_classes}")
 
     train_ds = MultiTaskDataset(train_df, DATA_ROOT, 'Multitask', label_map=label_map)
-    pretrain_loader = DataLoader(train_ds, batch_size=args.batch_size,
-                                 shuffle=True, num_workers=4, pin_memory=True)
-    # For feature extraction (no shuffle)
+    # For feature extraction (no shuffle) -- unaffected by domain-adversarial training,
+    # stays a plain (csi, label) 2-tuple loader regardless of --domain_adv_lambda.
     train_feat_loader = DataLoader(train_ds, batch_size=args.batch_size,
                                    shuffle=False, num_workers=4)
+
+    domain_map = None
+    if args.domain_adv_lambda > 0:
+        # domain_map is built ONLY from train_id's domain values -- OOD splits' domains
+        # (e.g. held-out devices) must never appear in this label space, see
+        # DomainLabeledDataset's docstring.
+        domain_values = sorted(train_df[args.domain_adv_column].unique(), key=str)
+        domain_map = {v: i for i, v in enumerate(domain_values)}
+        num_domains = len(domain_map)
+        print(f"[domain-adv] column={args.domain_adv_column!r}  num_domains={num_domains}  "
+              f"domain_map={domain_map}")
+        pretrain_ds = DomainLabeledDataset(train_df, DATA_ROOT, 'Multitask', label_map,
+                                           args.domain_adv_column, domain_map)
+        pretrain_loader = DataLoader(pretrain_ds, batch_size=args.batch_size,
+                                     shuffle=True, num_workers=4, pin_memory=True)
+    else:
+        pretrain_loader = DataLoader(train_ds, batch_size=args.batch_size,
+                                     shuffle=True, num_workers=4, pin_memory=True)
 
     # OOD loaders
     ood_loaders = {}
@@ -921,12 +1050,34 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs)
 
+    # ── Domain-adversarial setup (off unless --domain_adv_lambda > 0) ────────
+    domain_clf, grl, domain_optimizer = None, None, None
+    if args.domain_adv_lambda > 0:
+        domain_adv_layer = args.domain_adv_layer or args.encoder_depth
+        domain_clf = DomainClassifier(args.encoder_dim, num_domains,
+                                      hidden_dim=args.domain_adv_hidden_dim).to(device)
+        grl = GradientReversalLayer(lambda_=args.domain_adv_lambda)
+        # Separate optimizer for the domain classifier's OWN params -- deliberately not
+        # folded into the main AdamW optimizer, so its momentum state doesn't interact
+        # with the encoder/decoder's reconstruction-loss momentum state.
+        if args.domain_adv_optimizer == 'sgd':
+            domain_optimizer = torch.optim.SGD(domain_clf.parameters(), lr=args.domain_adv_lr, momentum=0.9)
+        else:
+            domain_optimizer = torch.optim.AdamW(domain_clf.parameters(), lr=args.domain_adv_lr)
+        print(f"[domain-adv] classifier attached at layer {domain_adv_layer}, "
+              f"lambda={args.domain_adv_lambda}, optimizer={args.domain_adv_optimizer}")
+        print(f"[domain-adv] WATCH the printed domain accuracy below -- it should trend "
+              f"DOWN toward chance level (~{1/num_domains:.3f}). If it stays high, the "
+              f"adversarial objective isn't working (see --domain_adv_lambda's help text).")
+
     # Persist padding metadata alongside args so downstream visualization/analysis
     # can tell exactly what shape the model actually trained on.
     saved_args = vars(args).copy()
     saved_args['padded_h'] = padded_h
     saved_args['padded_w'] = padded_w
     saved_args['num_patches'] = num_patches
+    if domain_map is not None:
+        saved_args['domain_map'] = {str(k): v for k, v in domain_map.items()}
     results = {'exp': exp_name, 'args': saved_args, 'loss_log': [], 'evals': {}}
     best_loss = float('inf')
 
@@ -934,18 +1085,57 @@ def main():
     for epoch in range(1, args.epochs + 1):
         model.train()
         total_loss = 0
-        for csi, _ in pretrain_loader:
-            csi = pad_csi(csi.to(device), padded_h, padded_w)
-            optimizer.zero_grad()
-            out = model(csi); loss = out[0]
-            loss.backward()
-            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
-            total_loss += loss.item()
+        total_domain_loss, domain_correct, domain_total = 0.0, 0, 0
+
+        if args.domain_adv_lambda > 0:
+            domain_clf.train()
+            for csi, _, domain_label in pretrain_loader:
+                csi = pad_csi(csi.to(device), padded_h, padded_w)
+                domain_label = domain_label.to(device)
+
+                # Reconstruction forward (masked, as always)
+                out = model(csi); recon_loss = out[0]
+
+                # Domain-adversarial forward: a SEPARATE, FULL (unmasked) encoder pass --
+                # matches what eval-time extract_layer_embeddings() sees, unlike the
+                # masked reconstruction forward above which only sees 25% of tokens (at
+                # mask_ratio=0.75). This is the extra compute cost flagged in
+                # --domain_adv_lambda's help text.
+                full_emb = model.extract_layer_embeddings(csi, [domain_adv_layer])[domain_adv_layer]
+                domain_logits = domain_clf(grl(full_emb))
+                domain_loss = F.cross_entropy(domain_logits, domain_label)
+
+                total = recon_loss + args.domain_adv_lambda * domain_loss
+
+                optimizer.zero_grad()
+                domain_optimizer.zero_grad()
+                total.backward()
+                nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                optimizer.step()
+                domain_optimizer.step()
+
+                total_loss += recon_loss.item()
+                total_domain_loss += domain_loss.item()
+                domain_correct += (domain_logits.argmax(1) == domain_label).sum().item()
+                domain_total += domain_label.shape[0]
+        else:
+            for csi, _ in pretrain_loader:
+                csi = pad_csi(csi.to(device), padded_h, padded_w)
+                optimizer.zero_grad()
+                out = model(csi); loss = out[0]
+                loss.backward()
+                nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                optimizer.step()
+                total_loss += loss.item()
         scheduler.step()
 
         avg_loss = total_loss / len(pretrain_loader)
         results['loss_log'].append({'epoch': epoch, 'loss': avg_loss})
+        if args.domain_adv_lambda > 0:
+            avg_domain_loss = total_domain_loss / len(pretrain_loader)
+            domain_acc = domain_correct / domain_total
+            results['loss_log'][-1]['domain_loss'] = avg_domain_loss
+            results['loss_log'][-1]['domain_acc'] = domain_acc
 
         if avg_loss < best_loss:
             best_loss = avg_loss
@@ -954,9 +1144,13 @@ def main():
                        f'{CKPT_DIR}/{exp_name}_best.pt')
 
         if epoch % 10 == 0:
-            print(f"Epoch {epoch:03d}/{args.epochs} | "
-                  f"loss={avg_loss:.4f} | best={best_loss:.4f} | "
-                  f"lr={scheduler.get_last_lr()[0]:.2e}")
+            line = (f"Epoch {epoch:03d}/{args.epochs} | "
+                   f"loss={avg_loss:.4f} | best={best_loss:.4f} | "
+                   f"lr={scheduler.get_last_lr()[0]:.2e}")
+            if args.domain_adv_lambda > 0:
+                line += (f" | domain_loss={avg_domain_loss:.4f} | domain_acc={domain_acc:.3f} "
+                        f"(chance={1/num_domains:.3f})")
+            print(line)
             sys.stdout.flush()
 
         # ── Periodic eval ─────────────────────────────────────
