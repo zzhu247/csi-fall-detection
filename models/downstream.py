@@ -23,7 +23,7 @@ class MAEv2ForDownstream(nn.Module):
         # 2. Add 2-layer MLP Head
         self.mlp_head = nn.Sequential(
             nn.Linear(encoder_dim, hidden_dim),
-            nn.LayerNorm(hidden_dim),
+            # nn.LayerNorm(hidden_dim),
             nn.ReLU(),
             nn.Dropout(0.3),
             nn.Linear(hidden_dim, num_classes)

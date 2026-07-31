@@ -1,0 +1,7 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/scripts/run_norm_comparison.py", line 36, in <module>
+    from train_mae_har import (
+        compute_padded_size, pad_csi, finetune_eval, ENCODER_HEADS, RAW_IMG_H, RAW_IMG_W,
+    )
+ModuleNotFoundError: No module named 'train_mae_har'

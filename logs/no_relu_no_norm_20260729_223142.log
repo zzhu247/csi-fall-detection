@@ -1,0 +1,79 @@
+nohup: ignoring input
+Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
+  norm_types to compare: ['none']
+  seeds per norm_type: [42, 43, 44]  (n=3)
+  unfreeze_last_n_layers: 0   l2sp_lambda: 0.0
+
+Loaded checkpoint: epoch=276, loss=0.1160
+
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+
+
+======================================================================
+norm_type = none  (3 seed(s): [42, 43, 44])
+======================================================================
+
+  --- seed=42 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/50  ood_avg loss=1.6421  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=1.8265  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=1.9318  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=2.0908  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=2.1917  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=2.2256  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=1.6421)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.6421), not the final epoch trained
+    test_id              acc=0.5900  loss=1.1148
+    test_cross_device    acc=0.3414  loss=1.6832
+    test_cross_env       acc=0.4707  loss=1.8349
+    test_cross_user      acc=0.4784  loss=1.4083
+
+  --- seed=43 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/50  ood_avg loss=1.6118  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=1.7870  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=1.9921  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=2.0869  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=2.1453  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=2.2551  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=1.6118)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.6118), not the final epoch trained
+    test_id              acc=0.5856  loss=1.1019
+    test_cross_device    acc=0.4057  loss=1.5989
+    test_cross_env       acc=0.4592  loss=1.8220
+    test_cross_user      acc=0.5003  loss=1.4146
+
+  --- seed=44 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/50  ood_avg loss=1.5997  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=1.7819  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=1.9925  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=2.0789  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=2.1228  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=2.2740  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=1.5997)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.5997), not the final epoch trained
+    test_id              acc=0.5874  loss=1.0903
+    test_cross_device    acc=0.4386  loss=1.5676
+    test_cross_env       acc=0.4680  loss=1.8285
+    test_cross_user      acc=0.5018  loss=1.4030
+
+  Aggregated (n=3):
+    test_id              acc=0.5876 ± 0.0022   f1=0.5121 ± 0.0145
+    test_cross_device    acc=0.3952 ± 0.0494   f1=0.3769 ± 0.0322
+    test_cross_env       acc=0.4660 ± 0.0060   f1=0.3713 ± 0.0114
+    test_cross_user      acc=0.4935 ± 0.0131   f1=0.4058 ± 0.0060
+
+Saved raw results: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.json
+Saved comparison plot: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.png
+
+--- Accuracy ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+        none         0.5876 ± 0.0022         0.3952 ± 0.0494         0.4660 ± 0.0060         0.4935 ± 0.0131
+
+--- F1 (weighted) ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+        none         0.5121 ± 0.0145         0.3769 ± 0.0322         0.3713 ± 0.0114         0.4058 ± 0.0060

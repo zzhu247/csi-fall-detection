@@ -1,0 +1,6 @@
+nohup: ignoring input
+usage: finetune_mae_har.py [-h] --ckpt CKPT [--encoder_depth ENCODER_DEPTH]
+                           [--encoder_dim ENCODER_DIM] [--epochs EPOCHS]
+                           [--lr LR] [--batch_size BATCH_SIZE]
+                           [--freeze_epochs FREEZE_EPOCHS]
+finetune_mae_har.py: error: unrecognized arguments: --l2sp_lambda 1.0 --early_stop_split ood_avg

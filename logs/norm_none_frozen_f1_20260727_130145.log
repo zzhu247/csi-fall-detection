@@ -1,0 +1,73 @@
+nohup: ignoring input
+Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
+  norm_types to compare: ['none']
+  seeds per norm_type: [42, 43, 44]  (n=3)
+  unfreeze_last_n_layers: 0   l2sp_lambda: 0.0
+
+Loaded checkpoint: epoch=276, loss=0.1160
+
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+
+
+======================================================================
+norm_type = none  (3 seed(s): [42, 43, 44])
+======================================================================
+
+  --- seed=42 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/25  ood_avg loss=1.7077  lr=9.05e-04  <- best
+[finetune_eval] epoch 10/25  ood_avg loss=2.0610  lr=6.55e-04
+[finetune_eval] epoch 15/25  ood_avg loss=2.2401  lr=3.45e-04
+[finetune_eval] epoch 20/25  ood_avg loss=2.3446  lr=9.55e-05
+[finetune_eval] epoch 25/25  ood_avg loss=2.3703  lr=0.00e+00
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.7077), not the final epoch trained
+    test_id              acc=0.8047  loss=0.5981
+    test_cross_device    acc=0.3885  loss=1.6604
+    test_cross_env       acc=0.4417  loss=1.9394
+    test_cross_user      acc=0.4884  loss=1.5233
+
+  --- seed=43 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/25  ood_avg loss=1.7566  lr=9.05e-04  <- best
+[finetune_eval] epoch 10/25  ood_avg loss=2.1420  lr=6.55e-04
+[finetune_eval] epoch 15/25  ood_avg loss=2.4516  lr=3.45e-04
+[finetune_eval] epoch 20/25  ood_avg loss=2.5488  lr=9.55e-05
+[finetune_eval] epoch 25/25  ood_avg loss=2.5754  lr=0.00e+00
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.7566), not the final epoch trained
+    test_id              acc=0.8038  loss=0.5884
+    test_cross_device    acc=0.4373  loss=1.6115
+    test_cross_env       acc=0.4101  loss=2.0364
+    test_cross_user      acc=0.4952  loss=1.6218
+
+  --- seed=44 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12
+[finetune_eval] epoch 5/25  ood_avg loss=1.7748  lr=9.05e-04  <- best
+[finetune_eval] epoch 10/25  ood_avg loss=2.2227  lr=6.55e-04
+[finetune_eval] epoch 15/25  ood_avg loss=2.4698  lr=3.45e-04
+[finetune_eval] epoch 20/25  ood_avg loss=2.5829  lr=9.55e-05
+[finetune_eval] epoch 25/25  ood_avg loss=2.5941  lr=0.00e+00
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=1.7748), not the final epoch trained
+    test_id              acc=0.8081  loss=0.5894
+    test_cross_device    acc=0.4068  loss=1.6921
+    test_cross_env       acc=0.3738  loss=2.0584
+    test_cross_user      acc=0.4832  loss=1.5738
+
+  Aggregated (n=3):
+    test_id              acc=0.8055 ± 0.0023   f1=0.7916 ± 0.0047
+    test_cross_device    acc=0.4109 ± 0.0247   f1=0.3886 ± 0.0119
+    test_cross_env       acc=0.4085 ± 0.0339   f1=0.3668 ± 0.0198
+    test_cross_user      acc=0.4889 ± 0.0060   f1=0.4175 ± 0.0165
+
+Saved raw results: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.json
+Saved comparison plot: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.png
+
+--- Accuracy ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+        none         0.8055 ± 0.0023         0.4109 ± 0.0247         0.4085 ± 0.0339         0.4889 ± 0.0060
+
+--- F1 (weighted) ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+        none         0.7916 ± 0.0047         0.3886 ± 0.0119         0.3668 ± 0.0198         0.4175 ± 0.0165
