@@ -1101,7 +1101,22 @@ def main():
                 # masked reconstruction forward above which only sees 25% of tokens (at
                 # mask_ratio=0.75). This is the extra compute cost flagged in
                 # --domain_adv_lambda's help text.
-                full_emb = model.extract_layer_embeddings(csi, [domain_adv_layer])[domain_adv_layer]
+                #
+                # IMPORTANT: model.extract_layer_embeddings() (models/mae.py) is decorated
+                # with @torch.no_grad() -- it was designed purely for eval-time feature
+                # extraction (get_features()), so calling it here would silently return a
+                # DETACHED tensor with no grad_fn. The GRL's reversed gradient would then
+                # stop dead at that detached tensor and never reach the encoder -- domain
+                # classifier accuracy would climb completely normally (its own gradient path
+                # is unaffected) while the encoder receives literally zero adversarial
+                # pressure, regardless of --domain_adv_lambda. (This was caught empirically:
+                # lambda=1 and lambda=10 produced bit-identical loss trajectories and eval
+                # numbers, which is only possible if the domain path wasn't touching the
+                # encoder at all.) extract_sequence_embeddings() (added earlier for
+                # attentive probing) does the same layer-walk WITHOUT @torch.no_grad(), so
+                # gradients flow correctly -- use that here instead.
+                full_seq = extract_sequence_embeddings(model, csi, domain_adv_layer)
+                full_emb = full_seq.mean(dim=1)  # [B, encoder_dim], matches extract_layer_embeddings' pooling
                 domain_logits = domain_clf(grl(full_emb))
                 domain_loss = F.cross_entropy(domain_logits, domain_label)
 
