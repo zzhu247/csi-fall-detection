@@ -2,14 +2,17 @@
 run_l2sp_sweep.py
 -------------------
 Sweeps l2sp_lambda across a list of values (full backbone unfreeze each time), records
-test_id + all OOD split accuracy at each value, and plots the trade-off curve: as
-l2sp_lambda increases, how much test_id gain from fine-tuning is given up, and how much
-OOD stability is recovered.
+test_id + all OOD split accuracy/F1 at each value, multi-seed, and plots the trade-off
+curve: as l2sp_lambda increases, how much test_id gain from fine-tuning is given up, and
+how much OOD stability is recovered.
 
 Also runs the frozen baseline (unfreeze_last_n_layers=0) once for reference -- plotted as
 horizontal dashed lines, since a frozen backbone can't drift at all regardless of
 l2sp_lambda, so it's the natural "OOD stability ceiling" / "test_id fine-tuning-gain floor"
-to compare every lambda against.
+to compare every lambda against. NOTE: the frozen baseline is a SINGLE, unseeded run --
+if you're comparing "gap to frozen" across two separate invocations of this script, be
+aware the frozen baseline itself can vary run-to-run (head init isn't seeded before it
+runs) by a similar magnitude to some of the lambda effects being studied.
 
 Usage:
     python run_l2sp_sweep.py \
@@ -17,10 +20,10 @@ Usage:
         --result_json results/mae_har/<exp_name>.json \
         --layer 12 \
         --lambdas 0,0.1,0.5,1.0,5.0,10.0 \
-        --finetune_epochs 25 \
+        --seeds 42,43,44 \
         --out_dir figs/l2sp_sweep
 """
-import argparse, json, sys
+import argparse, json, sys, statistics
 from pathlib import Path
 
 import torch
@@ -33,7 +36,7 @@ from data.dataset import MultiTaskDataset
 from models.mae import MAE
 from models.mae_v2 import MAEv2
 
-from train.train_mae_har import (
+from train_mae_har import (
     compute_padded_size, pad_csi, finetune_eval, ENCODER_HEADS, RAW_IMG_H, RAW_IMG_W,
 )
 
@@ -70,15 +73,12 @@ def build_model(train_args, padded_h, padded_w, device):
 
 
 def plot_tradeoff(sweep_results, frozen_baseline, out_path, monitor_metric):
-    """sweep_results: list of {'lambda': float, 'n_seeds': int, split: {'acc_mean':..., 'acc_std':..., ...}, ...}
+    """sweep_results: list of {'lambda': float, 'n_seeds': int, split: {'acc_mean':..., 'acc_std':...}, ...}
     frozen_baseline: {split: {'acc':..., 'loss':...}} from unfreeze_last_n_layers=0 (single run --
-    the backbone can't drift regardless of seed, so this is kept single-seed as a fixed reference,
-    unlike the lambda sweep itself which is now multi-seed).
+    see module docstring for why this stays single-seed while the lambda sweep is multi-seed).
     """
     lambdas = [r['lambda'] for r in sweep_results]
     n_seeds = sweep_results[0]['n_seeds'] if sweep_results else 1
-    # x-axis: lambda=0 breaks a log scale, so use ordinal positions with the real lambda
-    # values as tick labels instead of a true numeric/log axis.
     x_pos = list(range(len(lambdas)))
 
     fig, ax = plt.subplots(figsize=(9, 6))
@@ -87,7 +87,6 @@ def plot_tradeoff(sweep_results, frozen_baseline, out_path, monitor_metric):
         y_std = [r[split]['acc_std'] for r in sweep_results]
         ax.errorbar(x_pos, y_mean, yerr=y_std, fmt='o-', label=SPLIT_LABELS[split],
                     color=SPLIT_COLORS[split], linewidth=2, markersize=6, capsize=4)
-        # frozen-baseline reference line for this split (single-seed, see docstring)
         ax.axhline(frozen_baseline[split]['acc'], color=SPLIT_COLORS[split], linestyle=':', alpha=0.4, linewidth=1.5)
 
     ax.set_xticks(x_pos)
@@ -95,7 +94,7 @@ def plot_tradeoff(sweep_results, frozen_baseline, out_path, monitor_metric):
     ax.set_xlabel('l2sp_lambda (full backbone unfreeze)')
     ax.set_ylabel('Accuracy')
     ax.set_title(f'L2-SP Trade-off: test_id gain vs. OOD stability (mean \u00b1 std, n={n_seeds} seeds)\n'
-                  '(dotted lines = frozen-backbone reference, i.e. lambda=∞, single-seed)')
+                  '(dotted lines = frozen-backbone reference, i.e. lambda=\u221e, single-seed)')
     ax.legend(fontsize=9, loc='center left', bbox_to_anchor=(1.0, 0.5))
     ax.grid(alpha=0.3)
     fig.tight_layout()
@@ -111,12 +110,9 @@ def main():
     parser.add_argument('--lambdas', default='0,0.1,0.5,1.0,5.0,10.0',
                         help='Comma-separated list of l2sp_lambda values to sweep')
     parser.add_argument('--seeds', default='42',
-                        help='Comma-separated list of seeds to run at EACH lambda value (default: single '
-                             'seed=42, matching prior behavior). Each seed reseeds torch before that run, '
-                             'which changes both the downstream head\'s random initialization and the '
-                             'training DataLoader\'s shuffle order -- results are reported as mean +/- std '
-                             'across seeds. Use e.g. --seeds 42,43,44 to check whether a given lambda\'s '
-                             'result is stable or just noise from a single run.')
+                        help='Comma-separated list of seeds to run at EACH lambda value. Reseeds torch '
+                             'before each run (head init + train_loader shuffle order), results reported '
+                             'as mean +/- std across seeds.')
     parser.add_argument('--finetune_epochs', type=int, default=25)
     parser.add_argument('--backbone_lr', type=float, default=1e-5)
     parser.add_argument('--head_lr', type=float, default=1e-3)
@@ -184,9 +180,8 @@ def main():
                                        device, padded_h, padded_w, unfreeze_last_n_layers=0,
                                        verbose=False, **common_kwargs)
     for split in OOD_SPLITS:
-        print(f"  {split:<20} acc={frozen_baseline[split]['acc']:.4f}  loss={frozen_baseline[split]['loss']:.4f}")
-
-    import statistics
+        print(f"  {split:<20} acc={frozen_baseline[split]['acc']:.4f}  "
+              f"f1={frozen_baseline[split]['f1']:.4f}  loss={frozen_baseline[split]['loss']:.4f}")
 
     sweep_results = []
     for lam in lambdas:
@@ -197,55 +192,64 @@ def main():
         per_seed_results = []
         for seed in seeds:
             print(f"\n  --- seed={seed} ---")
-            torch.manual_seed(seed)  # reseeds BOTH the downstream head's init AND the
-                                     # train_loader's shuffle order (DataLoader(shuffle=True)
-                                     # draws from the global torch RNG unless given its own
-                                     # generator) -- so this one call makes the whole run
-                                     # reproducible per-seed, not just the head weights.
+            torch.manual_seed(seed)
             results, history = finetune_eval(model, train_loader, eval_loaders, num_classes, args.layer,
                                              device, padded_h, padded_w, unfreeze_last_n_layers=None,
                                              l2sp_lambda=lam, verbose=True, **common_kwargs)
             per_seed_results.append(results)
             for split in OOD_SPLITS:
-                print(f"    {split:<20} acc={results[split]['acc']:.4f}  loss={results[split]['loss']:.4f}")
+                print(f"    {split:<20} acc={results[split]['acc']:.4f}  "
+                      f"f1={results[split]['f1']:.4f}  loss={results[split]['loss']:.4f}")
 
-        # Aggregate across seeds: mean +/- std per split, per metric
         entry = {'lambda': lam, 'n_seeds': len(seeds)}
         for split in OOD_SPLITS:
             accs = [r[split]['acc'] for r in per_seed_results]
+            f1s = [r[split]['f1'] for r in per_seed_results]
             losses = [r[split]['loss'] for r in per_seed_results]
             entry[split] = {
                 'acc_mean': sum(accs) / len(accs),
                 'acc_std': statistics.stdev(accs) if len(accs) > 1 else 0.0,
+                'f1_mean': sum(f1s) / len(f1s),
+                'f1_std': statistics.stdev(f1s) if len(f1s) > 1 else 0.0,
                 'loss_mean': sum(losses) / len(losses),
                 'loss_std': statistics.stdev(losses) if len(losses) > 1 else 0.0,
-                'acc_per_seed': accs,  # keep raw per-seed values too, for later inspection
+                'acc_per_seed': accs,
+                'f1_per_seed': f1s,
             }
         sweep_results.append(entry)
         print(f"\n  Aggregated (n={len(seeds)}):")
         for split in OOD_SPLITS:
-            print(f"    {split:<20} acc={entry[split]['acc_mean']:.4f} \u00b1 {entry[split]['acc_std']:.4f}")
+            print(f"    {split:<20} acc={entry[split]['acc_mean']:.4f} \u00b1 {entry[split]['acc_std']:.4f}"
+                  f"   f1={entry[split]['f1_mean']:.4f} \u00b1 {entry[split]['f1_std']:.4f}")
 
-    # Save raw numbers
     out_json = out_dir / f"l2sp_sweep_{result['exp']}_layer{args.layer}.json"
     with open(out_json, 'w') as f:
         json.dump({'exp': result['exp'], 'layer': args.layer, 'frozen_baseline': frozen_baseline,
                    'sweep': sweep_results, 'monitor_metric': args.monitor_metric}, f, indent=2)
     print(f"\nSaved raw sweep results: {out_json}")
 
-    # Plot
     out_png = out_dir / f"l2sp_tradeoff_{result['exp']}_layer{args.layer}.png"
     plot_tradeoff(sweep_results, frozen_baseline, out_png, args.monitor_metric)
     print(f"Saved trade-off plot: {out_png}")
 
-    # Summary table (mean +/- std across seeds; frozen baseline stays single-run, see docstring)
     col_w = 24
-    print(f"\n{'lambda':>8}" + "".join(f"{SPLIT_LABELS[s]:>{col_w}}" for s in OOD_SPLITS))
+    print(f"\n--- Accuracy ---")
+    print(f"{'lambda':>8}" + "".join(f"{SPLIT_LABELS[s]:>{col_w}}" for s in OOD_SPLITS))
     print(f"{'frozen':>8}" + "".join(f"{frozen_baseline[s]['acc']:>{col_w}.4f}" for s in OOD_SPLITS))
     for r in sweep_results:
         row = f"{r['lambda']:>8}"
         for s in OOD_SPLITS:
             cell = f"{r[s]['acc_mean']:.4f} \u00b1 {r[s]['acc_std']:.4f}"
+            row += f"{cell:>{col_w}}"
+        print(row)
+
+    print(f"\n--- F1 (weighted) ---")
+    print(f"{'lambda':>8}" + "".join(f"{SPLIT_LABELS[s]:>{col_w}}" for s in OOD_SPLITS))
+    print(f"{'frozen':>8}" + "".join(f"{frozen_baseline[s]['f1']:>{col_w}.4f}" for s in OOD_SPLITS))
+    for r in sweep_results:
+        row = f"{r['lambda']:>8}"
+        for s in OOD_SPLITS:
+            cell = f"{r[s]['f1_mean']:.4f} \u00b1 {r[s]['f1_std']:.4f}"
             row += f"{cell:>{col_w}}"
         print(row)
 
