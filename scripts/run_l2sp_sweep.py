@@ -36,7 +36,7 @@ from data.dataset import MultiTaskDataset
 from models.mae import MAE
 from models.mae_v2 import MAEv2
 
-from train_mae_har import (
+from train.train_mae_har import (
     compute_padded_size, pad_csi, finetune_eval, ENCODER_HEADS, RAW_IMG_H, RAW_IMG_W,
 )
 
