@@ -1,0 +1,54 @@
+nohup: ignoring input
+
+Experiment: mae_hid_ep150_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128  (task=HumanIdentification)
+[patch-pad] patch_h=29, patch_w=25 evenly divide 232x500, no padding needed. num_patches=160
+[mem-check] num_patches=160  batch_size=128  encoder_depth=12  attention-score memory: 0.05 GB/layer, 0.59 GB cumulative (all layers retained for backward)
+label_map: {'U01': 0, 'U03': 1, 'U04': 2, 'U05': 3, 'U06': 4, 'U22': 5}  num_classes: 6
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+MAE params: 2,658,709
+Epoch 010/150 | loss=0.2455 | best=0.2455 | lr=1.48e-04
+Epoch 020/150 | loss=0.1659 | best=0.1659 | lr=1.44e-04
+Epoch 030/150 | loss=0.1390 | best=0.1390 | lr=1.36e-04
+Epoch 040/150 | loss=0.1292 | best=0.1292 | lr=1.25e-04
+Epoch 050/150 | loss=0.1256 | best=0.1256 | lr=1.12e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=99.9% LP=92.1% MLP=100.0% L2_dist=0.19 Cos_sim=0.999
+Traceback (most recent call last):
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train/train_mae_hid.py", line 1264, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train/train_mae_hid.py", line 1202, in main
+    eval_feats, eval_labels = get_features(model, ldr, layer, device, padded_h, padded_w)
+                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/zhuzih19/csi-project/csi-fall-detection/train/train_mae_hid.py", line 234, in get_features
+    for csi, y in loader:
+                  ^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 718, in __next__
+    data = self._next_data()
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1495, in _next_data
+    return self._process_data(data, worker_id)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1563, in _process_data
+    data.reraise()
+    ~~~~~~~~~~~~^^
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/_utils.py", line 774, in reraise
+    raise exception
+KeyError: Caught KeyError in DataLoader worker process 1.
+Original Traceback (most recent call last):
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/data/_utils/worker.py", line 374, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+  File "/home/zhuzih19/.local/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/home/zhuzih19/csi-project/csi-fall-detection/data/dataset.py", line 202, in __getitem__
+    self.label_map[row["label"]], dtype=torch.long
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'U02'
+
