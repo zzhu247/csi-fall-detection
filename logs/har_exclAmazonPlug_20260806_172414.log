@@ -1,0 +1,215 @@
+nohup: ignoring input
+
+Experiment: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_exclAmazonPlug
+[patch-pad] patch_h=29, patch_w=25 evenly divide 232x500, no padding needed. num_patches=160
+[mem-check] num_patches=160  batch_size=128  encoder_depth=12  attention-score memory: 0.05 GB/layer, 0.59 GB cumulative (all layers retained for backward)
+[exclude-devices] dropping device='AmazonPlug': 4736 rows
+[exclude-devices] meta: 55684 -> 50948 rows (applies to train_id AND every OOD split, since both are derived from this filtered meta going forward)
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+  test_id: 4602 samples
+  test_cross_device: 4895 samples
+  test_cross_env: 6095 samples
+  test_cross_user: 11009 samples
+MAE params: 2,658,709
+Epoch 010/300 | loss=0.2448 | best=0.2448 | lr=1.50e-04
+Epoch 020/300 | loss=0.1629 | best=0.1629 | lr=1.48e-04
+Epoch 030/300 | loss=0.1374 | best=0.1374 | lr=1.46e-04
+Epoch 040/300 | loss=0.1285 | best=0.1285 | lr=1.44e-04
+Epoch 050/300 | loss=0.1253 | best=0.1253 | lr=1.40e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.2% LP=52.6% MLP=86.8% L2_dist=0.21 Cos_sim=0.999
+    test_cross_device         (OOD)     KNN=18.5% LP=51.2% MLP=21.5% L2_dist=2.50 Cos_sim=0.942
+    test_cross_env            (OOD)     KNN=27.9% LP=46.4% MLP=31.2% L2_dist=1.32 Cos_sim=0.961
+    test_cross_user           (OOD)     KNN=44.7% LP=50.6% MLP=41.8% L2_dist=1.58 Cos_sim=0.956
+  Layer 3:
+    test_id                   (in-dist) KNN=94.4% LP=54.1% MLP=91.6% L2_dist=0.25 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=23.8% LP=50.0% MLP=15.2% L2_dist=2.84 Cos_sim=0.892
+    test_cross_env            (OOD)     KNN=30.4% LP=45.4% MLP=30.1% L2_dist=1.77 Cos_sim=0.925
+    test_cross_user           (OOD)     KNN=44.8% LP=48.5% MLP=44.5% L2_dist=1.72 Cos_sim=0.943
+  Layer 6:
+    test_id                   (in-dist) KNN=95.0% LP=55.9% MLP=93.1% L2_dist=0.31 Cos_sim=0.994
+    test_cross_device         (OOD)     KNN=24.0% LP=51.7% MLP=20.1% L2_dist=3.42 Cos_sim=0.791
+    test_cross_env            (OOD)     KNN=30.2% LP=47.6% MLP=28.4% L2_dist=2.07 Cos_sim=0.849
+    test_cross_user           (OOD)     KNN=44.2% LP=49.5% MLP=47.7% L2_dist=1.79 Cos_sim=0.904
+  Layer 9:
+    test_id                   (in-dist) KNN=95.1% LP=56.0% MLP=92.0% L2_dist=0.33 Cos_sim=0.995
+    test_cross_device         (OOD)     KNN=21.1% LP=50.9% MLP=28.7% L2_dist=3.94 Cos_sim=0.846
+    test_cross_env            (OOD)     KNN=32.6% LP=51.4% MLP=30.1% L2_dist=2.21 Cos_sim=0.833
+    test_cross_user           (OOD)     KNN=44.4% LP=49.3% MLP=45.5% L2_dist=2.04 Cos_sim=0.906
+  Layer 12:
+    test_id                   (in-dist) KNN=94.7% LP=56.1% MLP=88.0% L2_dist=0.30 Cos_sim=0.999
+    test_cross_device         (OOD)     KNN=23.8% LP=51.0% MLP=22.7% L2_dist=4.56 Cos_sim=0.927
+    test_cross_env            (OOD)     KNN=33.8% LP=49.6% MLP=30.6% L2_dist=1.94 Cos_sim=0.962
+    test_cross_user           (OOD)     KNN=44.7% LP=47.6% MLP=44.0% L2_dist=2.22 Cos_sim=0.969
+
+Epoch 060/300 | loss=0.1233 | best=0.1233 | lr=1.36e-04
+Epoch 070/300 | loss=0.1217 | best=0.1217 | lr=1.31e-04
+Epoch 080/300 | loss=0.1210 | best=0.1210 | lr=1.25e-04
+Epoch 090/300 | loss=0.1199 | best=0.1199 | lr=1.19e-04
+Epoch 100/300 | loss=0.1195 | best=0.1195 | lr=1.12e-04
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.2% MLP=89.1% L2_dist=0.23 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=16.5% LP=50.7% MLP=17.0% L2_dist=2.69 Cos_sim=0.912
+    test_cross_env            (OOD)     KNN=29.4% LP=44.0% MLP=26.5% L2_dist=1.38 Cos_sim=0.943
+    test_cross_user           (OOD)     KNN=45.0% LP=48.9% MLP=40.4% L2_dist=1.59 Cos_sim=0.949
+  Layer 3:
+    test_id                   (in-dist) KNN=94.8% LP=54.7% MLP=93.5% L2_dist=0.26 Cos_sim=0.997
+    test_cross_device         (OOD)     KNN=23.2% LP=50.2% MLP=14.1% L2_dist=3.03 Cos_sim=0.857
+    test_cross_env            (OOD)     KNN=32.0% LP=43.9% MLP=32.8% L2_dist=1.79 Cos_sim=0.897
+    test_cross_user           (OOD)     KNN=44.1% LP=46.2% MLP=44.0% L2_dist=1.71 Cos_sim=0.930
+  Layer 6:
+    test_id                   (in-dist) KNN=95.4% LP=57.0% MLP=94.7% L2_dist=0.30 Cos_sim=0.993
+    test_cross_device         (OOD)     KNN=18.8% LP=53.0% MLP=17.8% L2_dist=3.46 Cos_sim=0.762
+    test_cross_env            (OOD)     KNN=32.1% LP=45.2% MLP=30.2% L2_dist=2.05 Cos_sim=0.793
+    test_cross_user           (OOD)     KNN=44.9% LP=45.0% MLP=44.2% L2_dist=1.87 Cos_sim=0.873
+  Layer 9:
+    test_id                   (in-dist) KNN=95.1% LP=58.3% MLP=94.4% L2_dist=0.32 Cos_sim=0.993
+    test_cross_device         (OOD)     KNN=16.7% LP=46.0% MLP=29.2% L2_dist=3.79 Cos_sim=0.798
+    test_cross_env            (OOD)     KNN=30.5% LP=45.6% MLP=37.4% L2_dist=2.14 Cos_sim=0.805
+    test_cross_user           (OOD)     KNN=45.0% LP=49.5% MLP=45.1% L2_dist=2.07 Cos_sim=0.870
+  Layer 12:
+    test_id                   (in-dist) KNN=95.2% LP=57.6% MLP=92.1% L2_dist=0.31 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=19.1% LP=42.8% MLP=34.4% L2_dist=4.37 Cos_sim=0.914
+    test_cross_env            (OOD)     KNN=32.4% LP=49.3% MLP=34.3% L2_dist=1.96 Cos_sim=0.950
+    test_cross_user           (OOD)     KNN=44.0% LP=48.9% MLP=48.8% L2_dist=2.18 Cos_sim=0.959
+
+Epoch 110/300 | loss=0.1189 | best=0.1189 | lr=1.06e-04
+Epoch 120/300 | loss=0.1185 | best=0.1185 | lr=9.82e-05
+Epoch 130/300 | loss=0.1180 | best=0.1180 | lr=9.06e-05
+Epoch 140/300 | loss=0.1177 | best=0.1177 | lr=8.28e-05
+Epoch 150/300 | loss=0.1174 | best=0.1174 | lr=7.50e-05
+
+--- Eval at epoch 150 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.4% MLP=89.3% L2_dist=0.23 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=15.5% LP=50.7% MLP=14.3% L2_dist=2.70 Cos_sim=0.901
+    test_cross_env            (OOD)     KNN=29.0% LP=42.8% MLP=30.7% L2_dist=1.39 Cos_sim=0.934
+    test_cross_user           (OOD)     KNN=45.2% LP=51.2% MLP=40.3% L2_dist=1.57 Cos_sim=0.943
+  Layer 3:
+    test_id                   (in-dist) KNN=94.5% LP=54.7% MLP=94.3% L2_dist=0.25 Cos_sim=0.997
+    test_cross_device         (OOD)     KNN=21.0% LP=50.7% MLP=14.3% L2_dist=2.99 Cos_sim=0.850
+    test_cross_env            (OOD)     KNN=32.4% LP=40.0% MLP=33.5% L2_dist=1.76 Cos_sim=0.881
+    test_cross_user           (OOD)     KNN=44.1% LP=46.2% MLP=43.8% L2_dist=1.68 Cos_sim=0.922
+  Layer 6:
+    test_id                   (in-dist) KNN=95.3% LP=57.8% MLP=95.6% L2_dist=0.29 Cos_sim=0.992
+    test_cross_device         (OOD)     KNN=18.0% LP=52.0% MLP=17.4% L2_dist=3.43 Cos_sim=0.730
+    test_cross_env            (OOD)     KNN=33.5% LP=46.4% MLP=27.7% L2_dist=2.01 Cos_sim=0.756
+    test_cross_user           (OOD)     KNN=45.3% LP=43.4% MLP=43.6% L2_dist=1.84 Cos_sim=0.852
+  Layer 9:
+    test_id                   (in-dist) KNN=95.2% LP=58.8% MLP=95.1% L2_dist=0.31 Cos_sim=0.993
+    test_cross_device         (OOD)     KNN=23.8% LP=35.5% MLP=24.6% L2_dist=3.69 Cos_sim=0.766
+    test_cross_env            (OOD)     KNN=30.4% LP=52.4% MLP=33.1% L2_dist=2.06 Cos_sim=0.791
+    test_cross_user           (OOD)     KNN=47.3% LP=47.0% MLP=44.1% L2_dist=2.03 Cos_sim=0.851
+  Layer 12:
+    test_id                   (in-dist) KNN=95.5% LP=57.2% MLP=93.1% L2_dist=0.31 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=22.7% LP=40.9% MLP=17.0% L2_dist=4.23 Cos_sim=0.900
+    test_cross_env            (OOD)     KNN=32.7% LP=47.8% MLP=30.0% L2_dist=1.95 Cos_sim=0.942
+    test_cross_user           (OOD)     KNN=44.3% LP=49.2% MLP=42.6% L2_dist=2.11 Cos_sim=0.950
+
+Epoch 160/300 | loss=0.1173 | best=0.1173 | lr=6.72e-05
+Epoch 170/300 | loss=0.1172 | best=0.1172 | lr=5.94e-05
+Epoch 180/300 | loss=0.1170 | best=0.1170 | lr=5.18e-05
+Epoch 190/300 | loss=0.1169 | best=0.1169 | lr=4.45e-05
+Epoch 200/300 | loss=0.1167 | best=0.1167 | lr=3.75e-05
+
+--- Eval at epoch 200 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.5% LP=52.5% MLP=90.0% L2_dist=0.23 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=15.4% LP=50.6% MLP=15.8% L2_dist=2.70 Cos_sim=0.893
+    test_cross_env            (OOD)     KNN=28.5% LP=43.4% MLP=30.2% L2_dist=1.39 Cos_sim=0.926
+    test_cross_user           (OOD)     KNN=45.8% LP=50.1% MLP=40.5% L2_dist=1.55 Cos_sim=0.940
+  Layer 3:
+    test_id                   (in-dist) KNN=94.8% LP=54.7% MLP=94.1% L2_dist=0.25 Cos_sim=0.996
+    test_cross_device         (OOD)     KNN=20.3% LP=47.5% MLP=14.4% L2_dist=2.96 Cos_sim=0.839
+    test_cross_env            (OOD)     KNN=31.8% LP=39.6% MLP=34.7% L2_dist=1.74 Cos_sim=0.868
+    test_cross_user           (OOD)     KNN=44.5% LP=44.7% MLP=44.2% L2_dist=1.66 Cos_sim=0.917
+  Layer 6:
+    test_id                   (in-dist) KNN=95.4% LP=58.3% MLP=95.6% L2_dist=0.29 Cos_sim=0.991
+    test_cross_device         (OOD)     KNN=16.9% LP=52.0% MLP=19.1% L2_dist=3.41 Cos_sim=0.705
+    test_cross_env            (OOD)     KNN=32.8% LP=46.0% MLP=30.2% L2_dist=2.00 Cos_sim=0.713
+    test_cross_user           (OOD)     KNN=45.4% LP=43.6% MLP=45.2% L2_dist=1.81 Cos_sim=0.836
+  Layer 9:
+    test_id                   (in-dist) KNN=95.5% LP=59.1% MLP=95.4% L2_dist=0.31 Cos_sim=0.992
+    test_cross_device         (OOD)     KNN=22.7% LP=32.8% MLP=15.9% L2_dist=3.56 Cos_sim=0.750
+    test_cross_env            (OOD)     KNN=32.6% LP=49.3% MLP=30.6% L2_dist=2.02 Cos_sim=0.769
+    test_cross_user           (OOD)     KNN=47.2% LP=48.3% MLP=45.1% L2_dist=2.00 Cos_sim=0.836
+  Layer 12:
+    test_id                   (in-dist) KNN=95.7% LP=57.3% MLP=93.9% L2_dist=0.30 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=22.3% LP=42.1% MLP=15.3% L2_dist=4.13 Cos_sim=0.899
+    test_cross_env            (OOD)     KNN=34.8% LP=47.5% MLP=33.9% L2_dist=1.90 Cos_sim=0.941
+    test_cross_user           (OOD)     KNN=44.2% LP=49.3% MLP=44.0% L2_dist=2.10 Cos_sim=0.948
+
+Epoch 210/300 | loss=0.1166 | best=0.1165 | lr=3.09e-05
+Epoch 220/300 | loss=0.1165 | best=0.1165 | lr=2.48e-05
+Epoch 230/300 | loss=0.1165 | best=0.1164 | lr=1.93e-05
+Epoch 240/300 | loss=0.1164 | best=0.1163 | lr=1.43e-05
+Epoch 250/300 | loss=0.1163 | best=0.1162 | lr=1.00e-05
+
+--- Eval at epoch 250 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.4% LP=52.6% MLP=89.6% L2_dist=0.23 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=15.3% LP=51.4% MLP=16.9% L2_dist=2.70 Cos_sim=0.886
+    test_cross_env            (OOD)     KNN=29.0% LP=42.5% MLP=27.1% L2_dist=1.40 Cos_sim=0.921
+    test_cross_user           (OOD)     KNN=45.9% LP=49.9% MLP=46.5% L2_dist=1.56 Cos_sim=0.935
+  Layer 3:
+    test_id                   (in-dist) KNN=94.6% LP=54.5% MLP=94.7% L2_dist=0.25 Cos_sim=0.996
+    test_cross_device         (OOD)     KNN=21.2% LP=47.4% MLP=14.1% L2_dist=2.95 Cos_sim=0.834
+    test_cross_env            (OOD)     KNN=31.7% LP=39.6% MLP=29.3% L2_dist=1.72 Cos_sim=0.862
+    test_cross_user           (OOD)     KNN=44.4% LP=45.4% MLP=45.0% L2_dist=1.66 Cos_sim=0.912
+  Layer 6:
+    test_id                   (in-dist) KNN=95.5% LP=58.7% MLP=96.1% L2_dist=0.28 Cos_sim=0.990
+    test_cross_device         (OOD)     KNN=17.1% LP=51.6% MLP=16.9% L2_dist=3.42 Cos_sim=0.687
+    test_cross_env            (OOD)     KNN=31.9% LP=45.2% MLP=28.7% L2_dist=1.99 Cos_sim=0.692
+    test_cross_user           (OOD)     KNN=45.4% LP=43.3% MLP=44.0% L2_dist=1.80 Cos_sim=0.827
+  Layer 9:
+    test_id                   (in-dist) KNN=95.4% LP=59.6% MLP=96.0% L2_dist=0.30 Cos_sim=0.992
+    test_cross_device         (OOD)     KNN=22.9% LP=33.9% MLP=14.9% L2_dist=3.58 Cos_sim=0.735
+    test_cross_env            (OOD)     KNN=33.2% LP=51.3% MLP=32.6% L2_dist=2.04 Cos_sim=0.750
+    test_cross_user           (OOD)     KNN=47.3% LP=49.1% MLP=44.1% L2_dist=1.99 Cos_sim=0.830
+  Layer 12:
+    test_id                   (in-dist) KNN=95.8% LP=57.3% MLP=94.0% L2_dist=0.30 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=21.0% LP=32.7% MLP=25.8% L2_dist=4.08 Cos_sim=0.900
+    test_cross_env            (OOD)     KNN=34.0% LP=47.4% MLP=29.7% L2_dist=1.87 Cos_sim=0.941
+    test_cross_user           (OOD)     KNN=43.6% LP=49.5% MLP=48.3% L2_dist=2.08 Cos_sim=0.949
+
+Epoch 260/300 | loss=0.1162 | best=0.1162 | lr=6.48e-06
+Epoch 270/300 | loss=0.1160 | best=0.1160 | lr=3.67e-06
+Epoch 280/300 | loss=0.1162 | best=0.1160 | lr=1.64e-06
+Epoch 290/300 | loss=0.1161 | best=0.1160 | lr=4.11e-07
+Epoch 300/300 | loss=0.1162 | best=0.1160 | lr=0.00e+00
+
+--- Eval at epoch 300 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=93.4% LP=52.6% MLP=89.4% L2_dist=0.23 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=15.6% LP=51.4% MLP=12.6% L2_dist=2.70 Cos_sim=0.887
+    test_cross_env            (OOD)     KNN=29.0% LP=43.8% MLP=25.4% L2_dist=1.40 Cos_sim=0.920
+    test_cross_user           (OOD)     KNN=45.8% LP=49.0% MLP=44.6% L2_dist=1.56 Cos_sim=0.935
+  Layer 3:
+    test_id                   (in-dist) KNN=94.6% LP=54.8% MLP=94.2% L2_dist=0.25 Cos_sim=0.996
+    test_cross_device         (OOD)     KNN=21.0% LP=47.4% MLP=12.9% L2_dist=2.94 Cos_sim=0.835
+    test_cross_env            (OOD)     KNN=31.4% LP=40.0% MLP=31.5% L2_dist=1.73 Cos_sim=0.859
+    test_cross_user           (OOD)     KNN=44.3% LP=45.6% MLP=45.6% L2_dist=1.66 Cos_sim=0.911
+  Layer 6:
+    test_id                   (in-dist) KNN=95.5% LP=58.8% MLP=95.7% L2_dist=0.28 Cos_sim=0.990
+    test_cross_device         (OOD)     KNN=17.3% LP=52.1% MLP=25.3% L2_dist=3.41 Cos_sim=0.691
+    test_cross_env            (OOD)     KNN=32.3% LP=44.9% MLP=32.0% L2_dist=2.00 Cos_sim=0.685
+    test_cross_user           (OOD)     KNN=45.4% LP=43.4% MLP=43.5% L2_dist=1.80 Cos_sim=0.824
+  Layer 9:
+    test_id                   (in-dist) KNN=95.5% LP=59.5% MLP=95.9% L2_dist=0.30 Cos_sim=0.991
+    test_cross_device         (OOD)     KNN=22.0% LP=27.0% MLP=18.7% L2_dist=3.58 Cos_sim=0.736
+    test_cross_env            (OOD)     KNN=33.3% LP=51.7% MLP=33.7% L2_dist=2.04 Cos_sim=0.744
+    test_cross_user           (OOD)     KNN=46.7% LP=48.0% MLP=46.7% L2_dist=1.99 Cos_sim=0.827
+  Layer 12:
+    test_id                   (in-dist) KNN=95.8% LP=57.6% MLP=94.4% L2_dist=0.30 Cos_sim=0.998
+    test_cross_device         (OOD)     KNN=21.1% LP=34.0% MLP=17.8% L2_dist=4.08 Cos_sim=0.902
+    test_cross_env            (OOD)     KNN=34.1% LP=48.2% MLP=31.6% L2_dist=1.85 Cos_sim=0.942
+    test_cross_user           (OOD)     KNN=43.6% LP=49.4% MLP=45.2% L2_dist=2.07 Cos_sim=0.950
+
+
+Done. Best pretrain loss: 0.1160
+Results: /home/zhuzih19/csi-project/csi-fall-detection/results/mae_har/mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_exclAmazonPlug.json
+Checkpoint: /home/zhuzih19/csi-project/csi-fall-detection/checkpoints/mae_har/mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_exclAmazonPlug_best.pt

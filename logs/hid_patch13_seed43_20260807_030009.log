@@ -1,0 +1,114 @@
+nohup: ignoring input
+
+Experiment: mae_hid_ep150_mask0.75_strategyrandom_ph13pw13_seed43_enc12_dim128_bs128  (task=HumanIdentification)
+[patch-pad] patch_h=13, patch_w=13 do not evenly divide 232x500 -- zero-padding input to 234x507 (+2 subcarriers, +7 timesteps). num_patches=702 (n_h=18, n_w=39)
+[mem-check] num_patches=702  batch_size=128  encoder_depth=12  attention-score memory: 0.94 GB/layer, 11.28 GB cumulative (all layers retained for backward)
+label_map: {'U01': 0, 'U03': 1, 'U04': 2, 'U05': 3, 'U06': 4, 'U22': 5}  num_classes: 6
+  test_id: 4602 samples
+  test_cross_device: 9631 samples -- OPEN-SET eval (contains identities not in train_id's label_map: ['U02']). Uses Rank-1 retrieval + verification AUC/EER instead of KNN/LP/MLP.
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples -- OPEN-SET eval (contains identities not in train_id's label_map: ['U02']). Uses Rank-1 retrieval + verification AUC/EER instead of KNN/LP/MLP.
+MAE params: 2,655,465
+Epoch 010/150 | loss=0.2510 | best=0.2510 | lr=1.48e-04
+Epoch 020/150 | loss=0.1622 | best=0.1622 | lr=1.44e-04
+Epoch 030/150 | loss=0.1444 | best=0.1444 | lr=1.36e-04
+Epoch 040/150 | loss=0.1371 | best=0.1371 | lr=1.25e-04
+Epoch 050/150 | loss=0.1334 | best=0.1334 | lr=1.12e-04
+
+--- Eval at epoch 50 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=99.9% LP=82.6% MLP=100.0% L2_dist=0.09 Cos_sim=1.000
+    test_cross_env            (OOD)     KNN=31.4% LP=34.2% MLP=44.3% L2_dist=0.65 Cos_sim=0.992
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.5%    (n_query=4817)  VerifAUC=0.7487  EER=0.3183
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 3:
+    test_id                   (in-dist) KNN=100.0% LP=97.4% MLP=100.0% L2_dist=0.17 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=13.5% LP=27.7% MLP=19.1% L2_dist=1.36 Cos_sim=0.949
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7630  EER=0.3146
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 6:
+    test_id                   (in-dist) KNN=100.0% LP=99.0% MLP=100.0% L2_dist=0.22 Cos_sim=0.997
+    test_cross_env            (OOD)     KNN=14.5% LP=27.0% MLP=11.4% L2_dist=1.69 Cos_sim=0.905
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7902  EER=0.2885
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 9:
+    test_id                   (in-dist) KNN=100.0% LP=99.3% MLP=100.0% L2_dist=0.23 Cos_sim=0.998
+    test_cross_env            (OOD)     KNN=17.5% LP=18.7% MLP=20.8% L2_dist=2.24 Cos_sim=0.845
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7728  EER=0.2981
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 12:
+    test_id                   (in-dist) KNN=100.0% LP=97.9% MLP=100.0% L2_dist=0.19 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=17.1% LP=31.7% MLP=19.4% L2_dist=1.99 Cos_sim=0.956
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.8%    (n_query=4817)  VerifAUC=0.7596  EER=0.3100
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+
+Epoch 060/150 | loss=0.1313 | best=0.1313 | lr=9.82e-05
+Epoch 070/150 | loss=0.1298 | best=0.1298 | lr=8.28e-05
+Epoch 080/150 | loss=0.1285 | best=0.1285 | lr=6.72e-05
+Epoch 090/150 | loss=0.1274 | best=0.1274 | lr=5.18e-05
+Epoch 100/150 | loss=0.1262 | best=0.1262 | lr=3.75e-05
+
+--- Eval at epoch 100 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=99.9% LP=84.7% MLP=100.0% L2_dist=0.08 Cos_sim=1.000
+    test_cross_env            (OOD)     KNN=32.5% LP=29.5% MLP=44.6% L2_dist=0.65 Cos_sim=0.991
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.6%    (n_query=4817)  VerifAUC=0.7478  EER=0.3251
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 3:
+    test_id                   (in-dist) KNN=100.0% LP=97.8% MLP=100.0% L2_dist=0.16 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=5.9% LP=28.6% MLP=21.7% L2_dist=1.33 Cos_sim=0.948
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7487  EER=0.3123
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 6:
+    test_id                   (in-dist) KNN=100.0% LP=99.6% MLP=100.0% L2_dist=0.21 Cos_sim=0.997
+    test_cross_env            (OOD)     KNN=15.8% LP=33.8% MLP=14.0% L2_dist=1.63 Cos_sim=0.907
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.8%    (n_query=4817)  VerifAUC=0.7681  EER=0.3157
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 9:
+    test_id                   (in-dist) KNN=100.0% LP=99.8% MLP=100.0% L2_dist=0.23 Cos_sim=0.997
+    test_cross_env            (OOD)     KNN=14.5% LP=21.0% MLP=25.7% L2_dist=2.05 Cos_sim=0.859
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7612  EER=0.3148
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 12:
+    test_id                   (in-dist) KNN=100.0% LP=98.5% MLP=100.0% L2_dist=0.19 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=20.1% LP=21.1% MLP=37.1% L2_dist=1.79 Cos_sim=0.962
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.8%    (n_query=4817)  VerifAUC=0.7466  EER=0.3484
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+
+Epoch 110/150 | loss=0.1254 | best=0.1254 | lr=2.48e-05
+Epoch 120/150 | loss=0.1249 | best=0.1249 | lr=1.43e-05
+Epoch 130/150 | loss=0.1245 | best=0.1245 | lr=6.48e-06
+Epoch 140/150 | loss=0.1243 | best=0.1243 | lr=1.64e-06
+Epoch 150/150 | loss=0.1242 | best=0.1242 | lr=0.00e+00
+
+--- Eval at epoch 150 ---
+  Layer 1:
+    test_id                   (in-dist) KNN=99.9% LP=84.6% MLP=100.0% L2_dist=0.08 Cos_sim=1.000
+    test_cross_env            (OOD)     KNN=32.1% LP=29.4% MLP=45.8% L2_dist=0.65 Cos_sim=0.991
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.6%    (n_query=4817)  VerifAUC=0.7472  EER=0.3271
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 3:
+    test_id                   (in-dist) KNN=100.0% LP=97.6% MLP=100.0% L2_dist=0.16 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=9.2% LP=29.8% MLP=19.9% L2_dist=1.31 Cos_sim=0.949
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7472  EER=0.3115
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 6:
+    test_id                   (in-dist) KNN=100.0% LP=99.6% MLP=100.0% L2_dist=0.21 Cos_sim=0.997
+    test_cross_env            (OOD)     KNN=17.2% LP=34.3% MLP=24.2% L2_dist=1.62 Cos_sim=0.905
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.8%    (n_query=4817)  VerifAUC=0.7640  EER=0.3179
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 9:
+    test_id                   (in-dist) KNN=100.0% LP=99.8% MLP=100.0% L2_dist=0.22 Cos_sim=0.998
+    test_cross_env            (OOD)     KNN=14.8% LP=19.3% MLP=29.2% L2_dist=2.02 Cos_sim=0.862
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.9%    (n_query=4817)  VerifAUC=0.7581  EER=0.3153
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+  Layer 12:
+    test_id                   (in-dist) KNN=100.0% LP=98.4% MLP=100.0% L2_dist=0.18 Cos_sim=0.999
+    test_cross_env            (OOD)     KNN=19.1% LP=21.7% MLP=30.9% L2_dist=1.74 Cos_sim=0.964
+    test_cross_device         (OPEN-SET) identities=7   Rank1=99.8%    (n_query=4817)  VerifAUC=0.7412  EER=0.3557
+    test_cross_user           (OPEN-SET) identities=1   Rank1=100.0%   (n_query=6055)  VerifAUC=n/a  EER=n/a (TRIVIAL -- single identity in this split)
+
+
+Done. Best pretrain loss: 0.1242
+Results: /home/zhuzih19/csi-project/csi-fall-detection/results/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph13pw13_seed43_enc12_dim128_bs128.json
+Checkpoint: /home/zhuzih19/csi-project/csi-fall-detection/checkpoints/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph13pw13_seed43_enc12_dim128_bs128_best.pt
