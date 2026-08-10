@@ -1,263 +1,413 @@
-# CSI Fall Detection / HAR SSL Foundation Model Project
+# CSI Fall Detection and CSI-Bench SSL Project
 
-This repository implements a Masked Autoencoder (MAE) self-supervised pretraining pipeline for
-WiFi CSI sensing, with the primary active workstream targeting **CSI-Bench HumanActivityRecognition
-(HAR)** and cross-device / cross-environment / cross-user out-of-distribution (OOD) generalization.
-An earlier, separate experimental track on Fall Detection with I-JEPA and Bootleg pretraining is
-preserved in [Legacy Experiments](#legacy-experiments-fall-detection--i-jepa--bootleg) below.
+This repository contains a WiFi CSI self-supervised learning project centered on Masked Autoencoder (MAE) and MAEv2 pretraining for CSI-Bench tasks. The active work focuses on Human Activity Recognition (HAR) and Human Identification (HID), while the codebase also retains older fall-detection and legacy SSL experiments.
+
+The project is organized around:
+
+- CSI-Bench MAE/MAEv2 pretraining on official task splits
+- Frozen-feature evaluation using KNN, linear probe, and MLP probe
+- Open-set and closed-set evaluation for Human Identification
+- Baseline comparisons against CSI-Bench reference models
+- Legacy fall-detection experiments using earlier SSL approaches
+
+See [RESULTS.md](RESULTS.md) for experiment summaries and outcome tables.
 
 ## Table of Contents
 
-- [Current Status](#current-status)
-- [Key Findings (Current HAR Ablation Series)](#key-findings-current-har-ablation-series)
-- [Project Structure](#project-structure)
-- [Configuration](#configuration)
-- [Architecture](#architecture)
+- [Project Overview](#project-overview)
+- [Current Active Workstreams](#current-active-workstreams)
+- [Repository Layout](#repository-layout)
+- [Environment Setup](#environment-setup)
+- [Data Setup](#data-setup)
 - [Quick Start](#quick-start)
-- [Evaluation Protocols](#evaluation-protocols)
-- [Known Issues / Open Data Quality Items](#known-issues--open-data-quality-items)
-- [Legacy Experiments: Fall Detection / I-JEPA / Bootleg](#legacy-experiments-fall-detection--i-jepa--bootleg)
-- [References](#references-and-related-work)
-
-📊 **[See RESULTS.md](RESULTS.md)** for full tables, ablation results, and the cross-depth
-replication analysis.
+- [Training Pipelines](#training-pipelines)
+- [Evaluation Pipelines](#evaluation-pipelines)
+- [Important Notes and Caveats](#important-notes-and-caveats)
+- [Legacy Experiments](#legacy-experiments)
 
 ---
 
-## Current Status
+## Project Overview
 
-**Primary task**: CSI-Bench `HumanActivityRecognition` (5 classes: jumping, running,
-seated-breathing, walking, wavinghand). Official splits: `test_id` (in-distribution),
-`test_cross_device`, `test_cross_env`, `test_cross_user` (three independent OOD splits).
+The repository uses WiFi CSI amplitude tensors shaped as 232 subcarriers by 500 time steps, converted into patch tokens and trained with a masked autoencoding objective. The encoder is then evaluated through downstream probes and retrieval-based metrics.
 
-**Completed ablations** (all via `train_mae_har.py`, results in `results/mae_har/`,
-visualized in `consolidated_visualization.ipynb`):
+The main active tasks are:
 
-| Ablation | Encoder depth | Status |
-|---|---|---|
-| Mask ratio (0.5 / 0.75 / 0.875 / 0.95) | enc12 | ✅ Complete, n=2 |
-| Mask strategy (random / freq / mixed / time / 2d) | enc6 | ✅ Complete, ⚠️ data quality issue (see below) |
-| Mask strategy (random / freq / mixed / time / 2d) | enc12 | ✅ Complete, n=2 clean |
-| Patch size (11 / 13 / 15 / 17 / 19) | enc6 | ✅ Complete, n=2 |
-| Patch size (11 / 13 / 15 / 17 / 19 / 21) | enc12 | ✅ Complete, n=2 |
+- Human Activity Recognition (HAR)
+  - Official CSI-Bench splits: test_id, test_cross_device, test_cross_env, test_cross_user
+  - MAE/MAEv2 pretraining and representation evaluation
+- Human Identification (HID)
+  - Train-id + OOD split evaluation
+  - Closed-set and open-set identity metrics
 
-**In progress / recently added**:
-- `mlp_probe_eval()` — non-linear (1-hidden-layer MLP) frozen-feature probe, added alongside
-  KNN and Linear Probe to test whether the LP accuracy ceiling is a linear-separability limit.
-- `finetune_eval()` / `MAEDownstreamHead` — full/partial backbone fine-tuning (frozen /
-  unfreeze-last-k / full unfreeze), differential learning rate, for comparing frozen-probe
-  representation quality against fine-tuned ceiling performance. Two earlier, non-comparable
-  implementations were merged into one (`MAEDownstreamHead`, see [Architecture](#architecture))
-  after a real bug was found in the older one (direct references to the pretrained model's
-  submodules instead of a deep copy, meaning training it would have silently mutated the
-  original checkpoint object in memory). **First real result: unfreezing the backbone shows
-  clear catastrophic forgetting — OOD accuracy drops as more of the backbone is unfrozen, even
-  as `test_id` accuracy rises. See [RESULTS.md](RESULTS.md#fine-tuning-frozen-vs-partial-vs-full-backbone-unfreeze).**
-- `visualize_embeddings.py` — t-SNE + silhouette-score diagnostic for inspecting embedding
-  geometry (class structure vs. domain/session structure).
+This project is not a single end-to-end script. It is a research codebase with multiple training and evaluation entry points, each tuned to a specific task or protocol.
 
 ---
 
-## Key Findings (Current HAR Ablation Series)
+## Current Active Workstreams
 
-### 1. LP and KNN diverge systematically and predictably — not randomly
+### 1. HAR MAE pretraining and OOD evaluation
 
-Across **all 5 independent ablations** run so far, the direction of the KNN/LP gap is
-**100% consistent**:
+Primary training script:
 
-- **In-distribution (`test_id`)**: KNN always wins, by a wide margin (KNN ~0.92–0.96 vs.
-  LP ~0.55–0.59 in every ablation).
-- **Out-of-distribution** (any of the three OOD splits): LP always wins on average, though by a
-  narrower margin.
+- [train/train_mae_har.py](train/train_mae_har.py)
 
-This is **not** attributed to train/pretrain data overlap (unlike the legacy Fall Detection
-finding below) — `train_id` and all OOD splits are official, disjoint CSI-Bench splits. The
-current working explanation, backed by t-SNE + silhouette-score analysis of the embedding space,
-is that the representation is **locally separable but not linearly separable** (KNN can exploit
-non-convex, multi-modal class clusters; a single linear decision boundary per class cannot), and
-that domain/session identity — not class — is the dominant factor structuring the embedding space
-(see `visualize_embeddings.py` output, [RESULTS.md](RESULTS.md#embedding-geometry-investigation)).
+This script performs:
 
-Even after picking the correct protocol for the split of interest, **the two protocols agree on
-which config is "best" only ~10% of the time** (2 of 20 column-wise comparisons across all
-ablation summary tables). Any "best config" claim needs to specify both the protocol and the
-split, or report both.
+- CSI-Bench HAR pretraining
+- Random masking and structured masking strategies
+- Layer-wise feature extraction
+- KNN, linear probe, and MLP probe evaluation
+- Optional domain-adversarial training hooks
+- Attention memory safety checks before starting training
 
-### 2. Encoder depth is a confirmed confound — two independent replication failures
+Key hyperparameters include:
 
-Rerunning both mask-strategy and patch-size ablations at `encoder_depth=12` (vs. the original
-`encoder_depth=6`) reversed the headline conclusion in both cases:
+- `--epochs`
+- `--mask_ratio`
+- `--encoder_depth`
+- `--encoder_dim`
+- `--decoder_dim`
+- `--batch_size`
+- `--patch_h` and `--patch_w`
+- `--mask_strategy` with choices: `random`, `time`, `freq`, `mixed`, `2d`
 
-- **Mask strategy**: `"2d"` was the clear worst strategy on Cross-Device at enc6 (LP 0.2912) —
-  it is the clear **best** at enc12 (LP 0.4217), a +13pp swing.
-- **Patch size**: `patch=17` was the clear best on Cross-Device at enc6 (LP 0.4638) — it drops to
-  near-worst at enc12 (LP 0.2953), a −16.9pp swing, the largest single-config swing observed.
-- `patch=15` is the one patch size that stays stable across both depths (0.4191 / 0.4216) and is
-  a more defensible "robust default" than either single-depth winner.
+### 2. Human Identification self-supervised training
 
-No "best config" conclusion from a single encoder depth should be treated as final without a
-cross-depth check.
+Primary training script:
 
-### 3. Data quality issues can silently distort conclusions — two caught, one still open
+- [train/train_mae_hid.py](train/train_mae_hid.py)
 
-- A `check_attention_memory()` bug (gating on per-layer instead of cumulative attention memory
-  across all retained layers) let `patch=7` pass a pre-flight safety check and then genuinely
-  OOM in production — fixed to gate on the cumulative estimate.
-- A `loss_log` length-mismatch bug crashed the visualization notebook when a group mixed a
-  partial run with complete ones — fixed to auto-truncate with a `[warn]`, which caught a
-  genuinely incomplete `patch=19` (enc12) seed automatically.
-- **Still open**: the enc6 mask-strategy `"2d"` group shows exactly `std=0.000` on the ID split
-  across both seeds (likely a duplicated run, unconfirmed), and the `"random"` group has shown
-  `n=3` instead of `n=2` (a stray unseeded file not yet removed from `results/`). The enc6 "2d is
-  worst" finding referenced above should be treated as provisional until this is resolved.
+This is a separate training pipeline for the HID task and includes:
+
+- MAE/MAEv2 pretraining on HumanIdentification splits
+- Closed-set evaluation on known identities
+- Open-set evaluation for unknown identities
+- Rank-1 retrieval, verification AUC, and EER metrics
+
+### 3. Benchmark and comparison scripts
+
+Relevant evaluation scripts:
+
+- [eval/eval_har_ood_v2.py](eval/eval_har_ood_v2.py)
+- [eval/eval_hid_device_closedset.py](eval/eval_hid_device_closedset.py)
+- [eval/eval_hid_openset.py](eval/eval_hid_openset.py)
+- [eval/eval_linear_probe.py](eval/eval_linear_probe.py)
+- [eval/eval_multitask.py](eval/eval_multitask.py)
+- [eval/eval_user_independent.py](eval/eval_user_independent.py)
 
 ---
 
-## Project Structure
+## Repository Layout
 
-```
+```text
 .
-├── config.py                       # DATA_ROOT and other central config
-├── train_mae_har.py                # Main MAE training + eval script (current active pipeline)
-│                                    #   NOTE: does NOT yet include mlp_probe_eval/MAEDownstreamHead
-│                                    #   (local prototypes — see Architecture below)
-├── finetune_mae_har.py             # Committed HAR fine-tuning script (two-phase, MAE-only)
-├── models/
-│   ├── vit.py                      # ViT backbone: PatchEmbedding, Encoder, MultiHeadAttention (naive, non-flash)
-│   ├── mae.py                      # MAE (random masking)
-│   ├── mae_v2.py                   # MAEv2 (block masking strategies: time/freq/mixed/2d)
-│   ├── csibench_models.py          # Baseline architectures for eval_har_ood_v2.py (mlp/lstm/resnet18/
-│   │                                #   transformer/vit/patchtst/timesformer1d)
-│   ├── resnet.py, baselines.py     # Additional baseline model definitions
-│   └── ijepa.py, bootleg_with_recon.py, decoder.py   # Legacy pretraining methods (Fall Detection track)
+├── config.py                              # Shared config and dataset root
+├── README.md                              # Project documentation
+├── RESULTS.md                             # Summary of experiment results
 ├── data/
-│   └── dataset.py                  # MultiTaskDataset, CSI loading/normalization
-├── eval_har_ood_v2.py              # Official CSI-Bench baseline replication (independent of train_mae_har.py's
-│                                    #   data pipeline — uses csibench-official's BenchmarkCSIDataset loader)
-├── eval_finetune.py                # Legacy Fall Detection / Motion Source fine-tune script (NOT HAR-related)
-├── visualize_embeddings.py         # t-SNE + silhouette-score embedding geometry diagnostic
-├── consolidated_visualization.ipynb # All ablation results: Sections A-E (ratio/strategy×2 depths/patch×2 depths)
-├── launch_mask_strategy_enc12.sh   # Background launch script (nohup + disown)
-├── launch_patch_size_ablation_v2.sh    # enc6 patch-size sweep (11/13/15/17/19)
-├── launch_patch_size_ablation_enc12.sh # enc12 patch-size sweep (11@bs96, 13/15/17/19/21@bs128)
-├── results/mae_har/                # Per-run result JSON (loss_log, evals by layer/split/checkpoint)
-├── results/csibench_official/      # Official baseline checkpoints + results (used by eval_har_ood_v2.py)
-├── figs/                           # Ablation charts (from consolidated_visualization.ipynb) +
-│                                    #   figs/embeddings/ (t-SNE diagnostics from visualize_embeddings.py)
-├── checkpoints/mae_har/            # best_model.pt per run (NOT committed to git — see note below)
-└── logs/                           # Training logs (per-run + launcher status logs)
+│   └── dataset.py                         # CSI loading, normalization, dataset wrappers
+├── train/
+│   ├── train_mae_har.py                  # Main HAR pretraining pipeline
+│   ├── train_mae_hid.py                  # Main HID training pipeline
+│   ├── train_mae.py                      # Older MAE training utilities
+│   ├── train_mae_run.py                  # Multi-run experiment orchestration
+│   ├── train_ijepa.py                    # Legacy I-JEPA training code
+│   ├── train_ablation.py                 # Ablation-related training script
+│   └── train_booyleg_recon.py            # Legacy reconstruction-based experiment
+├── eval/
+│   ├── eval_har_ood_v2.py                # CSI-Bench HAR OOD baseline eval
+│   ├── eval_hid_device_closedset.py      # HID known-identity closed-set eval
+│   ├── eval_hid_openset.py               # HID open-set eval with retrieval/verification
+│   ├── eval_linear_probe.py              # Linear probe helper
+│   ├── eval_multitask.py                 # Multi-task evaluation
+│   ├── eval_pertask.py                   # Per-task evaluation
+│   ├── eval_user_independent.py          # User-held-out evaluation
+│   ├── eval_cross_task.py                # Cross-task evaluation
+│   └── knn_probe.py                      # KNN evaluation utilities
+├── models/
+│   ├── mae.py                            # Standard MAE implementation
+│   ├── mae_v2.py                         # MAEv2 masked strategies
+│   ├── vit.py                            # Patch embedding + encoder blocks + attention
+│   ├── csibench_models.py                # Baselines: MLP, LSTM, ResNet18, ViT, etc.
+│   ├── decoder.py                        # Decoder utilities
+│   ├── resnet.py                         # Additional model definitions
+│   ├── baselines.py                      # Baseline modules
+│   ├── ijepa.py                          # Legacy SSL module
+│   └── bootleg_with_recon.py             # Legacy reconstruction experiment
+├── scripts/
+│   ├── run_mae_experiments.py            # Sweep helper for older MAE runs
+│   ├── run_all_baselines.sh              # Baseline benchmark launcher
+│   ├── launch_mask_strategy_enc12.sh     # Background job launcher
+│   ├── launch_patch_size_ablation.sh     # Patch-size sweep launcher
+│   ├── launch_patch_size_ablation_v2.sh  # Additional patch-size sweep
+│   ├── run_mask_ablation.sh              # Mask ablation runner
+│   ├── run_strategy_ablation.sh          # Strategy ablation runner
+│   └── run_norm_comparison.py            # Normalization comparison script
+├── checkpoints/
+│   ├── har_models/                       # HAR baseline checkpoints
+│   ├── mae_har/                          # HAR MAE checkpoints
+│   ├── mae_hid/                          # HID MAE checkpoints
+│   └── ablation/                         # Ablation checkpoints
+├── results/
+│   ├── mae_har/                          # HAR result JSONs and metrics
+│   ├── mae_hid/                          # HID result JSONs and metrics
+│   ├── csibench_official/               # Official benchmark outputs
+│   └── figures/                          # Aggregated result figures
+├── figs/
+│   ├── embeddings/                       # Embedding visualization outputs
+│   └── ...                                # Result plots for ablation runs
+├── visualization/
+│   ├── visualize_embeddings.py           # Embedding geometry diagnostics
+│   ├── visualize_mask_ablation.py        # Mask ablation plotter
+│   ├── visualize_results.py              # Result plotting tool
+│   └── *.ipynb                          # Analysis notebooks
+├── config.py                             # Root config file
+├── train.pid                             # PID file for training runs
+├── logs/                                 # Training logs
+└── data/                                 # CSI benchmark dataset root (external)
 ```
-
-**Note on checkpoints and git**: model checkpoints are large (100+ MB each) and are **not**
-tracked in git — an earlier commit of baseline checkpoints bloated `.git` to 2.95GB and broke
-`git push`; history was rewritten with `git filter-repo` and `.gitignore` now excludes
-`*.pt`/`*.pth`. Manage checkpoints locally or via a separate artifact store.
 
 ---
 
-## Configuration
+## Environment Setup
 
-Key parameters (all configurable via `train_mae_har.py` CLI args):
+This project is built for a Python environment with PyTorch and standard scientific Python packages.
 
-- **Input shape**: 232 subcarriers × 500 timesteps (standard CSI-Bench HAR input)
-- **Patch size**: configurable `--patch_h`/`--patch_w`; square patches that don't evenly divide
-  232×500 (e.g. 11, 13, 15, 17, 19, 21) are zero-padded to the nearest compatible size
-  automatically (`compute_padded_size` / `pad_csi`)
-- **Encoder depth**: 6 or 12 (both actively studied)
-- **Encoder dim**: 128, 4 attention heads
-- **Mask ratio**: 0.5 / 0.75 / 0.875 / 0.95 (ablated)
-- **Mask strategy**: `random` (MAE) / `time`, `freq`, `mixed`, `2d` (MAEv2, block masking)
-- **Batch size**: 128 default; smaller patch sizes (higher `num_patches`) may require a reduced
-  batch size — see `check_attention_memory()` pre-flight check
-- **Data root**: `/home/zhuzih19/data/csi-bench-dataset`
+Recommended setup:
 
-### A note on the attention-memory constraint
-
-`models/vit.py`'s `MultiHeadAttention` is a **naive (non-flash)** implementation — its attention
-score tensor is `O(batch_size × heads × num_patches²)` in memory, and because there is no
-gradient checkpointing, **all `encoder_depth` layers' attention scores are retained
-simultaneously during backward**. `check_attention_memory()` gates on this cumulative estimate
-(not just a single layer) and will refuse to start with a suggested safe `--batch_size` if the
-projected memory exceeds budget. Small patch sizes (3×3, 5×5, 7×7) are effectively infeasible at
-`batch_size=128` under this architecture; see [RESULTS.md](RESULTS.md) for the exact numbers
-that motivated the current 11–21 patch-size range.
-
-
-## Architecture
-
-All HAR pretraining uses the shared building blocks in `models/vit.py`, wrapped by either
-`MAE` (`models/mae.py`) or `MAEv2` (`models/mae_v2.py`). Downstream evaluation (fine-tuning
-specifically) uses a separate `MAEDownstreamHead` wrapper described below.
-
-### Shared building blocks (`models/vit.py`)
-
-```
-PatchEmbedding     — Conv2d(kernel=stride=(patch_h, patch_w)), flattens to [B, N, d_model]
-                      (no CLS token in MAE/MAEv2 — see below)
-MultiHeadAttention  — standard scaled dot-product attention, NAIVE implementation
-                      (Q @ K^T, softmax, @ V) with no flash/memory-efficient kernel.
-                      Attention-score memory is O(batch_size × heads × num_patches²) per
-                      layer, and — since there's no gradient checkpointing — ALL
-                      encoder_depth layers' scores are retained simultaneously during
-                      backward. This is why check_attention_memory() gates on the
-                      CUMULATIVE estimate, not a per-layer one (see Configuration above).
-EncoderBlock        — MultiHeadAttention → AddNorm → FeedForward (GELU) → AddNorm (post-norm)
-Encoder             — nn.ModuleList of `N` EncoderBlocks, applied sequentially. Individual
-                      blocks are reachable at `model.encoder_blocks.layers` — used by
-                      MAEDownstreamHead's `unfreeze_last_n_layers` to partially unfreeze
-                      only the last k blocks.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install torch torchvision torchaudio numpy pandas scikit-learn h5py matplotlib seaborn
 ```
 
-`patch_h`/`patch_w` don't need to be equal (non-square patches are used for the default
-`29×25` config) and don't need to evenly divide 232×500 — `train_mae_har.py` zero-pads the
-input to the nearest compatible multiple before `PatchEmbedding` (see Configuration above).
+If you are using a specific local environment or conda environment, ensure the interpreter matches the one used by your editor.
 
-### MAE (`models/mae.py`)
+Core repository config is in [config.py](config.py):
 
-```
-INPUT [B, 1, 232, 500] (zero-padded to nearest patch-size multiple if needed)
-  │
-  ▼
-PatchEmbedding + encoder_pos_embed              →  tokens [B, N, encoder_dim]
-  │
-  ▼
-Random masking (mask_ratio, default 0.75)       →  N_visible = N × (1 - mask_ratio) tokens kept,
-  │                                                  N_masked = N × mask_ratio tokens DROPPED
-  │                                                  (not zeroed/attention-masked — removed
-  │                                                   from the sequence entirely)
-  ▼
-Encoder (encoder_depth blocks) + LayerNorm      →  encoded [B, N_visible, encoder_dim]
-  │
-  ▼
-Linear(encoder_dim → decoder_dim), then insert a single learned mask_token at every
-masked position, unshuffle back to original patch order, + decoder_pos_embed
-  │
-  ▼
-Decoder (decoder_depth blocks, its own smaller Encoder instance) + LayerNorm
-  │
-  ▼
-Linear(decoder_dim → patch_h × patch_w)         →  pred [B, N, patch_h × patch_w]
-  │
-  ▼
-MSE(pred, target), computed ONLY on the N_masked positions
+- `DATA_ROOT = "/home/zhuzih19/data/csi-bench-dataset"`
+- default image shape is 232 x 500
+- standard MAE params are defined there as defaults
+
+---
+
+## Data Setup
+
+The project expects the CSI-Bench dataset to live at:
+
+```text
+/home/zhuzih19/data/csi-bench-dataset
 ```
 
-The encoder never sees masked patches at all (excluded from its input sequence, not just
-attention-masked) — standard MAE design (He et al. 2022), cheaper to pretrain than a
-full-sequence masked model. The decoder is discarded after pretraining; only
-`patch_embedding` + `encoder_pos_embed` + `encoder_blocks` + `encoder_norm` are used at
-evaluation time.
+The dataset layout is expected to match the CSI-Bench format used by the code in [data/dataset.py](data/dataset.py), including task folders such as:
 
-**No CLS token.** `extract_layer_embeddings()` (used by every evaluation protocol — KNN, LP,
-MLP-probe, and as the reference implementation for fine-tuning) mean-pools over all patch
-tokens at the requested layer instead:
+- `Multitask/HumanActivityRecognition/...`
+- `Multitask/HumanIdentification/...`
+- metadata and split JSON files under each task folder
 
-```python
-layer_outputs[i + 1] = self.encoder_norm(h).mean(dim=1)   # [B, encoder_dim]
+The dataset loader normalizes each CSI sample to 232x500 and applies per-sample standardization before returning tensors.
+
+---
+
+## Quick Start
+
+### 1. Train HAR MAE
+
+```bash
+python train/train_mae_har.py \
+  --epochs 300 \
+  --mask_ratio 0.75 \
+  --encoder_depth 6 \
+  --encoder_dim 128 \
+  --decoder_dim 64 \
+  --batch_size 128 \
+  --patch_h 29 \
+  --patch_w 25 \
+  --seed 42
 ```
 
-This always runs the encoder over the complete, unmasked input — masking is a
-pretraining-time-only operation.
+### 2. Train Human Identification MAE
+
+```bash
+python train/train_mae_hid.py \
+  --epochs 300 \
+  --mask_ratio 0.75 \
+  --encoder_depth 12 \
+  --encoder_dim 128 \
+  --decoder_dim 64 \
+  --batch_size 128 \
+  --patch_h 29 \
+  --patch_w 25 \
+  --seed 42
+```
+
+### 3. Run a closed-set HID evaluation on known identities
+
+```bash
+python eval/eval_hid_device_closedset.py \
+  --checkpoint checkpoints/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_best.pt \
+  --result_json results/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128.json \
+  --layers 1,3,6,9,12
+```
+
+### 4. Run open-set HID evaluation
+
+```bash
+python eval/eval_hid_openset.py \
+  --checkpoint checkpoints/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_best.pt \
+  --result_json results/mae_hid/mae_hid_ep150_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128.json \
+  --layers 1,3,6,9,12
+```
+
+### 5. Run CSI-Bench baseline evaluation
+
+```bash
+python eval/eval_har_ood_v2.py
+```
+
+---
+
+## Training Pipelines
+
+### HAR training flow
+
+The active HAR pipeline is driven by [train/train_mae_har.py](train/train_mae_har.py).
+
+The script includes:
+
+- data split loading from CSI-Bench task metadata
+- MAE or MAEv2 model construction
+- optional mask strategy selection
+- attention-memory guard before training
+- feature extraction at target layers
+- KNN / LP / MLP evaluation across official splits
+- checkpoint saving under `checkpoints/mae_har/`
+
+### HID training flow
+
+The active HID pipeline is in [train/train_mae_hid.py](train/train_mae_hid.py).
+
+This script extends the HAR pipeline for identity learning and evaluates:
+
+- test_id
+- test_cross_device
+- test_cross_env
+- test_cross_user
+
+It also distinguishes between:
+
+- closed-set classification on known identities
+- open-set identity retrieval and verification when the split contains identities unseen during training
+
+---
+
+## Evaluation Pipelines
+
+### KNN evaluation
+
+Implemented in [eval/knn_probe.py](eval/knn_probe.py)
+
+The evaluation workflow typically does the following:
+
+1. extract frozen embeddings at a selected encoder layer
+2. normalize embeddings for cosine similarity
+3. compare query samples against train-set features
+4. report prediction accuracy and F1 when applicable
+
+### Linear probe and MLP probe
+
+These are used to test how linearly or nonlinearly separable the features are after pretraining.
+
+Typical files:
+
+- [eval/eval_linear_probe.py](eval/eval_linear_probe.py)
+- [eval/eval_hid_device_closedset.py](eval/eval_hid_device_closedset.py)
+
+### Open-set identity evaluation
+
+Used for HID splits with unseen identities.
+
+Relevant file:
+
+- [eval/eval_hid_openset.py](eval/eval_hid_openset.py)
+
+This includes metrics such as:
+
+- Rank-1 retrieval accuracy
+- verification AUC
+- EER
+
+---
+
+## Important Notes and Caveats
+
+### Memory safety
+
+The attention implementation in [models/vit.py](models/vit.py) is a naive, non-flash attention block. The attention score tensor scales quadratically with the number of patches and is retained during backward across all layers. This is why the training scripts include `check_attention_memory()` before training starts.
+
+If patch sizes are too small or the batch size is too large, training can run out of memory mid-run. The recommended safer patch sizes are in the 11–21 range for the current encoder design.
+
+### Data conventions
+
+The dataset loader treats each CSI sample as a 2D array and normalizes it before conversion to tensor format. All samples are standardized per sample before they are used for pretraining or evaluation.
+
+### Split semantics
+
+The code differentiates between:
+
+- in-distribution evaluation (`test_id`)
+- out-of-distribution evaluation (`test_cross_device`, `test_cross_env`, `test_cross_user`)
+- closed-set vs open-set identity evaluation
+
+This distinction matters for interpreting results and should not be ignored when reporting metrics.
+
+### Result files
+
+Results are stored in:
+
+- [results/mae_har](results/mae_har)
+- [results/mae_hid](results/mae_hid)
+- [results/csibench_official](results/csibench_official)
+
+Checkpoints are saved under:
+
+- [checkpoints/mae_har](checkpoints/mae_har)
+- [checkpoints/mae_hid](checkpoints/mae_hid)
+
+Large model artifacts are not intended to be committed to git.
+
+---
+
+## Legacy Experiments
+
+This repo still contains earlier non-core experiments from the fall-detection and SSL research track.
+
+These include:
+
+- [train/train_ijepa.py](train/train_ijepa.py)
+- [train/train_ablation.py](train/train_ablation.py)
+- [train/train_booyleg_recon.py](train/train_booyleg_recon.py)
+- [models/ijepa.py](models/ijepa.py)
+- [models/bootleg_with_recon.py](models/bootleg_with_recon.py)
+- [finetune_mae_har.py](finetune_mae_har.py)
+
+These are kept for historical and experimental reference, but the current active pipeline is the HAR/HID MAE work.
+
+---
+
+## Useful References in This Repo
+
+- [config.py](config.py)
+- [data/dataset.py](data/dataset.py)
+- [train/train_mae_har.py](train/train_mae_har.py)
+- [train/train_mae_hid.py](train/train_mae_hid.py)
+- [eval/eval_hid_device_closedset.py](eval/eval_hid_device_closedset.py)
+- [eval/eval_hid_openset.py](eval/eval_hid_openset.py)
+- [RESULTS.md](RESULTS.md)
+
+If you are starting from scratch, the best entry points are the HAR training script and the HID training script, followed by the relevant evaluation script for the split and metric you need.
 
 ### MAEv2 (`models/mae_v2.py`)
 
