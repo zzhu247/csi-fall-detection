@@ -14,17 +14,19 @@ Usage:
         --seeds 42,43,44
 
 Activation ablation:
-    --activation now also accepts 'gelu' (and silu/leaky_relu/elu/mish) in addition to
-    the original 'relu' / 'none'. This is passed straight through to finetune_eval ->
-    MAEDownstreamHead -> train_mae_har.make_activation(). Useful in combination with
+    --activation accepts 'relu' (default), 'gelu', 'silu', 'leaky_relu', 'elu',
+    'mish', 'none'. Routed through train_mae_har.finetune_eval ->
+    MAEDownstreamHead -> train_mae_har.make_activation(). Especially useful with
     --norm_types none: without LayerNorm stabilizing hidden-unit scale, a smooth
-    non-zero-gradient-on-negative-half activation like gelu is usually more robust
-    against dead ReLU units.
+    non-zero-gradient-on-negative-half activation (gelu/silu) is usually more
+    robust against dead ReLU units.
 
-    IMPORTANT: the output JSON/PNG filenames now include an activation tag
-    (norm_comparison_<exp>_layer<L>_act<activation>.{json,png}). Previously a
-    layernorm/relu run and a layernorm/gelu run would both write to the same
-    ..._layer12.json and silently overwrite each other.
+    Output filename includes BOTH the norm_types tag and the activation tag:
+        norm_comparison_<exp>_layer<L>_norm<normtypes>_act<activation>.{json,png}
+    This is deliberate: previously only the activation tag was in the filename,
+    so e.g. a layernorm/relu run and a none/relu run wrote to the same JSON and
+    silently overwrote each other. With the norm tag included, all four cells of
+    a 2x2 (norm x activation) ablation can coexist on disk.
 
 Note on BatchNorm: nn.BatchNorm1d requires batch_size > 1 in train() mode (raises
 otherwise) -- if your train_loader's last batch of an epoch has exactly 1 sample
@@ -245,16 +247,24 @@ def main():
             print(f"    {split:<20} acc={entry[split]['acc_mean']:.4f} \u00b1 {entry[split]['acc_std']:.4f}"
                   f"   f1={entry[split]['f1_mean']:.4f} \u00b1 {entry[split]['f1_std']:.4f}")
 
-    # ── Filenames include the activation tag so relu/gelu runs don't overwrite ──
+    # ── Filenames include BOTH the norm_types and activation tags so that
+    #    (norm=layernorm, act=relu), (norm=layernorm, act=gelu),
+    #    (norm=none, act=relu), (norm=none, act=gelu), ... do NOT overwrite each other. ──
     norm_tag = args.norm_types.replace(',', '-')
-    out_stem = f"norm_comparison_{result['exp']}_layer{args.layer}_norm{norm_tag}_act{args.activation}"
+    out_stem = (f"norm_comparison_{result['exp']}_layer{args.layer}"
+                f"_norm{norm_tag}_act{args.activation}")
     out_json = out_dir / f"{out_stem}.json"
     with open(out_json, 'w') as f:
-        json.dump({'exp': result['exp'], 'layer': args.layer,
-                   'activation': args.activation,
-                   'sweep': sweep_results,
-                   'monitor_metric': args.monitor_metric, 'l2sp_lambda': args.l2sp_lambda,
-                   'unfreeze_last_n_layers': args.unfreeze_last_n_layers}, f, indent=2)
+        json.dump({
+            'exp': result['exp'],
+            'layer': args.layer,
+            'norm_types': norm_types,
+            'activation': args.activation,
+            'sweep': sweep_results,
+            'monitor_metric': args.monitor_metric,
+            'l2sp_lambda': args.l2sp_lambda,
+            'unfreeze_last_n_layers': args.unfreeze_last_n_layers,
+        }, f, indent=2)
     print(f"\nSaved raw results: {out_json}")
 
     out_png = out_dir / f"{out_stem}.png"

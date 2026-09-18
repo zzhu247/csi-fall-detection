@@ -1,6 +1,9 @@
 {
   "exp": "mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128",
   "layer": 12,
+  "norm_types": [
+    "layernorm"
+  ],
   "activation": "gelu",
   "sweep": [
     {

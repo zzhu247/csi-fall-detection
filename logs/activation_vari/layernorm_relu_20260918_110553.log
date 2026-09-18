@@ -1,7 +1,8 @@
 nohup: ignoring input
 Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
   norm_types to compare: ['layernorm']
-  seeds per norm_type: [42, 43, 44]  (n=3)
+  activation:            relu
+  seeds per norm_type:   [42, 43, 44]  (n=3)
   unfreeze_last_n_layers: 0   l2sp_lambda: 0.0
 
 Loaded checkpoint: epoch=276, loss=0.1160
@@ -13,7 +14,7 @@ Loaded checkpoint: epoch=276, loss=0.1160
 
 
 ======================================================================
-norm_type = layernorm  (3 seed(s): [42, 43, 44])
+norm_type = layernorm  activation = relu  (3 seed(s): [42, 43, 44])
 ======================================================================
 
   --- seed=42 ---
@@ -67,13 +68,13 @@ norm_type = layernorm  (3 seed(s): [42, 43, 44])
     test_cross_env       acc=0.4001 ± 0.0381   f1=0.3563 ± 0.0195
     test_cross_user      acc=0.4816 ± 0.0128   f1=0.4099 ± 0.0223
 
-Saved raw results: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.json
-Saved comparison plot: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12.png
+Saved raw results: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12_normlayernorm_actrelu.json
+Saved comparison plot: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12_normlayernorm_actrelu.png
 
---- Accuracy ---
+--- Accuracy (activation=relu) ---
    norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
    layernorm         0.8329 ± 0.0121         0.3603 ± 0.0482         0.4001 ± 0.0381         0.4816 ± 0.0128
 
---- F1 (weighted) ---
+--- F1 (weighted, activation=relu) ---
    norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
    layernorm         0.8243 ± 0.0151         0.3554 ± 0.0236         0.3563 ± 0.0195         0.4099 ± 0.0223
