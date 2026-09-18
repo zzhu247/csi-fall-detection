@@ -26,6 +26,16 @@ Patch-size ablation notes (added):
     and hard-stops with a suggested safe --batch_size instead of letting
     you OOM 20+ minutes into a run. Use --skip_mem_check to bypass (not
     recommended unless you've already sized batch_size yourself).
+
+Downstream-head activation ablation notes (added):
+    MAEDownstreamHead's mlp_head previously only supported activation='relu'
+    or activation='none'. make_activation() now supports:
+        'relu' | 'gelu' | 'silu' | 'leaky_relu' | 'elu' | 'mish' | 'none'
+    Pass --head_activation and --head_dropout on the CLI. Especially useful
+    in combination with --norm_type none: without LayerNorm stabilizing the
+    hidden-unit scale, an activation with a non-zero negative-half gradient
+    (gelu / silu / leaky_relu / elu / mish) tends to be more robust against
+    dead ReLU units than plain ReLU.
 """
 import os, sys, json, argparse, random, math, torch, numpy as np, pandas as pd
 import torch.nn as nn
@@ -50,6 +60,53 @@ OOD_SPLITS = ['test_id', 'test_cross_device', 'test_cross_env', 'test_cross_user
 
 RAW_IMG_H, RAW_IMG_W = 232, 500  # standard CSI-Bench input shape (subcarriers x timesteps)
 ENCODER_HEADS = 4                # hardcoded to match existing model construction below
+
+
+# ── Activation factory ────────────────────────────────────────────────────────
+def make_activation(name):
+    """
+    Central factory for the downstream head's activation layer. Keeping this in one
+    place lets the head, MLP probe, and (in principle) any other probe share the
+    same activation vocabulary -- previously MAEDownstreamHead's activation was
+    hard-coded to relu/none, and mlp_probe_eval() hard-coded nn.ReLU().
+
+    Supported:
+        'relu'       -- nn.ReLU()          (historical default, unchanged)
+        'gelu'       -- nn.GELU()          (transformer-standard; smooth, non-zero
+                                            gradient on the negative half, so it's
+                                            more robust to dead units than ReLU
+                                            when there's no LayerNorm upstream)
+        'silu'       -- nn.SiLU()          a.k.a. swish
+        'leaky_relu' -- nn.LeakyReLU(0.1)  explicit non-zero negative slope
+        'elu'        -- nn.ELU()
+        'mish'       -- nn.Mish()
+        'none'       -- nn.Identity()      ablation control (see MAEDownstreamHead
+                                            docstring -- with no non-linearity the
+                                            head is mathematically a single Linear)
+
+    NOTE: 'none' is deliberately preserved. Do not "fix" it away -- it's the control
+    condition that lets you check whether the ReLU is doing anything at all, versus
+    the extra parameters/depth just helping by accident.
+    """
+    name = name.lower()
+    if name == 'relu':
+        return nn.ReLU()
+    if name == 'gelu':
+        return nn.GELU()
+    if name == 'silu':
+        return nn.SiLU()
+    if name == 'leaky_relu':
+        return nn.LeakyReLU(negative_slope=0.1)
+    if name == 'elu':
+        return nn.ELU()
+    if name == 'mish':
+        return nn.Mish()
+    if name == 'none':
+        return nn.Identity()
+    raise ValueError(
+        f"activation must be one of 'relu', 'gelu', 'silu', 'leaky_relu', 'elu', "
+        f"'mish', 'none', got {name!r}")
+
 
 # ── Domain-adversarial pretraining (DANN, Ganin & Lempitsky 2016) ─────────────
 class GradientReversalFunction(torch.autograd.Function):
@@ -354,10 +411,16 @@ class MAEDownstreamHead(nn.Module):
        this was a real bug in the standalone-class version this replaces (it stored
        direct references to the pretrained model's submodules, so training it would
        have silently rewritten the caller's checkpoint in place).
+
+    Activation choice: the `activation` argument is routed through make_activation()
+    above, so any of 'relu' | 'gelu' | 'silu' | 'leaky_relu' | 'elu' | 'mish' | 'none'
+    is valid. This matters most when norm_type='none' -- without LayerNorm stabilizing
+    hidden-unit scales, plain ReLU is more prone to dead units, and a smooth non-zero
+    negative-half activation (gelu/silu/leaky_relu/elu/mish) is usually the safer pick.
     """
     def __init__(self, pretrained_model, num_classes, layer=None,
                  hidden_dim=256, unfreeze_last_n_layers=0, norm_type='layernorm',
-                 activation='relu'):
+                 activation='relu', dropout=0.3):
         super().__init__()
         import copy
         backbone = copy.deepcopy(pretrained_model)  # never mutate the caller's model
@@ -395,6 +458,9 @@ class MAEDownstreamHead(nn.Module):
         else:
             raise ValueError(f"norm_type must be 'layernorm', 'batchnorm', or 'none', got {norm_type!r}")
 
+        # activation is routed through make_activation() -- supports relu/gelu/silu/
+        # leaky_relu/elu/mish/none. See that function's docstring.
+        #
         # activation='none' -- IMPORTANT: with no non-linearity between the two Linear
         # layers, this head is mathematically equivalent to a SINGLE linear layer at eval
         # time (W2 @ (W1 @ x) = (W2 @ W1) @ x is still just one linear map), regardless of
@@ -408,19 +474,14 @@ class MAEDownstreamHead(nn.Module):
         # optimization path (two matrices trained jointly via SGD) can differ from directly
         # fitting one matrix -- so don't expect the numbers to be bit-identical to LP, just
         # in the same ballpark if the "ReLU is the key ingredient" hypothesis is correct.
-        if activation == 'relu':
-            act_layer = nn.ReLU()
-        elif activation == 'none':
-            act_layer = nn.Identity()
-        else:
-            raise ValueError(f"activation must be 'relu' or 'none', got {activation!r}")
+        act_layer = make_activation(activation)
         self.activation = activation
 
         self.mlp_head = nn.Sequential(
             nn.Linear(backbone.encoder_dim, hidden_dim),
             norm_layer,
             act_layer,
-            nn.Dropout(0.3),
+            nn.Dropout(dropout),
             nn.Linear(hidden_dim, num_classes),
         )
 
@@ -496,7 +557,8 @@ class MAEDownstreamHead(nn.Module):
         status = ("frozen" if unfreeze_last_n_layers == 0
                   else "fully unfrozen" if unfreeze_last_n_layers is None
                   else f"last {unfreeze_last_n_layers} block(s) unfrozen")
-        print(f"[MAEDownstreamHead] backbone: {status}, probing layer {self.layer}")
+        print(f"[MAEDownstreamHead] backbone: {status}, probing layer {self.layer}, "
+              f"norm={self.norm_type}, activation={self.activation}")
 
     def backbone_parameters(self):
         """Trainable backbone params only (excludes mlp_head) -- used to build the
@@ -522,7 +584,7 @@ class MAEDownstreamHead(nn.Module):
 def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
                   padded_h, padded_w, epochs=25, backbone_lr=1e-5, head_lr=1e-3,
                   unfreeze_last_n_layers=None, hidden_dim=256, norm_type='layernorm',
-                  activation='relu',
+                  activation='relu', dropout=0.3,
                   eval_every=5, early_stop_patience=5, early_stop_split='ood_avg',
                   monitor_metric='loss', use_plateau_scheduler=False,
                   l2sp_lambda=0.0, verbose=True):
@@ -572,6 +634,13 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
         standard weight_decay on the backbone param group is automatically set to 0
         (L2-SP replaces it for backbone params, per Li et al.'s formulation).
 
+    activation: passed straight through to MAEDownstreamHead -> make_activation().
+        'relu' (default), 'gelu', 'silu', 'leaky_relu', 'elu', 'mish', or 'none'.
+    dropout: dropout rate between the two Linear layers in mlp_head. Default 0.3
+        (matching prior behavior). With norm_type='none' or a smooth activation
+        (gelu/silu), lowering this (e.g. 0.1) is a reasonable first knob to try if
+        train/eval loss diverge.
+
     Returns (results, history):
         results -- {split_name: {'acc': ..., 'f1': ..., 'loss': ...}}, evaluated at the
                    BEST epoch found (by early_stop_split + monitor_metric), not
@@ -582,7 +651,8 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
 
     wrapper = MAEDownstreamHead(model, num_classes, layer=layer, hidden_dim=hidden_dim,
                                 unfreeze_last_n_layers=unfreeze_last_n_layers,
-                                norm_type=norm_type, activation=activation).to(device)
+                                norm_type=norm_type, activation=activation,
+                                dropout=dropout).to(device)
 
     param_groups = [{'params': wrapper.mlp_head.parameters(), 'lr': head_lr, 'weight_decay': 0.05}]
     backbone_params = wrapper.backbone_parameters()
@@ -696,7 +766,8 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
 
 
 def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
-                   num_classes, device, epochs=50, hidden_dim=128):
+                   num_classes, device, epochs=50, hidden_dim=128,
+                   activation='relu'):
     """
     Same protocol as linear_probe_eval (identical normalization, optimizer, schedule,
     epoch count, batch size) but with a 1-hidden-layer MLP instead of nn.Linear.
@@ -704,6 +775,10 @@ def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
     Purpose: directly test whether the LP accuracy ceiling is a REPRESENTATIONAL limit
     (a single hyperplane per class structurally cannot separate a non-convex, multi-modal
     class distribution) rather than an optimization/undertraining issue.
+
+    activation: routed through make_activation() -- 'relu' (default), 'gelu', 'silu',
+    'leaky_relu', 'elu', 'mish', or 'none' (none is a no-op ablation here, the head
+    collapses to a single linear layer at eval time -- see MAEDownstreamHead docstring).
     """
     mu  = train_feats.mean(0, keepdim=True)
     std = train_feats.std(0,  keepdim=True) + 1e-8
@@ -712,7 +787,7 @@ def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
 
     head = nn.Sequential(
         nn.Linear(tf.shape[1], hidden_dim),
-        nn.ReLU(),
+        make_activation(activation),
         nn.Linear(hidden_dim, num_classes),
     ).to(device)
     optim = torch.optim.Adam(head.parameters(), lr=1e-3, weight_decay=1e-4)
@@ -797,7 +872,7 @@ class AttentiveProbe(nn.Module):
     (not implemented here) is the standard next step for this probe type specifically.
     """
     def __init__(self, encoder_dim, num_classes, num_heads=4, heavyweight=False,
-                ff_dim=None, dropout=0.1):
+                ff_dim=None, dropout=0.1, ff_activation='gelu'):
         super().__init__()
         self.query = nn.Parameter(torch.randn(1, 1, encoder_dim) * 0.02)
         self.attn = nn.MultiheadAttention(encoder_dim, num_heads, dropout=dropout, batch_first=True)
@@ -806,8 +881,11 @@ class AttentiveProbe(nn.Module):
         if heavyweight:
             ff_dim = ff_dim or encoder_dim * 4
             self.norm1 = nn.LayerNorm(encoder_dim)
+            # ff_activation routed through the same make_activation() factory as the
+            # downstream head -- default 'gelu' matches the original hard-coded choice.
             self.ffn = nn.Sequential(
-                nn.Linear(encoder_dim, ff_dim), nn.GELU(), nn.Dropout(dropout),
+                nn.Linear(encoder_dim, ff_dim), make_activation(ff_activation),
+                nn.Dropout(dropout),
                 nn.Linear(ff_dim, encoder_dim), nn.Dropout(dropout),
             )
             self.norm2 = nn.LayerNorm(encoder_dim)
@@ -828,7 +906,7 @@ class AttentiveProbe(nn.Module):
 
 def attentive_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
                          num_classes, device, epochs=50, heavyweight=False,
-                         num_heads=4, dropout=0.1):
+                         num_heads=4, dropout=0.1, ff_activation='gelu'):
     """
     train_feats/eval_feats: [N_samples, N_tokens, encoder_dim] -- UNPOOLED sequences from
     get_sequence_features(), NOT get_features(). Backbone is already frozen by construction
@@ -847,7 +925,8 @@ def attentive_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
 
     encoder_dim = tf.shape[-1]
     probe = AttentiveProbe(encoder_dim, num_classes, num_heads=num_heads,
-                           heavyweight=heavyweight, dropout=dropout).to(device)
+                           heavyweight=heavyweight, dropout=dropout,
+                           ff_activation=ff_activation).to(device)
     optim = torch.optim.Adam(probe.parameters(), lr=1e-3, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs)
     crit = nn.CrossEntropyLoss()
@@ -925,6 +1004,30 @@ def main():
                               'unpooled sequence features + training 2 extra probes per layer/split), and for '
                               'small patch sizes the unpooled sequence cache can be several GB. Opt in explicitly.')
     parser.add_argument('--attentive_probe_epochs', type=int, default=50)
+
+    # ── Downstream head activation/dropout ablation knobs ─────────────────
+    parser.add_argument('--head_activation', default='relu',
+                         choices=['relu', 'gelu', 'silu', 'leaky_relu', 'elu', 'mish', 'none'],
+                         help="Activation for the MLP/attentive probe heads and for "
+                              "MLP-probe eval. 'relu' (default) preserves prior behavior. "
+                              "'gelu'/'silu'/'leaky_relu'/'elu'/'mish' are usually safer when "
+                              "combined with --head_norm none, where there's no LayerNorm "
+                              "stabilizing the hidden-unit scale. 'none' is the ablation "
+                              "control (head collapses to a single Linear at eval time).")
+    parser.add_argument('--head_dropout', type=float, default=0.3,
+                         help="Dropout rate between the two Linear layers in the downstream "
+                              "head / MLP probe / attentive probe FFN. Default 0.3 matches "
+                              "prior behavior. Lower it (e.g. 0.1) if you see train/eval loss "
+                              "diverge, especially with --head_norm none or a smooth activation.")
+    parser.add_argument('--head_norm', default='layernorm',
+                         choices=['layernorm', 'batchnorm', 'none'],
+                         help="Normalization layer inside the downstream MLP head (between "
+                              "the two Linears). Default 'layernorm' matches prior behavior. "
+                              "'none' removes it, letting --head_activation do the ablation of "
+                              "whether the norm was load-bearing.")
+    parser.add_argument('--head_hidden_dim', type=int, default=256,
+                         help="Hidden width of the downstream MLP head (only used by "
+                              "finetune_eval; MLP-probe eval keeps its own default).")
     args = parser.parse_args()
 
     # Seed control for reproducibility
@@ -1199,7 +1302,8 @@ def main():
                     # LP ceiling is about linear separability specifically, not undertraining.
                     mlp_acc, mlp_f1 = mlp_probe_eval(
                         train_feats, train_labels, eval_feats, eval_labels,
-                        num_classes, device, epochs=50)
+                        num_classes, device, epochs=50,
+                        activation=args.head_activation)
 
                     # Domain-shift geometry: class-conditional centroid L2 distance and
                     # cosine similarity between ID and this OOD split's features. Purely
@@ -1225,10 +1329,12 @@ def main():
                             model, ldr, layer, device, padded_h, padded_w)
                         attn_light_acc, attn_light_f1 = attentive_probe_eval(
                             train_seq_feats, train_labels, eval_seq_feats, eval_seq_labels,
-                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=False)
+                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=False,
+                            dropout=args.head_dropout, ff_activation=args.head_activation)
                         attn_heavy_acc, attn_heavy_f1 = attentive_probe_eval(
                             train_seq_feats, train_labels, eval_seq_feats, eval_seq_labels,
-                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=True)
+                            num_classes, device, epochs=args.attentive_probe_epochs, heavyweight=True,
+                            dropout=args.head_dropout, ff_activation=args.head_activation)
                         line += (f" AttnLight={attn_light_acc*100:.1f}% AttnHeavy={attn_heavy_acc*100:.1f}%")
                         layer_results[sname].update({
                             'attn_light_acc': attn_light_acc, 'attn_light_f1': attn_light_f1,

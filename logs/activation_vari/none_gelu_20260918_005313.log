@@ -1,0 +1,23 @@
+nohup: ignoring input
+Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
+  norm_types to compare: ['none']
+  activation:            gelu
+  seeds per norm_type:   [42, 43, 44]  (n=3)
+  unfreeze_last_n_layers: 0   l2sp_lambda: 0.0
+
+Loaded checkpoint: epoch=276, loss=0.1160
+
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+
+
+======================================================================
+norm_type = none  activation = gelu  (3 seed(s): [42, 43, 44])
+======================================================================
+
+  --- seed=42 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12, norm=none, activation=gelu
+[finetune_eval] epoch 5/50  ood_avg loss=1.8522  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=2.3525  lr=9.05e-04

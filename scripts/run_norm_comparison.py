@@ -13,6 +13,19 @@ Usage:
         --norm_types layernorm,batchnorm,none \
         --seeds 42,43,44
 
+Activation ablation:
+    --activation now also accepts 'gelu' (and silu/leaky_relu/elu/mish) in addition to
+    the original 'relu' / 'none'. This is passed straight through to finetune_eval ->
+    MAEDownstreamHead -> train_mae_har.make_activation(). Useful in combination with
+    --norm_types none: without LayerNorm stabilizing hidden-unit scale, a smooth
+    non-zero-gradient-on-negative-half activation like gelu is usually more robust
+    against dead ReLU units.
+
+    IMPORTANT: the output JSON/PNG filenames now include an activation tag
+    (norm_comparison_<exp>_layer<L>_act<activation>.{json,png}). Previously a
+    layernorm/relu run and a layernorm/gelu run would both write to the same
+    ..._layer12.json and silently overwrite each other.
+
 Note on BatchNorm: nn.BatchNorm1d requires batch_size > 1 in train() mode (raises
 otherwise) -- if your train_loader's last batch of an epoch has exactly 1 sample
 (possible if len(dataset) % batch_size == 1), the batchnorm run will crash mid-epoch.
@@ -65,8 +78,11 @@ def build_model(train_args, padded_h, padded_w, device):
     return MAEv2(**common, mask_strategy=train_args['mask_strategy']).to(device)
 
 
-def plot_comparison(sweep_results, out_path, monitor_metric):
-    """sweep_results: list of {'norm_type': str, 'n_seeds': int, split: {'acc_mean':..., 'acc_std':...}, ...}"""
+def plot_comparison(sweep_results, out_path, monitor_metric, activation):
+    """
+    sweep_results: list of {'norm_type': str, 'n_seeds': int, split: {'acc_mean':..., 'acc_std':...}, ...}
+    activation is only used in the title here -- the per-bar labels are the norm_types.
+    """
     norm_types = [r['norm_type'] for r in sweep_results]
     n_seeds = sweep_results[0]['n_seeds'] if sweep_results else 1
     x_pos = list(range(len(norm_types)))
@@ -84,7 +100,8 @@ def plot_comparison(sweep_results, out_path, monitor_metric):
     ax.set_xticklabels(norm_types)
     ax.set_xlabel('norm_type (full backbone unfreeze)')
     ax.set_ylabel('Accuracy')
-    ax.set_title(f'MAEDownstreamHead Normalization Comparison (mean \u00b1 std, n={n_seeds} seeds)')
+    ax.set_title(f'MAEDownstreamHead Normalization Comparison '
+                 f'(activation={activation}, mean \u00b1 std, n={n_seeds} seeds)')
     ax.legend(fontsize=9, loc='upper right')
     ax.grid(alpha=0.3, axis='y')
     fig.tight_layout()
@@ -105,12 +122,18 @@ def main():
                              'reported as mean +/- std across seeds.')
     parser.add_argument('--unfreeze_last_n_layers', default='None',
                         help="'None' (full unfreeze, default), '0' (frozen), or an int k (last k layers)")
-    parser.add_argument('--activation', default='relu', choices=['relu', 'none'],
-                        help="'relu' (default) or 'none' -- with 'none', the two Linear layers in "
-                             "mlp_head have no non-linearity between them, making the head "
-                             "mathematically equivalent to a single Linear layer at eval time "
-                             "(ablation control to isolate whether ReLU specifically, not just "
-                             "extra parameters, is what lets MLP/attentive probes beat LP)")
+
+    # ── activation choices extended to match train_mae_har.make_activation() ──
+    parser.add_argument('--activation', default='relu',
+                        choices=['relu', 'gelu', 'silu', 'leaky_relu', 'elu', 'mish', 'none'],
+                        help="Activation used inside the downstream head (between the two Linear "
+                             "layers of mlp_head). Routed through train_mae_har.make_activation(). "
+                             "'relu' (default) preserves prior behavior; 'gelu'/'silu'/'leaky_relu'/"
+                             "'elu'/'mish' are usually more robust against dead units when combined "
+                             "with --norm_types none (no LayerNorm stabilizing hidden scale). "
+                             "'none' is the ablation control: with no non-linearity, the two Linear "
+                             "layers collapse to a single effective Linear at eval time.")
+
     parser.add_argument('--l2sp_lambda', type=float, default=0.0,
                         help='Optional: apply L2-SP at a fixed lambda while comparing norm types '
                              '(0.0 = off, matching finetune_eval default)')
@@ -137,7 +160,8 @@ def main():
     train_args = result['args']
     print(f"Config: {result['exp']}")
     print(f"  norm_types to compare: {norm_types}")
-    print(f"  seeds per norm_type: {seeds}  (n={len(seeds)})")
+    print(f"  activation:            {args.activation}")
+    print(f"  seeds per norm_type:   {seeds}  (n={len(seeds)})")
     print(f"  unfreeze_last_n_layers: {unfreeze}   l2sp_lambda: {args.l2sp_lambda}\n")
 
     padded_h = compute_padded_size(RAW_IMG_H, train_args['patch_h'])
@@ -185,7 +209,8 @@ def main():
     sweep_results = []
     for norm_type in norm_types:
         print(f"\n{'='*70}")
-        print(f"norm_type = {norm_type}  ({len(seeds)} seed(s): {seeds})")
+        print(f"norm_type = {norm_type}  activation = {args.activation}  "
+              f"({len(seeds)} seed(s): {seeds})")
         print("=" * 70)
 
         per_seed_results = []
@@ -199,7 +224,7 @@ def main():
             for split in OOD_SPLITS:
                 print(f"    {split:<20} acc={results[split]['acc']:.4f}  loss={results[split]['loss']:.4f}")
 
-        entry = {'norm_type': norm_type, 'n_seeds': len(seeds)}
+        entry = {'norm_type': norm_type, 'activation': args.activation, 'n_seeds': len(seeds)}
         for split in OOD_SPLITS:
             accs = [r[split]['acc'] for r in per_seed_results]
             f1s = [r[split]['f1'] for r in per_seed_results]
@@ -220,19 +245,24 @@ def main():
             print(f"    {split:<20} acc={entry[split]['acc_mean']:.4f} \u00b1 {entry[split]['acc_std']:.4f}"
                   f"   f1={entry[split]['f1_mean']:.4f} \u00b1 {entry[split]['f1_std']:.4f}")
 
-    out_json = out_dir / f"norm_comparison_{result['exp']}_layer{args.layer}.json"
+    # ── Filenames include the activation tag so relu/gelu runs don't overwrite ──
+    norm_tag = args.norm_types.replace(',', '-')
+    out_stem = f"norm_comparison_{result['exp']}_layer{args.layer}_norm{norm_tag}_act{args.activation}"
+    out_json = out_dir / f"{out_stem}.json"
     with open(out_json, 'w') as f:
-        json.dump({'exp': result['exp'], 'layer': args.layer, 'sweep': sweep_results,
+        json.dump({'exp': result['exp'], 'layer': args.layer,
+                   'activation': args.activation,
+                   'sweep': sweep_results,
                    'monitor_metric': args.monitor_metric, 'l2sp_lambda': args.l2sp_lambda,
                    'unfreeze_last_n_layers': args.unfreeze_last_n_layers}, f, indent=2)
     print(f"\nSaved raw results: {out_json}")
 
-    out_png = out_dir / f"norm_comparison_{result['exp']}_layer{args.layer}.png"
-    plot_comparison(sweep_results, out_png, args.monitor_metric)
+    out_png = out_dir / f"{out_stem}.png"
+    plot_comparison(sweep_results, out_png, args.monitor_metric, args.activation)
     print(f"Saved comparison plot: {out_png}")
 
     col_w = 24
-    print(f"\n--- Accuracy ---")
+    print(f"\n--- Accuracy (activation={args.activation}) ---")
     print(f"{'norm_type':>12}" + "".join(f"{SPLIT_LABELS[s]:>{col_w}}" for s in OOD_SPLITS))
     for r in sweep_results:
         row = f"{r['norm_type']:>12}"
@@ -241,7 +271,7 @@ def main():
             row += f"{cell:>{col_w}}"
         print(row)
 
-    print(f"\n--- F1 (weighted) ---")
+    print(f"\n--- F1 (weighted, activation={args.activation}) ---")
     print(f"{'norm_type':>12}" + "".join(f"{SPLIT_LABELS[s]:>{col_w}}" for s in OOD_SPLITS))
     for r in sweep_results:
         row = f"{r['norm_type']:>12}"

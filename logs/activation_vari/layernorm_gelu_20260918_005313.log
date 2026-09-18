@@ -1,0 +1,80 @@
+nohup: ignoring input
+Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
+  norm_types to compare: ['layernorm']
+  activation:            gelu
+  seeds per norm_type:   [42, 43, 44]  (n=3)
+  unfreeze_last_n_layers: 0   l2sp_lambda: 0.0
+
+Loaded checkpoint: epoch=276, loss=0.1160
+
+  test_id: 4602 samples
+  test_cross_device: 9631 samples
+  test_cross_env: 6650 samples
+  test_cross_user: 12109 samples
+
+
+======================================================================
+norm_type = layernorm  activation = gelu  (3 seed(s): [42, 43, 44])
+======================================================================
+
+  --- seed=42 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12, norm=layernorm, activation=gelu
+[finetune_eval] epoch 5/50  ood_avg loss=2.0432  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=2.5379  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=2.8559  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=3.1805  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=3.5984  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=3.7229  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=2.0432)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=2.0432), not the final epoch trained
+    test_id              acc=0.8466  loss=0.4785
+    test_cross_device    acc=0.3562  loss=2.0633
+    test_cross_env       acc=0.4122  loss=2.3421
+    test_cross_user      acc=0.4998  loss=1.7242
+
+  --- seed=43 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12, norm=layernorm, activation=gelu
+[finetune_eval] epoch 5/50  ood_avg loss=2.0916  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=2.5370  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=2.9778  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=3.1977  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=3.4248  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=3.7218  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=2.0916)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=2.0916), not the final epoch trained
+    test_id              acc=0.8218  loss=0.4864
+    test_cross_device    acc=0.3909  loss=1.9920
+    test_cross_env       acc=0.3880  loss=2.4540
+    test_cross_user      acc=0.4927  loss=1.8288
+
+  --- seed=44 ---
+[MAEDownstreamHead] backbone: frozen, probing layer 12, norm=layernorm, activation=gelu
+[finetune_eval] epoch 5/50  ood_avg loss=2.1349  lr=9.76e-04  <- best
+[finetune_eval] epoch 10/50  ood_avg loss=2.5962  lr=9.05e-04
+[finetune_eval] epoch 15/50  ood_avg loss=3.0030  lr=7.94e-04
+[finetune_eval] epoch 20/50  ood_avg loss=3.2450  lr=6.55e-04
+[finetune_eval] epoch 25/50  ood_avg loss=3.5098  lr=5.00e-04
+[finetune_eval] epoch 30/50  ood_avg loss=3.7797  lr=3.45e-04
+[finetune_eval] early stopping at epoch 30 (no improvement in 5 evals since epoch 5, best ood_avg loss=2.1349)
+[finetune_eval] reporting results from epoch 5 (best ood_avg loss=2.1349), not the final epoch trained
+    test_id              acc=0.8372  loss=0.4773
+    test_cross_device    acc=0.3443  loss=2.1817
+    test_cross_env       acc=0.3615  loss=2.4191
+    test_cross_user      acc=0.4727  loss=1.8038
+
+  Aggregated (n=3):
+    test_id              acc=0.8352 ± 0.0125   f1=0.8276 ± 0.0156
+    test_cross_device    acc=0.3638 ± 0.0242   f1=0.3625 ± 0.0065
+    test_cross_env       acc=0.3872 ± 0.0253   f1=0.3552 ± 0.0164
+    test_cross_user      acc=0.4884 ± 0.0140   f1=0.4182 ± 0.0192
+
+Saved raw results: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12_normlayernorm_actgelu.json
+Saved comparison plot: figs/norm_comparison/norm_comparison_mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128_layer12_normlayernorm_actgelu.png
+
+--- Accuracy (activation=gelu) ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+   layernorm         0.8352 ± 0.0125         0.3638 ± 0.0242         0.3872 ± 0.0253         0.4884 ± 0.0140
+
+--- F1 (weighted, activation=gelu) ---
+   norm_type    ID (in-distribution)            Cross-Device               Cross-Env              Cross-User
+   layernorm         0.8276 ± 0.0156         0.3625 ± 0.0065         0.3552 ± 0.0164         0.4182 ± 0.0192

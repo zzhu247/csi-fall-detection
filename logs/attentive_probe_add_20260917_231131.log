@@ -1,0 +1,34 @@
+Config: mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128
+Loaded checkpoint: epoch=276, loss=0.1160
+
+label_map: {'jumping': 0, 'running': 1, 'seated-breathing': 2, 'walking': 3, 'wavinghand': 4}  num_classes: 5
+
+Adding attentive-probe columns to checkpoint: epoch_300
+
+Layer 1: extracting unpooled sequence features (train_id)...
+  test_id              AttnLight=85.5%  AttnHeavy=99.4%
+  test_cross_device    AttnLight=25.2%  AttnHeavy=32.4%
+  test_cross_env       AttnLight=29.5%  AttnHeavy=37.1%
+  test_cross_user      AttnLight=45.7%  AttnHeavy=44.3%
+Layer 3: extracting unpooled sequence features (train_id)...
+  test_id              AttnLight=92.8%  AttnHeavy=99.7%
+  test_cross_device    AttnLight=28.2%  AttnHeavy=26.3%
+  test_cross_env       AttnLight=28.9%  AttnHeavy=36.5%
+  test_cross_user      AttnLight=35.3%  AttnHeavy=48.2%
+Layer 6: extracting unpooled sequence features (train_id)...
+  test_id              AttnLight=94.7%  AttnHeavy=99.7%
+  test_cross_device    AttnLight=31.1%  AttnHeavy=30.5%
+  test_cross_env       AttnLight=34.8%  AttnHeavy=36.8%
+  test_cross_user      AttnLight=43.4%  AttnHeavy=46.9%
+Layer 9: extracting unpooled sequence features (train_id)...
+  test_id              AttnLight=93.9%  AttnHeavy=99.7%
+  test_cross_device    AttnLight=28.5%  AttnHeavy=16.8%
+  test_cross_env       AttnLight=35.7%  AttnHeavy=42.3%
+  test_cross_user      AttnLight=40.4%  AttnHeavy=46.7%
+Layer 12: extracting unpooled sequence features (train_id)...
+  test_id              AttnLight=92.7%  AttnHeavy=99.4%
+  test_cross_device    AttnLight=20.1%  AttnHeavy=28.4%
+  test_cross_env       AttnLight=39.6%  AttnHeavy=27.1%
+  test_cross_user      AttnLight=42.8%  AttnHeavy=45.7%
+
+Updated in place: results/mae_har/mae_har_ep300_mask0.75_strategyrandom_ph29pw25_seed42_enc12_dim128_bs128.json
