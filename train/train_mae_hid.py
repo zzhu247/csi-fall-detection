@@ -11,7 +11,7 @@ MAE pretraining on HumanIdentification train_id, followed by:
   - Linear probe eval on test_id + OOD splits
 
 Usage:
-    python train_mae_har.py --epochs 300 --mask_ratio 0.75 --encoder_depth 6
+    python train_mae_hid.py --epochs 300 --mask_ratio 0.75 --encoder_depth 6
 
 Patch-size ablation notes (added):
     Square patch sizes that don't evenly divide the standard 232x500 input
@@ -32,6 +32,34 @@ Patch-size ablation notes (added):
     and hard-stops with a suggested safe --batch_size instead of letting
     you OOM 20+ minutes into a run. Use --skip_mem_check to bypass (not
     recommended unless you've already sized batch_size yourself).
+
+Split-selection knobs (added):
+    Previously the train split ('train_id') and eval splits (OOD_SPLITS,
+    hardcoded to ['test_id', 'test_cross_device', 'test_cross_env',
+    'test_cross_user']) were hardcoded, so there was no way to point this
+    script at the corrected, session-disjoint splits (train_final/val_final/
+    test_final, or the nested train_hp/val_hp used for hyperparameter
+    search) without editing the file. --train_split and --eval_splits make
+    both configurable from the CLI:
+        - Hyperparameter search (choosing mask_ratio, patch size, etc.):
+              --train_split train_hp --eval_splits val_hp,test_cross_device,test_cross_env,test_cross_user
+          Never pass test_final or test_id here -- selecting hyperparameters
+          against a split, then reporting on that same split, reintroduces
+          exactly the kind of meta-level leakage the corrected splits were
+          built to avoid.
+        - Final reported run (hyperparameters already locked in):
+              --train_split train_final --eval_splits test_final,test_cross_device,test_cross_env,test_cross_user
+        - test_id is the ORIGINAL, session-leaky in-distribution split
+          (confirmed 100% train/test session overlap for HID) -- do not use
+          it for any number that goes in the paper. Left as the default only
+          for backward compatibility; always pass --train_split/--eval_splits
+          explicitly going forward.
+    The open-set vs. closed-set routing below (RawIdentityDataset / rank1_retrieval_accuracy
+    / verification_auc_eer vs. label_map-based KNN/LP/MLP) now checks EACH split named in
+    --eval_splits against label_map, rather than only the hardcoded OOD_SPLITS list -- this
+    matters for val_hp/test_final too, in principle, though in practice they're built as
+    trial-level subsets of train's own identity pool, so they're expected to be closed-set
+    (every identity in val_hp/test_final already has a label_map entry from train_hp/train_final).
 """
 import os, sys, json, argparse, random, math, torch, numpy as np, pandas as pd
 import torch.nn as nn
@@ -53,6 +81,9 @@ CKPT_DIR    = '/home/zhuzih19/csi-project/csi-fall-detection/checkpoints/mae_hid
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(CKPT_DIR,    exist_ok=True)
 
+# NOTE: kept for backward compatibility (nothing else in this file references it any
+# more -- main() now builds its eval split list from args.eval_splits). See the
+# "Split-selection knobs" note in the module docstring above for what to pass instead.
 OOD_SPLITS = ['test_id', 'test_cross_device', 'test_cross_env', 'test_cross_user']
 
 RAW_IMG_H, RAW_IMG_W = 232, 500  # standard CSI-Bench input shape (subcarriers x timesteps)
@@ -360,14 +391,6 @@ def compute_domain_shift_metrics(id_features, id_labels, ood_features, ood_label
     This is a direct, non-parametric, purely geometric measure: for each class, take
     the ID centroid and OOD centroid (mean embedding), and measure how far apart /
     misaligned they are. No classifier training involved.
-
-    Findings so far (see RESULTS.md / weekly updates): within a layer, this ranking
-    across OOD splits tracks KNN accuracy's ranking closely. Across layers, cosine
-    similarity (scale-invariant) reproduces the same U-shaped depth pattern seen in
-    classification accuracy, while raw L2 distance does not track as cleanly (likely
-    because L2 distance is NOT scale-invariant across layers with different embedding
-    norms -- prefer cosine similarity for cross-layer comparisons, L2 distance only
-    for within-layer comparisons).
     """
     if hasattr(id_features, 'numpy'): id_features = id_features.numpy()
     if hasattr(id_labels, 'numpy'): id_labels = id_labels.numpy()
@@ -408,12 +431,10 @@ def compute_domain_shift_metrics(id_features, id_labels, ood_features, ood_label
 
 
 def knn_eval(train_feats, train_labels, eval_feats, eval_labels, k=10):
-    # Normalize
     mu  = train_feats.mean(0, keepdim=True)
     std = train_feats.std(0,  keepdim=True) + 1e-8
     tf = (train_feats - mu) / std
     ef = (eval_feats  - mu) / std
-    # Cosine similarity
     tf_n = tf / (tf.norm(dim=1, keepdim=True) + 1e-8)
     ef_n = ef / (ef.norm(dim=1, keepdim=True) + 1e-8)
     sim  = ef_n @ tf_n.T  # [N_eval, N_train]
@@ -459,23 +480,6 @@ def linear_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
 class MAEDownstreamHead(nn.Module):
     """
     Downstream evaluation/fine-tuning wrapper for MAE/MAEv2 backbones.
-
-    This is the single, shared implementation for fine-tuning -- it replaces two
-    previously-separate, non-comparable implementations (finetune_eval()'s old inline
-    head, and a standalone MAEv2ForDownstream class) so there is one source of truth
-    for fine-tune numbers instead of two head designs that couldn't be compared.
-
-    Supports:
-    1. Extracting embeddings at any specific encoder `layer` (not just the final one),
-       matching the `layer` argument used by every other eval protocol (KNN / Linear
-       Probe / MLP Probe), so fine-tune results are directly comparable layer-for-layer.
-    2. Freezing the backbone entirely, unfreezing only the last k encoder blocks, or
-       unfreezing the whole backbone -- see `unfreeze_last_n_layers`.
-    3. Safety: the constructor deepcopies the passed-in model internally, so training
-       this wrapper (even fully unfrozen) NEVER mutates the caller's original model --
-       this was a real bug in the standalone-class version this replaces (it stored
-       direct references to the pretrained model's submodules, so training it would
-       have silently rewritten the caller's checkpoint in place).
     """
     def __init__(self, pretrained_model, num_classes, layer=None,
                  hidden_dim=256, unfreeze_last_n_layers=0, norm_type='layernorm',
@@ -491,23 +495,6 @@ class MAEDownstreamHead(nn.Module):
         self.layer = layer or len(self.encoder_blocks.layers)  # default: deepest layer
         self.norm_type = norm_type
 
-        # norm_type controls the normalization layer between the two Linears in mlp_head.
-        # 'layernorm' (default, unchanged from before): normalizes each sample independently
-        #   over the hidden_dim axis -- stable regardless of batch composition, and doesn't
-        #   need train/eval-mode distinct behavior. Matters here specifically because the
-        #   backbone may be unfrozen (finetune_eval with unfreeze_last_n_layers != 0), so the
-        #   feature distribution feeding into mlp_head can drift epoch to epoch as the
-        #   backbone's own weights change -- LayerNorm re-stabilizes that per-sample.
-        # 'batchnorm': normalizes each feature dim over the CURRENT BATCH. Two things to be
-        #   aware of vs LayerNorm: (1) needs batch_size > 1 in train() mode (nn.BatchNorm1d
-        #   raises on a batch of size 1 -- can happen on the last, possibly-partial batch of
-        #   an epoch); (2) behaves differently in train() (uses batch statistics) vs eval()
-        #   (uses running statistics accumulated during training) -- LayerNorm has no such
-        #   train/eval distinction, so this is a genuinely different mechanism, not just a
-        #   drop-in swap.
-        # 'none': no normalization layer (nn.Identity) -- included as the ablation control,
-        #   to see whether either LayerNorm or BatchNorm is doing anything at all here versus
-        #   just adding parameters/depth.
         if norm_type == 'layernorm':
             norm_layer = nn.LayerNorm(hidden_dim)
         elif norm_type == 'batchnorm':
@@ -517,19 +504,6 @@ class MAEDownstreamHead(nn.Module):
         else:
             raise ValueError(f"norm_type must be 'layernorm', 'batchnorm', or 'none', got {norm_type!r}")
 
-        # activation='none' -- IMPORTANT: with no non-linearity between the two Linear
-        # layers, this head is mathematically equivalent to a SINGLE linear layer at eval
-        # time (W2 @ (W1 @ x) = (W2 @ W1) @ x is still just one linear map), regardless of
-        # hidden_dim or how many parameters it has. This is intentionally included as an
-        # ablation control: if this variant performs similarly to plain LP (linear_probe_eval)
-        # rather than to the ReLU-activated MLP probe, that's direct evidence the ReLU
-        # non-linearity -- not the extra parameters/depth by themselves -- is what let the
-        # MLP/attentive probes access non-linearly-separable structure that LP cannot.
-        # NOTE: this equivalence is about the *function class*, not the *training dynamics*.
-        # Dropout still acts between train() batches even with no activation, and the
-        # optimization path (two matrices trained jointly via SGD) can differ from directly
-        # fitting one matrix -- so don't expect the numbers to be bit-identical to LP, just
-        # in the same ballpark if the "ReLU is the key ingredient" hypothesis is correct.
         if activation == 'relu':
             act_layer = nn.ReLU()
         elif activation == 'none':
@@ -548,22 +522,12 @@ class MAEDownstreamHead(nn.Module):
 
         self.set_backbone_trainable(unfreeze_last_n_layers)
 
-        # L2-SP (Li et al. 2018): snapshot pretrained backbone weights ONCE, at construction
-        # time, before any fine-tuning happens. l2sp_penalty() later measures how far the
-        # (currently trainable) backbone params have drifted from this snapshot -- this is
-        # taken BEFORE set_backbone_trainable() has any chance to be called again, so it is
-        # always the true pretrained starting point, never a partially-fine-tuned state.
-        # Only backbone params are snapshotted -- the head is randomly initialized and has
-        # no meaningful "starting point" to regularize toward.
         self._pretrained_backbone_state = {
             name: p.detach().clone()
             for name, p in self._backbone_named_parameters()
         }
 
     def _backbone_named_parameters(self):
-        """Yields (name, param) for every backbone parameter (patch_embedding,
-        encoder_pos_embed, encoder_blocks), regardless of requires_grad -- used both to
-        build the L2-SP snapshot and to compute the penalty against it."""
         for name, p in self.patch_embedding.named_parameters():
             yield f"patch_embedding.{name}", p
         yield "encoder_pos_embed", self.encoder_pos_embed
@@ -571,13 +535,6 @@ class MAEDownstreamHead(nn.Module):
             yield f"encoder_blocks.{name}", p
 
     def l2sp_penalty(self):
-        """Sum of squared L2 distance between each currently-TRAINABLE backbone parameter
-        and its pretrained (snapshotted) value. Frozen parameters are skipped (they can't
-        have moved, so their contribution would always be exactly zero anyway, but skipping
-        them avoids walking the whole backbone every step when most of it is frozen).
-        Returns a 0-dim tensor on the same device as the model; safe to add directly into
-        a training loss. Multiply by an l2sp_lambda coefficient before adding -- this
-        function does not apply any weighting itself."""
         device = self.encoder_pos_embed.device
         penalty = torch.zeros((), device=device)
         for name, p in self._backbone_named_parameters():
@@ -586,15 +543,6 @@ class MAEDownstreamHead(nn.Module):
         return penalty
 
     def set_backbone_trainable(self, unfreeze_last_n_layers):
-        """
-        unfreeze_last_n_layers:
-            0    -> freeze the entire backbone (linear/MLP probing, via end-to-end training
-                    rather than the two-stage extract-then-probe pipeline mlp_probe_eval uses
-                    -- included mainly as a cross-check that the two give similar numbers)
-            k>0  -> unfreeze only the last k encoder blocks, freeze the rest (a middle ground
-                    that's less prone to catastrophic forgetting than a full unfreeze)
-            None -> unfreeze the entire backbone (full fine-tune)
-        """
         for p in self.patch_embedding.parameters():
             p.requires_grad = False
         self.encoder_pos_embed.requires_grad = False
@@ -613,7 +561,6 @@ class MAEDownstreamHead(nn.Module):
             for block in list(self.encoder_blocks.layers)[-unfreeze_last_n_layers:]:
                 for p in block.parameters():
                     p.requires_grad = True
-        # unfreeze_last_n_layers == 0 -> backbone stays fully frozen (nothing more to do)
 
         status = ("frozen" if unfreeze_last_n_layers == 0
                   else "fully unfrozen" if unfreeze_last_n_layers is None
@@ -621,16 +568,11 @@ class MAEDownstreamHead(nn.Module):
         print(f"[MAEDownstreamHead] backbone: {status}, probing layer {self.layer}")
 
     def backbone_parameters(self):
-        """Trainable backbone params only (excludes mlp_head) -- used to build the
-        differential-LR optimizer param groups in finetune_eval()."""
         params = list(self.patch_embedding.parameters()) + [self.encoder_pos_embed] + \
                  list(self.encoder_blocks.parameters())
         return [p for p in params if p.requires_grad]
 
     def forward(self, x):
-        """x: [B, 1, H, W] (already padded to a patch-size-compatible shape).
-        Processes the FULL sequence, no masking (masking is pretraining-only),
-        mean-pools over patch tokens at self.layer -- matches extract_layer_embeddings()."""
         h = self.patch_embedding(x) + self.encoder_pos_embed
         for i, block in enumerate(self.encoder_blocks.layers):
             h = block(h)
@@ -651,48 +593,6 @@ def finetune_eval(model, train_loader, eval_loaders, num_classes, layer, device,
     """
     Full (or partial) fine-tuning of the pretrained encoder + a downstream MLP head,
     evaluated end-to-end -- NOT a frozen-feature probe (see mlp_probe_eval for that).
-    Thin wrapper around MAEDownstreamHead (see its docstring for design details);
-    this function owns the training loop and differential-LR optimizer setup.
-
-    BREAKING CHANGE from the previous version: now returns (results, history) instead
-    of just results -- update any caller that does `x = finetune_eval(...)` to
-    `x, history = finetune_eval(...)`.
-
-    OOD-aware early stopping + best-checkpoint selection:
-    Fixed-epoch full-backbone fine-tuning showed monotonic OOD degradation even with a
-    low backbone_lr (catastrophic forgetting continues to accumulate epoch over epoch,
-    it doesn't just plateau) -- see the "2d" enc12 result in RESULTS.md. Lowering
-    backbone_lr further only slows this down, it doesn't necessarily stop it from
-    happening by the time training finishes. So instead of reporting whatever the model
-    looks like at the LAST epoch, this evaluates every `eval_every` epochs, tracks the
-    epoch with the best OOD performance, and reports/returns THAT checkpoint's results
-    (reloaded via a deepcopied state_dict) -- not the final epoch's.
-
-    monitor_metric: 'loss' (default) or 'acc'. 'loss' monitors CROSS-ENTROPY LOSS on the
-        monitored split(s) -- computed at eval time (model.eval(), no_grad), NOT the
-        training loss (which is only ever computed on train_id and never touches OOD
-        data). Lower is better for 'loss', so the improvement direction, best_metric
-        initialization, and ReduceLROnPlateau's `mode` all flip relative to 'acc' --
-        this is handled internally, you don't need to adjust anything else when switching.
-    early_stop_split: which split is monitored (via monitor_metric) for both early
-        stopping and the optional plateau scheduler. 'ood_avg' (default) averages across
-        every split except 'test_id' -- monitoring test_id (or anything that includes it)
-        would miss forgetting entirely, since test_id keeps improving even as OOD
-        degrades. Pass an explicit split name (e.g. 'test_cross_device') to monitor a
-        single split instead. Requires at least one non-test_id split in eval_loaders
-        unless you pass an explicit split name.
-    early_stop_patience: stop if the monitored metric hasn't improved for this many
-        *evaluations* (i.e. patience * eval_every epochs of no improvement), not epochs.
-    use_plateau_scheduler: if True, use ReduceLROnPlateau (factor=0.5, patience=2 evals)
-        driven by the same monitored metric, instead of CosineAnnealingLR. Off by
-        default -- CosineAnnealingLR remains the default schedule for backward compatibility.
-    l2sp_lambda: L2-SP regularization strength (Li et al. 2018). 0.0 (default) = off,
-        matching prior behavior. When > 0, adds `l2sp_lambda * ||backbone_params -
-        pretrained_backbone_params||^2` to the training loss -- this penalizes the
-        backbone for drifting from its pretrained starting point directly, rather than
-        relying on a low backbone_lr to indirectly limit drift. When l2sp_lambda > 0,
-        standard weight_decay on the backbone param group is automatically set to 0
-        (L2-SP replaces it for backbone params, per Li et al.'s formulation).
 
     Returns (results, history):
         results -- {split_name: {'acc': ..., 'f1': ..., 'loss': ...}}, evaluated at the
@@ -822,10 +722,6 @@ def mlp_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
     """
     Same protocol as linear_probe_eval (identical normalization, optimizer, schedule,
     epoch count, batch size) but with a 1-hidden-layer MLP instead of nn.Linear.
-
-    Purpose: directly test whether the LP accuracy ceiling is a REPRESENTATIONAL limit
-    (a single hyperplane per class structurally cannot separate a non-convex, multi-modal
-    class distribution) rather than an optimization/undertraining issue.
     """
     mu  = train_feats.mean(0, keepdim=True)
     std = train_feats.std(0,  keepdim=True) + 1e-8
@@ -865,13 +761,7 @@ def extract_sequence_embeddings(model, x, layer):
     """
     Same layer-by-layer walk as model.extract_layer_embeddings() (models/mae.py),
     but returns the UNPOOLED per-patch-token sequence [B, N, encoder_dim] at the given
-    layer instead of the mean-pooled [B, encoder_dim] vector that extract_layer_embeddings
-    always returns. Needed for attentive probing, which needs the full token sequence to
-    let a learned query attend over it -- mean-pooling (used by every other eval protocol
-    in this file, via get_features()) discards any information that's distributed
-    non-redundantly across tokens rather than duplicated across all of them.
-
-    x is assumed already padded (pad_csi) to a patch-size-compatible shape.
+    layer instead of the mean-pooled [B, encoder_dim] vector.
     """
     h = model.patch_embedding(x) + model.encoder_pos_embed
     for i, block in enumerate(model.encoder_blocks.layers):
@@ -883,12 +773,7 @@ def extract_sequence_embeddings(model, x, layer):
 
 @torch.no_grad()
 def get_sequence_features(model, loader, layer, device, padded_h, padded_w):
-    """Sequence-level counterpart to get_features() -- returns [N_samples, N_tokens,
-    encoder_dim] instead of [N_samples, encoder_dim]. Memory note: this is N_tokens times
-    larger than get_features()'s output -- for small patch sizes (e.g. patch=11,
-    num_patches~1000+) combined with a large split (test_cross_user has 12k+ samples),
-    the cached sequence tensor can reach multiple GB even on CPU. Consider processing one
-    split at a time rather than caching all splits simultaneously if memory is tight."""
+    """Sequence-level counterpart to get_features()."""
     model.eval()
     feats, labels = [], []
     for csi, y in loader:
@@ -903,20 +788,7 @@ class AttentiveProbe(nn.Module):
     """
     Attentive probe (V-JEPA style, arxiv.org/abs/2404.08471): a single learnable query
     vector cross-attends over the full, UNPOOLED patch-token sequence to extract a
-    task-relevant summary -- instead of mean-pooling the sequence first (which every
-    other probe in this file does, via get_features()) and potentially averaging away
-    information that's distributed non-redundantly across tokens rather than duplicated
-    across all of them.
-
-    heavyweight=False (lightweight): a single cross-attention layer, query -> classifier.
-    heavyweight=True: adds a full transformer-block-style FFN after the attention (matching
-    V-JEPA's design) to extract more from the attended representation before classifying.
-
-    dropout: attentive probes have more parameters than linear/MLP probes and the
-    cross-attention itself can learn to key on spurious per-sample patterns in a small
-    downstream training set, so they're more prone to overfitting -- this dropout is a
-    light mitigation; if overfitting is still an issue in practice, data augmentation
-    (not implemented here) is the standard next step for this probe type specifically.
+    task-relevant summary.
     """
     def __init__(self, encoder_dim, num_classes, num_heads=4, heavyweight=False,
                 ff_dim=None, dropout=0.1):
@@ -952,15 +824,7 @@ def attentive_probe_eval(train_feats, train_labels, eval_feats, eval_labels,
                          num_classes, device, epochs=50, heavyweight=False,
                          num_heads=4, dropout=0.1):
     """
-    train_feats/eval_feats: [N_samples, N_tokens, encoder_dim] -- UNPOOLED sequences from
-    get_sequence_features(), NOT get_features(). Backbone is already frozen by construction
-    here (these are precomputed, detached features) -- only the probe itself is trained,
-    same "extract-then-probe" two-stage design as mlp_probe_eval(), just operating on the
-    full sequence instead of a mean-pooled vector.
-
-    Normalization is per-feature-dim, computed across both the sample and token axes
-    (dim=(0,1)) -- analogous to mlp_probe_eval()'s per-feature normalization, just
-    accounting for the extra token dimension here.
+    train_feats/eval_feats: [N_samples, N_tokens, encoder_dim] -- UNPOOLED sequences.
     """
     mu = train_feats.mean(dim=(0, 1), keepdim=True)
     std = train_feats.std(dim=(0, 1), keepdim=True) + 1e-8
@@ -1008,6 +872,26 @@ def main():
     parser.add_argument('--patch_h',       type=int,   default=29)
     parser.add_argument('--patch_w',       type=int,   default=25)
     parser.add_argument('--seed',          type=int,   default=42)
+
+    # ── Split-selection knobs (added) ─────────────────────────────────────
+    parser.add_argument('--train_split', type=str, default='train_id',
+                         help="Which split JSON (under SPLITS_DIR) to train on. Use "
+                              "'train_hp' for hyperparameter search, 'train_final' "
+                              "only for the final reported run. Default ('train_id') "
+                              "is the ORIGINAL, session-leaky split (confirmed 100%% "
+                              "train/test session overlap for HID) -- kept only for "
+                              "backward compatibility; do not use it for paper numbers.")
+    parser.add_argument('--eval_splits', type=str,
+                         default='test_id,test_cross_device,test_cross_env,test_cross_user',
+                         help="Comma-separated split names (under SPLITS_DIR) to "
+                              "evaluate on each --eval_every checkpoint. For HP search: "
+                              "'val_hp,test_cross_device,test_cross_env,test_cross_user' "
+                              "(never test_final or test_id here). For the final reported "
+                              "run: 'test_final,test_cross_device,test_cross_env,test_cross_user'. "
+                              "Each named split is checked against label_map and routed to "
+                              "closed-set (KNN/LP/MLP) or open-set (Rank-1/AUC/EER) eval "
+                              "accordingly -- see module docstring.")
+
     parser.add_argument('--skip_mem_check', action='store_true',
                          help='Bypass the pre-flight attention-memory safety check (not recommended)')
     parser.add_argument('--mem_budget_gb', type=float, default=20.0,
@@ -1016,16 +900,7 @@ def main():
                          help='Domain-adversarial pretraining strength (DANN, Ganin & Lempitsky 2016). '
                               '0.0 (default) = off. When > 0, adds a domain classifier on the FULL '
                               '(unmasked) pooled encoder embedding, trained via gradient reversal to push '
-                              'the encoder toward domain-invariant representations. WARNING: this requires '
-                              'an extra full (unmasked) encoder forward pass per training step on top of '
-                              "MAE's existing masked forward -- meaningfully more compute, especially for "
-                              'small patch sizes (more tokens = the extra full-sequence attention is more '
-                              'expensive than the 25%-visible masked pass). Also: naive Adam-based joint '
-                              'optimization of this adversarial objective can fail silently (the domain '
-                              'classifier "wins" and stays highly accurate, meaning the encoder never '
-                              'became domain-invariant) -- watch the printed domain classifier accuracy '
-                              'during training; it should trend DOWN toward chance level (1/num_domains), '
-                              'not stay high. If it stays high, try --domain_adv_optimizer sgd.')
+                              'the encoder toward domain-invariant representations.')
     parser.add_argument('--domain_adv_column', default='device', choices=['device', 'environment', 'user'],
                          help='Which metadata column to use as the domain-adversarial target')
     parser.add_argument('--domain_adv_layer', type=int, default=None,
@@ -1033,33 +908,18 @@ def main():
                               'encoder_depth, i.e. the deepest layer)')
     parser.add_argument('--domain_adv_hidden_dim', type=int, default=128)
     parser.add_argument('--domain_adv_optimizer', default='adamw', choices=['adamw', 'sgd'],
-                         help="Optimizer for the domain classifier's own parameters (separate from the "
-                              "main model optimizer, which stays AdamW regardless). sgd (with momentum) "
-                              "was empirically more reliable at actually driving domain accuracy toward "
-                              "chance level in isolated testing -- adamw can let the domain classifier "
-                              "win the adversarial game and stay highly accurate. Try sgd first if "
-                              "domain accuracy isn't dropping.")
+                         help="Optimizer for the domain classifier's own parameters.")
     parser.add_argument('--domain_adv_lr', type=float, default=0.01,
                          help="Learning rate for the domain classifier's own optimizer")
     parser.add_argument('--run_attentive_probe', action='store_true',
-                         help='Also run lightweight + heavyweight attentive probing at every eval checkpoint. '
-                              'OFF by default -- this roughly doubles per-checkpoint eval cost (extracting '
-                              'unpooled sequence features + training 2 extra probes per layer/split), and for '
-                              'small patch sizes the unpooled sequence cache can be several GB. Opt in explicitly.')
+                         help='Also run lightweight + heavyweight attentive probing at every eval checkpoint.')
     parser.add_argument('--attentive_probe_epochs', type=int, default=50)
     parser.add_argument('--resume_from', default=None,
                          help='Path to a _best.pt checkpoint to resume from. Loads model_state '
-                              'and continues epoch numbering from ckpt["epoch"]+1 -- does NOT '
-                              'restart from epoch 1. NOTE: the checkpoint format here only saves '
-                              'model_state (not optimizer/scheduler state), so the AdamW momentum '
-                              'buffers restart from zero on resume and the LR schedule is '
-                              're-derived by fast-forwarding a fresh CosineAnnealingLR to the '
-                              'correct epoch rather than being restored exactly -- this is a '
-                              'reasonable approximation, not a bit-exact continuation.')
+                              'and continues epoch numbering from ckpt["epoch"]+1.')
     parser.add_argument('--n_verification_pairs', type=int, default=5000,
                          help='Number of same/different-identity pairs sampled for the '
-                              'open-set verification AUC/EER metric (splits with unknown '
-                              'identities, e.g. test_cross_device/test_cross_user).')
+                              'open-set verification AUC/EER metric.')
     args = parser.parse_args()
 
     # Seed control for reproducibility
@@ -1071,11 +931,6 @@ def main():
     torch.backends.cudnn.benchmark = False
 
     eval_layers = [int(x) for x in args.eval_layers.split(',')]
-    # Defensive filter: --eval_layers defaults to '1,3,6,9,12' (sized for encoder_depth=12),
-    # so a run with a shallower encoder_depth (e.g. 6) would otherwise KeyError inside
-    # get_features() when it hits a layer index that doesn't exist in this model. Silently
-    # drop any requested layer beyond the actual encoder depth instead of crashing, and warn
-    # so it's clear layers were dropped rather than intentionally excluded.
     valid_eval_layers = [l for l in eval_layers if l <= args.encoder_depth]
     if len(valid_eval_layers) < len(eval_layers):
         dropped = [l for l in eval_layers if l > args.encoder_depth]
@@ -1113,27 +968,23 @@ def main():
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # Data
+    # ── Data ──────────────────────────────────────────────────────────────
     meta = pd.read_csv(META_PATH)
     import json as _json
-    with open(f'{SPLITS_DIR}/train_id.json') as f:
+    with open(f'{SPLITS_DIR}/{args.train_split}.json') as f:      # <-- CHANGED (was hardcoded 'train_id')
         train_ids = set(_json.load(f))
+    print(f"[split] training on: {args.train_split}")             # <-- CHANGED (new)
     train_df  = meta[meta['id'].isin(train_ids)].reset_index(drop=True)
     label_map = {l: i for i, l in enumerate(sorted(train_df['label'].unique(), key=str))}
     num_classes = len(label_map)
     print(f"label_map: {label_map}  num_classes: {num_classes}")
 
     train_ds = MultiTaskDataset(train_df, DATA_ROOT, 'Multitask', label_map=label_map)
-    # For feature extraction (no shuffle) -- unaffected by domain-adversarial training,
-    # stays a plain (csi, label) 2-tuple loader regardless of --domain_adv_lambda.
     train_feat_loader = DataLoader(train_ds, batch_size=args.batch_size,
                                    shuffle=False, num_workers=4)
 
     domain_map = None
     if args.domain_adv_lambda > 0:
-        # domain_map is built ONLY from train_id's domain values -- OOD splits' domains
-        # (e.g. held-out devices) must never appear in this label space, see
-        # DomainLabeledDataset's docstring.
         domain_values = sorted(train_df[args.domain_adv_column].unique(), key=str)
         domain_map = {v: i for i, v in enumerate(domain_values)}
         num_domains = len(domain_map)
@@ -1147,20 +998,27 @@ def main():
         pretrain_loader = DataLoader(train_ds, batch_size=args.batch_size,
                                      shuffle=True, num_workers=4, pin_memory=True)
 
-    # OOD loaders
+    # ── Eval loaders: closed-set (label_map) vs. open-set (unknown identities) ──
     # IMPORTANT (HumanIdentification-specific): label_map is a CLOSED set built from
-    # train_id's identities only. Some OOD splits contain identities that never appear in
-    # train_id (e.g. test_cross_user is entirely 'U02', who has zero train_id samples) --
-    # MultiTaskDataset.__getitem__ does label_map[row["label"]], which raises KeyError for
-    # any such identity. A classifier with a fixed output layer built from label_map is
-    # structurally incapable of predicting an identity it was never given an output slot
-    # for -- so splits with unknown identities go through a DIFFERENT eval path instead of
-    # being dropped: open-set retrieval/verification (rank1_retrieval_accuracy,
-    # verification_auc_eer), which never reference label_map and work correctly regardless
-    # of whether the identity was seen during pretraining.
+    # args.train_split's identities only. Some eval splits contain identities that never
+    # appear there (e.g. test_cross_user is entirely 'U02', who may have zero train-split
+    # samples) -- MultiTaskDataset.__getitem__ does label_map[row["label"]], which raises
+    # KeyError for any such identity. A classifier with a fixed output layer built from
+    # label_map is structurally incapable of predicting an identity it was never given an
+    # output slot for -- so splits with unknown identities go through a DIFFERENT eval path:
+    # open-set retrieval/verification (rank1_retrieval_accuracy, verification_auc_eer),
+    # which never reference label_map and work correctly regardless of whether the identity
+    # was seen during pretraining.
+    #
+    # This check now runs over args.eval_splits (whatever the caller passed), not the
+    # hardcoded OOD_SPLITS -- val_hp/test_final are expected to be closed-set in practice
+    # (they're trial-level subsets of train_hp's/train_final's own identity pool), but the
+    # check is applied uniformly rather than assumed.
+    eval_split_names = args.eval_splits.split(',')                 # <-- CHANGED (was hardcoded OOD_SPLITS)
+    print(f"[split] evaluating on: {eval_split_names}")            # <-- CHANGED (new)
     ood_loaders = {}
     openset_loaders = {}
-    for sname in OOD_SPLITS:
+    for sname in eval_split_names:                                 # <-- CHANGED (was `for sname in OOD_SPLITS:`)
         with open(f'{SPLITS_DIR}/{sname}.json') as f:
             split_ids = set(_json.load(f))
         split_df = meta[meta['id'].isin(split_ids)]
@@ -1171,8 +1029,8 @@ def main():
             openset_loaders[sname] = DataLoader(openset_ds, batch_size=args.batch_size,
                                                 shuffle=False, num_workers=4)
             print(f"  {sname}: {len(split_df)} samples -- OPEN-SET eval (contains identities "
-                  f"not in train_id's label_map: {sorted(unknown_identities)}). Uses Rank-1 "
-                  f"retrieval + verification AUC/EER instead of KNN/LP/MLP.")
+                  f"not in {args.train_split}'s label_map: {sorted(unknown_identities)}). Uses "
+                  f"Rank-1 retrieval + verification AUC/EER instead of KNN/LP/MLP.")
             continue
         ds = load_split(sname, meta, label_map)
         ood_loaders[sname] = DataLoader(ds, batch_size=args.batch_size,
@@ -1225,11 +1083,6 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs)
     if start_epoch > 1:
-        # Fast-forward the schedule to the correct LR for start_epoch. NOTE: the checkpoint
-        # format doesn't save optimizer/scheduler state, so AdamW's momentum buffers restart
-        # from zero here regardless -- this only restores the LR VALUE a continuous run would
-        # have reached, not the optimizer's internal momentum history. A brief re-adjustment
-        # period after resuming (a few epochs) is expected and not a bug.
         for _ in range(start_epoch - 1):
             scheduler.step()
         print(f"[resume] fast-forwarded LR schedule to epoch {start_epoch} "
@@ -1242,9 +1095,6 @@ def main():
         domain_clf = DomainClassifier(args.encoder_dim, num_domains,
                                       hidden_dim=args.domain_adv_hidden_dim).to(device)
         grl = GradientReversalLayer(lambda_=args.domain_adv_lambda)
-        # Separate optimizer for the domain classifier's OWN params -- deliberately not
-        # folded into the main AdamW optimizer, so its momentum state doesn't interact
-        # with the encoder/decoder's reconstruction-loss momentum state.
         if args.domain_adv_optimizer == 'sgd':
             domain_optimizer = torch.optim.SGD(domain_clf.parameters(), lr=args.domain_adv_lr, momentum=0.9)
         else:
@@ -1255,8 +1105,6 @@ def main():
               f"DOWN toward chance level (~{1/num_domains:.3f}). If it stays high, the "
               f"adversarial objective isn't working (see --domain_adv_lambda's help text).")
 
-    # Persist padding metadata alongside args so downstream visualization/analysis
-    # can tell exactly what shape the model actually trained on.
     saved_args = vars(args).copy()
     saved_args['padded_h'] = padded_h
     saved_args['padded_w'] = padded_w
@@ -1278,30 +1126,10 @@ def main():
                 csi = pad_csi(csi.to(device), padded_h, padded_w)
                 domain_label = domain_label.to(device)
 
-                # Reconstruction forward (masked, as always)
                 out = model(csi); recon_loss = out[0]
 
-                # Domain-adversarial forward: a SEPARATE, FULL (unmasked) encoder pass --
-                # matches what eval-time extract_layer_embeddings() sees, unlike the
-                # masked reconstruction forward above which only sees 25% of tokens (at
-                # mask_ratio=0.75). This is the extra compute cost flagged in
-                # --domain_adv_lambda's help text.
-                #
-                # IMPORTANT: model.extract_layer_embeddings() (models/mae.py) is decorated
-                # with @torch.no_grad() -- it was designed purely for eval-time feature
-                # extraction (get_features()), so calling it here would silently return a
-                # DETACHED tensor with no grad_fn. The GRL's reversed gradient would then
-                # stop dead at that detached tensor and never reach the encoder -- domain
-                # classifier accuracy would climb completely normally (its own gradient path
-                # is unaffected) while the encoder receives literally zero adversarial
-                # pressure, regardless of --domain_adv_lambda. (This was caught empirically:
-                # lambda=1 and lambda=10 produced bit-identical loss trajectories and eval
-                # numbers, which is only possible if the domain path wasn't touching the
-                # encoder at all.) extract_sequence_embeddings() (added earlier for
-                # attentive probing) does the same layer-walk WITHOUT @torch.no_grad(), so
-                # gradients flow correctly -- use that here instead.
                 full_seq = extract_sequence_embeddings(model, csi, domain_adv_layer)
-                full_emb = full_seq.mean(dim=1)  # [B, encoder_dim], matches extract_layer_embeddings' pooling
+                full_emb = full_seq.mean(dim=1)
                 domain_logits = domain_clf(grl(full_emb))
                 domain_loss = F.cross_entropy(domain_logits, domain_label)
 
@@ -1358,14 +1186,11 @@ def main():
             print(f"\n--- Eval at epoch {epoch} ---")
             epoch_results = {}
 
-            # Extract train features once per eval layer
             for layer in eval_layers:
                 print(f"  Layer {layer}:")
                 train_feats, train_labels = get_features(
                     model, train_feat_loader, layer, device, padded_h, padded_w)
 
-                # Sequence features (unpooled) only extracted if attentive probing is on --
-                # this is the expensive/opt-in path, see --run_attentive_probe help text.
                 if args.run_attentive_probe:
                     train_seq_feats, _ = get_sequence_features(
                         model, train_feat_loader, layer, device, padded_h, padded_w)
@@ -1379,20 +1204,14 @@ def main():
                     lp_acc, lp_f1 = linear_probe_eval(
                         train_feats, train_labels, eval_feats, eval_labels,
                         num_classes, device, epochs=50)
-                    # Non-linear probe, same protocol as LP (see mlp_probe_eval docstring) --
-                    # if this tracks close to KNN rather than LP, that's direct evidence the
-                    # LP ceiling is about linear separability specifically, not undertraining.
                     mlp_acc, mlp_f1 = mlp_probe_eval(
                         train_feats, train_labels, eval_feats, eval_labels,
                         num_classes, device, epochs=50)
 
-                    # Domain-shift geometry: class-conditional centroid L2 distance and
-                    # cosine similarity between ID and this OOD split's features. Purely
-                    # geometric, no classifier -- see compute_domain_shift_metrics docstring.
                     shift_metrics = compute_domain_shift_metrics(
                         train_feats, train_labels, eval_feats, eval_labels)
 
-                    line = (f"    {sname:25s} {'(in-dist)' if sname == 'test_id' else '(OOD)    '} "
+                    line = (f"    {sname:25s} {'(in-dist)' if sname in ('test_id', 'val_hp', 'test_final') else '(OOD)    '} "
                             f"KNN={knn_acc*100:.1f}% LP={lp_acc*100:.1f}% MLP={mlp_acc*100:.1f}% "
                             f"L2_dist={shift_metrics['centroid_l2_dist']:.2f} "
                             f"Cos_sim={shift_metrics['centroid_cos_sim']:.3f}")
@@ -1422,7 +1241,7 @@ def main():
 
                     print(line)
 
-                # ── Open-set eval for splits containing identities unseen in train_id ──
+                # ── Open-set eval for splits containing identities unseen in the train split ──
                 for sname, ldr in openset_loaders.items():
                     eval_feats, eval_identities = get_features_with_identity(
                         model, ldr, layer, device, padded_h, padded_w)
@@ -1451,7 +1270,6 @@ def main():
                 epoch_results[f'layer_{layer}'] = layer_results
 
             results['evals'][f'epoch_{epoch}'] = epoch_results
-            # Save intermediate results
             with open(f'{RESULTS_DIR}/{exp_name}.json', 'w') as f:
                 json.dump(results, f, indent=2)
             print()
